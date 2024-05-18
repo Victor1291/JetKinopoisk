@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.shu.home.HomeMain
 import com.shu.jetcinema.ui.theme.JetCinemaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,9 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetCinemaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                    HomeMain(
                     )
                 }
             }
