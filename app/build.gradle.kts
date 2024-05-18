@@ -65,6 +65,7 @@ dependencies {
 
     //Hilt
     implementation(libs.bundles.hilt)
+    implementation(project(":core:network"))
     ksp(libs.bundles.hilt.ksp)
 
     testImplementation(libs.junit)

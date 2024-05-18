@@ -21,4 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "JetCinema"
 include(":app")
- 
+include(":core:models")
+include(":core:network")
+include(":core:database")
+include(":feature:home")
