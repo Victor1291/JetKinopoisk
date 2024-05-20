@@ -6,8 +6,8 @@ import com.shu.models.ListCinema
 data class ListCollectionsDto(
 
     @SerializedName("total") var total: Int? = null,
-    @SerializedName("totalPages") var totalPages: Int? = null,
-    @SerializedName("items") var items: List<ColectionsDto> = listOf()
+    @SerializedName(value = "totalPages", alternate = ["pagesCount"]) var totalPages: Int? = null,
+    @SerializedName(value = "items", alternate = ["films"]) var items: List<ColectionsDto> = listOf()
 
 )
 

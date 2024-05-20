@@ -26,39 +26,45 @@ fun HoursCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier.padding(4.dp).width(180.dp)
+            .height(320.dp),
 
     ) {
 
         Column(
-            verticalArrangement = Arrangement.SpaceBetween,
+           // verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
 
             modifier = Modifier
                 .padding(4.dp)
         ) {
 
-            Text(
-                text = cinemaItem.nameRu.toString(),
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            cinemaItem.genres?.let {
-                Text(
-                    text = if (it.isNotEmpty()) "${it[0]}" else "",
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-
             AsyncImage(
                 modifier = Modifier
-                    .width(80.dp)
-                    .height(200.dp),
+                    .width(180.dp)
+                    .height(260.dp),
                 model = ImageRequest.Builder(context = LocalContext.current)
                     .data(cinemaItem.posterUrlPreview)
                     .build(),
                 contentDescription = "icon"
             )
+
+            Text(
+                text = cinemaItem.nameRu.toString(),
+                maxLines = 1,
+                modifier = Modifier
+                    .width(180.dp),
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            cinemaItem.genres?.let {
+                Text(
+                    text =  it[0].genre,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
+
             /*Text(
                 text =  hours.pressureIn.toString() ,
                 color = MaterialTheme.colorScheme.primary

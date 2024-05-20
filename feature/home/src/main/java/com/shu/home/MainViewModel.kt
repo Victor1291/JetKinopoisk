@@ -5,21 +5,18 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shu.models.ManyScreens
 import com.shu.network.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
 import javax.inject.Inject
-import com.shu.models.ManyScreens
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-
 
 sealed interface UiState {
     data class Success(val manyScreens: ManyScreens) : UiState
@@ -33,7 +30,6 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     var choiceCity: String = ""
-
 
     val currentDay = getTime()
 
@@ -53,11 +49,9 @@ class MainViewModel @Inject constructor(
          mutableStateOf(value = SearchWidgetState.CLOSED)
      val searchWidgetState: androidx.compose.runtime.State<SearchWidgetState> = _searchWidgetState*/
 
-
     private val _searchTextState: MutableState<String> =
         mutableStateOf(value = "")
     val searchTextState: androidx.compose.runtime.State<String> = _searchTextState
-
 
     fun getTime(): String {
         val date = Date()
@@ -69,7 +63,6 @@ class MainViewModel @Inject constructor(
 
         return if (month < 10) "$year-0$month-$day" else "$year-$month-$day"
     }
-
 
     /* fun updateSearchWidgetState(newValue: SearchWidgetState) {
          _searchWidgetState.value = newValue
@@ -92,36 +85,19 @@ class MainViewModel @Inject constructor(
         getMovies()
     }
 
-    fun getMovies() {
-        viewModelScope.launch {
-            _uiState.update {
-                return@update UiState.Loading
-            }
-            _uiState.update {
+    private fun getMovies() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _uiState.value = UiState.Loading
+            _uiState.value =
                 try {
-
-                    val first = async(context = Dispatchers.IO) {
-                        repository.getPopular(1)
-                    }
-                    val second = async(context = Dispatchers.IO) {
-                        repository.getTop250(1)
-                    }
-
-                    val up = UiState.Success(
-                        ManyScreens(listOf(first.await(), second.await()))
-                    )
-
-                    return@update up
-
+                    UiState.Success(repository.getAllScreen())
                 } catch (e: Exception) {
                     Log.e("viewmodelError", "Error $e")
-                    return@update UiState.Error
-                } finally {
-
+                    UiState.Error
                 }
-            }
         }
     }
+
 
     /* fun getAllCity() {
          viewModelScope.launch {

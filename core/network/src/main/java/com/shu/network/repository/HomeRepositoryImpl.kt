@@ -4,12 +4,76 @@ import com.shu.models.ListCinema
 import com.shu.models.FilmVip
 import com.shu.network.ServiceMovieApi
 import android.util.Log
+import com.shu.models.CinemaItem
+import com.shu.models.ManyScreens
 import com.shu.network.models.mapFrom
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
 ) : HomeRepository {
+    override suspend fun getAllScreen(): ManyScreens {
+        return coroutineScope {
+
+            var listPremier: List<CinemaItem> = emptyList()
+            var listPopular: List<CinemaItem> = emptyList()
+            var listUSA: List<CinemaItem> = emptyList()
+            var list250: List<CinemaItem> = emptyList()
+            var listFrance: List<CinemaItem> = emptyList()
+            var listSerials: List<CinemaItem> = emptyList()
+
+            //  val genreCountry = getGenreCountry()
+            //загружаю лист с watched
+            /* getWatched().forEach {
+                 it.kinopoiskId?.let { it1 -> listId.add(it1) }
+             }
+             Log.d("mainUseCase", " listWatched ${listId.size}")*/
+
+            launch {
+                launch {
+                    listPremier =
+                        getPremieres(2024, "MAY").items.take(20)
+                }
+                launch {
+                    listPopular = getPopular(1).items
+                }
+                launch {
+                    list250 = getTop250(1).items
+                }
+//                launch {
+//                    val choice = choiceCountry(genreCountry)
+//                    val movies = repository.getFilmVip(choice).list.map { cinema ->
+//                        setWatched(cinema)
+//                    }
+//                    listUSA.movies = movies
+//                    listUSA.choice = choice.copy(idTitle = 8)
+//                }
+//                launch {
+//                    val choice = choiceCountry(genreCountry)
+//                    listFrance.movies =
+//                        repository.getFilmVip(choice).items.map { cinema ->
+//                            setWatched(cinema)
+//                        }
+//                    listFrance.choice = choice.copy(idTitle = 8)
+//                }
+//                launch {
+//                    listSerials.movies = repository.getSerialVip(1).items.map { cinema ->
+//                        setWatched(cinema)
+//                    }
+//                }
+            }.join()
+
+            return@coroutineScope ManyScreens(
+                listOf(
+                    listPremier,
+                    listPopular,
+                    list250,
+                )
+            )
+        }
+    }
 
     override suspend fun getPremieres(year: Int, month: String): ListCinema {
         return api.movies(year, month).mapFrom()
@@ -20,7 +84,9 @@ class HomeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getTop250(page: Int): ListCinema {
-        return api.top250(page = page).mapFrom()
+        val responce = api.top250(page = page)
+        Log.d("repository ", " ${responce.items.size}")
+        return responce.mapFrom()
     }
 
     override suspend fun getFilmVip(vip: FilmVip): ListCinema {

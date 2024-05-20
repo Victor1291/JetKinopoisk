@@ -1,5 +1,5 @@
 package com.shu.models
 
 data class ManyScreens(
-    val homeListScreen: List<ListCinema>
+    val homeListScreen: List<List<CinemaItem>>
 )

@@ -42,22 +42,22 @@ interface ServiceMovieApi {
     @GET("/api/v2.2/films/filters")
     suspend fun genreCountry(): ListFiltersDto
 
-   /* @Headers("X-API-KEY: $api_key")
+   /*
     @GET("/api/v2.2/films/{id}/seasons")
     suspend fun serial(@Path("id") id: Int): SeasonsSerialDto
 
-    @Headers("X-API-KEY: $api_key")
+
     @GET("/api/v2.2/films/{id}/similars")
     suspend fun similar(@Path("id") id: Int?): ListSimilarDto
 
-    @Headers("X-API-KEY: $api_key")
+
     @GET("/api/v2.1/films/search-by-keyword")
     suspend fun search(
         @Query("page") page: Int,
         @Query("keyword") keyword: String
     ): SearchListDto
 
-    @Headers("X-API-KEY: $api_key")
+
     @GET("/api/v2.2/films/{id}/images")
     suspend fun gallery(
         @Path("id") id: Int,
@@ -65,7 +65,7 @@ interface ServiceMovieApi {
         @Query("type") type: String = "STILL",
     ): GalleryListDto
 
-    @Headers("X-API-KEY: $api_key")
+
     @GET("/api/v2.2/films/{id}/images")
     suspend fun galleryTotal(
         @Path("id") id: Int,
@@ -73,7 +73,7 @@ interface ServiceMovieApi {
         @Query("type") type: String = "STILL",
     ): GalleryTotalListDto*/
 
-   // @Headers("X-API-KEY: $api_key")
+   //
     @GET("api/v2.2/films")
     suspend fun filmVip(
         @Query("countries") country : Int = 1,
@@ -88,7 +88,7 @@ interface ServiceMovieApi {
         @Query("keyword") keyword: String = ""
     ): ListFiltersFilmDto
 
-   // @Headers("X-API-KEY: $api_key")
+   //
     @GET("api/v2.2/films")
     suspend fun serialVip(
         @Query("order") order: String = "NUM_VOTE",
