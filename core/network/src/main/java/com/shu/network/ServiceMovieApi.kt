@@ -1,28 +1,29 @@
 package  com.shu.network
 
-import com.shu.network.models.CinemaItemDto
-import com.shu.network.models.ListCinemaDto
+import com.shu.network.models.ListCollectionsDto
+import com.shu.network.models.ListPremiersDto
+import com.shu.network.models.ListFiltersFilmDto
 import com.shu.network.models.filters.ListFiltersDto
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface ServiceMovieApi {
-    @Headers("X-API-KEY: $api_key")
+   // @Headers("X-API-KEY: $api_key")
     @GET("/api/v2.2/films/premieres")
-    suspend fun movies(@Query("year") year: Int, @Query("month") month: String): ListCinemaDto
+    suspend fun movies(@Query("year") year: Int, @Query("month") month: String): ListPremiersDto
 
-    @Headers("X-API-KEY: $api_key")
+    //@Headers("X-API-KEY: $api_key")
     @GET("/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS")
-    suspend fun popular(@Query("page") page: Int): ListCinemaDto
+    suspend fun popular(@Query("page") page: Int): ListCollectionsDto
 
-    @Headers("X-API-KEY: $api_key")
+   // @Headers("X-API-KEY: $api_key")
     @GET("/api/v2.2/films/top?type=TOP_250_BEST_FILMS")
-    suspend fun top250(@Query("page") page: Int): ListCinemaDto
+    suspend fun top250(@Query("page") page: Int): ListCollectionsDto
 
-    @Headers("X-API-KEY: $api_key")
+   // @Headers("X-API-KEY: $api_key")
     @GET("/api/v2.2/films/top?type=TOP_AWAIT_FILMS")
-    suspend fun awaitFilms(@Query("page") page: Int): ListCinemaDto
+    suspend fun awaitFilms(@Query("page") page: Int): ListCollectionsDto
 
 
    /* @Headers("X-API-KEY: $api_key")
@@ -37,7 +38,7 @@ interface ServiceMovieApi {
     @GET("/api/v2.2/films/{id}")
     suspend fun detailFilmography(@Path("id") id: Int?): MovieImageDto
 */
-    @Headers("X-API-KEY: $api_key")
+  //  @Headers("X-API-KEY: $api_key")
     @GET("/api/v2.2/films/filters")
     suspend fun genreCountry(): ListFiltersDto
 
@@ -72,7 +73,7 @@ interface ServiceMovieApi {
         @Query("type") type: String = "STILL",
     ): GalleryTotalListDto*/
 
-    @Headers("X-API-KEY: $api_key")
+   // @Headers("X-API-KEY: $api_key")
     @GET("api/v2.2/films")
     suspend fun filmVip(
         @Query("countries") country : Int = 1,
@@ -85,9 +86,9 @@ interface ServiceMovieApi {
         @Query("yearTo") yearTo: Int = 2024,
         @Query("page") page: Int = 1,
         @Query("keyword") keyword: String = ""
-    ): ListCinemaDto
+    ): ListFiltersFilmDto
 
-    @Headers("X-API-KEY: $api_key")
+   // @Headers("X-API-KEY: $api_key")
     @GET("api/v2.2/films")
     suspend fun serialVip(
         @Query("order") order: String = "NUM_VOTE",
@@ -97,7 +98,7 @@ interface ServiceMovieApi {
         @Query("yearFrom") yearFrom: Int = 2000,
         @Query("yearTo") yearTo: Int = 2023,
         @Query("page") page: Int = 1
-    ): ListCinemaDto
+    ): ListFiltersFilmDto
 
   /*  @Headers("X-API-KEY: $api_key")
     @GET("/api/v1/staff")
@@ -122,7 +123,7 @@ genres 1 - триллер 2 - драма 3 -криминал 4 - мелодра�
      */
     private companion object {
       //private const val api_key = "e3390a86-ab61-4dcd-b721-7cee593b1ecd" // 18.10
-    private const val api_key = "6f544dac-8b44-4204-a502-203a753e8985" //13.10
+   // private const val api_key = "6f544dac-8b44-4204-a502-203a753e8985" //13.10
     //  private const val api_key = "00129dee-5912-4f04-bfb7-57b378a0b86e" // 14.l0
     }
 }

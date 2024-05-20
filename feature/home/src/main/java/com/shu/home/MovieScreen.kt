@@ -28,7 +28,7 @@ fun MovieScreen(
     ) {
         Spacer(modifier = Modifier.height(100.dp))
         Text(
-            text = " City ",
+            text = " Kinopoisk ",
             color = MaterialTheme.colorScheme.primary
         )
         LazyColumn(

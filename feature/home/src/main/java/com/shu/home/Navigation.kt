@@ -34,7 +34,7 @@ sealed class BottomNavigationScreens(val route: String, val label: String, val i
 
 val bottomNavigationItems = listOf(
     BottomNavigationScreens.MainScreen,
-    BottomNavigationScreens.SearchScreen,
+    //BottomNavigationScreens.SearchScreen,
 )
 
 @Composable

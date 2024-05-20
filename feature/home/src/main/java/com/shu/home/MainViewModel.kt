@@ -89,7 +89,7 @@ class MainViewModel @Inject constructor(
 
     init {
         Log.d("Init Viewmodel", " ******************************** ")
-            //getCityFromDataSource()
+        getMovies()
     }
 
     fun getMovies() {

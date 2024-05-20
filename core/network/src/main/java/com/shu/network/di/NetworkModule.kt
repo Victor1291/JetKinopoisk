@@ -12,17 +12,20 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 private const val BASE_URL = "https://kinopoiskapiunofficial.tech"
+
 @InstallIn(SingletonComponent::class)
 @Module
 class NetworkModule {
 
 
     @Provides
-    fun provideRetrofit() : ServiceMovieApi = Retrofit.Builder()
+    fun provideRetrofit(): ServiceMovieApi = Retrofit.Builder()
         .client(
             OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().also {
                 it.level = HttpLoggingInterceptor.Level.BODY
-            }).build()
+            })
+                .addInterceptor(AuthorizationInterceptor())
+                .build()
         )
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
