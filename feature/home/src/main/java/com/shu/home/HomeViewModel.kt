@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    fun getTime(): String {
+    private fun getTime(): String {
         val date = Date()
         val calendar: Calendar = GregorianCalendar()
         calendar.time = date

@@ -18,4 +18,11 @@ class CinemaModule {
         return HomeRepositoryImpl(api)
     }
 
+    @Provides
+    fun providesDetailRepository(
+        api: ServiceMovieApi
+    ): DetailRepository {
+        return DetailRepositoryImpl(api)
+    }
+
 }

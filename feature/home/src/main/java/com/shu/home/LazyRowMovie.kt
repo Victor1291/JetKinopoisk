@@ -2,8 +2,6 @@ package com.shu.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -16,15 +14,14 @@ import com.shu.models.CinemaItem
 
 
 @Composable
-fun ListHours(
+fun LazyRowMovie(
     list: List<CinemaItem>,
     num: Int,
+    onMovieClick: (Int?) -> Unit,
+    listName: List<String> = listOf("Premiers","Popular","Top 250","Third","Four","Five"),
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
-    // onCharacterClicked: (ListItem) -> Unit
-) {
-
-    val listName = listOf("Premiers","Popular","Top 250","Third","Four","Five")
+    ) {
 
     Column(
         modifier = Modifier
@@ -42,7 +39,7 @@ fun ListHours(
             list.let { listHours ->
                 listHours.size?.let {
                     items(it) { day ->
-                        HoursCard(listHours[day])
+                        MovieItemCard(listHours[day],onMovieClick = onMovieClick)
                     }
                 }
             }

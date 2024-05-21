@@ -1,11 +1,13 @@
 package  com.shu.network
 
+import com.shu.network.modelDetail.DetailMovieDto
 import com.shu.network.models.ListCollectionsDto
 import com.shu.network.models.ListPremiersDto
 import com.shu.network.models.ListFiltersFilmDto
 import com.shu.network.models.filters.ListFiltersDto
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ServiceMovieApi {
@@ -25,14 +27,41 @@ interface ServiceMovieApi {
     @GET("/api/v2.2/films/top?type=TOP_AWAIT_FILMS")
     suspend fun awaitFilms(@Query("page") page: Int): ListCollectionsDto
 
+    @GET("/api/v2.2/films/{id}")
+    suspend fun getFilm(@Path("id") id: Int): DetailMovieDto
 
+    @GET("api/v2.2/films")
+    suspend fun filmVip(
+        @Query("countries") country : Int = 1,
+        @Query("genres") genres : Int = 11,
+        @Query("order") order: String = "NUM_VOTE",
+        @Query("type") type: String = "FILM",
+        @Query("ratingFrom") ratingFrom: Int = 0,
+        @Query("ratingTo") ratingTo: Int = 10,
+        @Query("yearFrom") yearFrom: Int = 2000,
+        @Query("yearTo") yearTo: Int = 2024,
+        @Query("page") page: Int = 1,
+        @Query("keyword") keyword: String = ""
+    ): ListFiltersFilmDto
+
+    //
+    @GET("api/v2.2/films")
+    suspend fun serialVip(
+        @Query("order") order: String = "NUM_VOTE",
+        @Query("type") type: String = "TV_SERIES",
+        @Query("ratingFrom") ratingFrom: Int = 0,
+        @Query("ratingTo") ratingTo: Int = 10,
+        @Query("yearFrom") yearFrom: Int = 2000,
+        @Query("yearTo") yearTo: Int = 2023,
+        @Query("page") page: Int = 1
+    ): ListFiltersFilmDto
+
+}
    /*
     @GET("/api/v2.2/films/{id}/facts")
     suspend fun factList(@Path("id") id: Int): FactList
 
 
-    @GET("/api/v2.2/films/{id}")
-    suspend fun detail(@Path("id") id: Int): DetailMovieDto*/
 
    /*
     @GET("/api/v2.2/films/{id}")
@@ -74,31 +103,7 @@ interface ServiceMovieApi {
     ): GalleryTotalListDto*/
 
    //
-    @GET("api/v2.2/films")
-    suspend fun filmVip(
-        @Query("countries") country : Int = 1,
-        @Query("genres") genres : Int = 11,
-        @Query("order") order: String = "NUM_VOTE",
-        @Query("type") type: String = "FILM",
-        @Query("ratingFrom") ratingFrom: Int = 0,
-        @Query("ratingTo") ratingTo: Int = 10,
-        @Query("yearFrom") yearFrom: Int = 2000,
-        @Query("yearTo") yearTo: Int = 2024,
-        @Query("page") page: Int = 1,
-        @Query("keyword") keyword: String = ""
-    ): ListFiltersFilmDto
 
-   //
-    @GET("api/v2.2/films")
-    suspend fun serialVip(
-        @Query("order") order: String = "NUM_VOTE",
-        @Query("type") type: String = "TV_SERIES",
-        @Query("ratingFrom") ratingFrom: Int = 0,
-        @Query("ratingTo") ratingTo: Int = 10,
-        @Query("yearFrom") yearFrom: Int = 2000,
-        @Query("yearTo") yearTo: Int = 2023,
-        @Query("page") page: Int = 1
-    ): ListFiltersFilmDto
 
   /*  @Headers("X-API-KEY: $api_key")
     @GET("/api/v1/staff")
@@ -126,3 +131,4 @@ genres 1 - триллер 2 - драма 3 -криминал 4 - мелодра�
 /*
 отсчёт страниц начинается с 1 а не с 0
  */
+*/

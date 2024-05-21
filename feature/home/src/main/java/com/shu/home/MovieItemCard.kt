@@ -1,6 +1,6 @@
 package com.shu.home
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,15 +19,17 @@ import coil.request.ImageRequest
 import com.shu.models.CinemaItem
 
 @Composable
-fun HoursCard(
-    cinemaItem: CinemaItem
+fun MovieItemCard(
+    cinemaItem: CinemaItem,
+    onMovieClick: (Int?) -> Unit,
 ) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
         modifier = Modifier.padding(4.dp).width(180.dp)
-            .height(320.dp),
+            .height(320.dp)
+            .clickable { onMovieClick(cinemaItem.kinopoiskId) },
 
     ) {
 

@@ -23,19 +23,14 @@ fun HomeScreen(
     manyScreens: ManyScreens,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
-    // onCityClicked: (String?) -> Unit
+    onMovieClick: (Int?) -> Unit
 ) {
 
     Column(
         modifier = Modifier
     ) {
         Spacer(modifier = Modifier.height(15.dp))
-        Text(
-            text = " Kinopoisk ",
-            fontSize = 20.sp,
-            modifier = modifier.align(Alignment.CenterHorizontally) ,
-            color = MaterialTheme.colorScheme.primary
-        )
+
         LazyColumn(
             contentPadding = PaddingValues(4.dp),
             modifier = modifier.
@@ -45,7 +40,7 @@ fun HomeScreen(
 
             items(manyScreens.homeListScreen.size) { num ->
 
-                ListHours(list = manyScreens.homeListScreen[num],num)
+                LazyRowMovie(list = manyScreens.homeListScreen[num],num, onMovieClick = onMovieClick)
 
             }
         }

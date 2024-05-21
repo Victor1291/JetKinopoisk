@@ -21,8 +21,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         setContent {
             JetCinemaTheme {
                 val navController = rememberNavController()
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                             )
                         } else {
                             TopBar(
-                                header = "Cities",
+                                header = "",
                                 leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                                 onLeftIconClick = { navController.navigateUp() },
                             )

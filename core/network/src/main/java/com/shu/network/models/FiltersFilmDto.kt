@@ -7,7 +7,7 @@ import com.shu.network.models.filters.GenresDto
 import com.shu.network.models.filters.mapFrom
 
 data class FiltersFilmDto(
-    @SerializedName(value = "kinopoiskId")
+    @SerializedName(value = "filmId", alternate = ["kinopoiskId"])
     val kinopoiskId: Int?,
     @SerializedName(value = "imdbId")
     val imdbId: String?,

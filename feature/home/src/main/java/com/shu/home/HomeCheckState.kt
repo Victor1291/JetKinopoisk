@@ -11,6 +11,7 @@ import com.shu.home.state.LoadingScreen
 @Composable
 fun CheckState(
     viewModel: HomeViewModel = hiltViewModel(),
+    onMovieClick: (Int?) -> Unit
 ) {
     val viewState by viewModel.uiState.collectAsState()
 
@@ -27,7 +28,7 @@ fun CheckState(
 
              )*/
 
-            HomeScreen(manyScreens = (viewState as UiState.Success).manyScreens)
+            HomeScreen(manyScreens = (viewState as UiState.Success).manyScreens,onMovieClick = onMovieClick)
         }
 
         is UiState.Error -> ErrorScreen(

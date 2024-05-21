@@ -54,7 +54,7 @@ android {
 dependencies {
 
     implementation(project(":core:network"))
-
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.bundles.hilt)
     implementation(project(":feature:home"))
     implementation(project(":core:models"))
+    implementation(project(":feature:detail_movie"))
     ksp(libs.bundles.hilt.ksp)
 
     testImplementation(libs.junit)
