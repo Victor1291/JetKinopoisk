@@ -1,41 +1,13 @@
-package com.shu.home
+package com.shu.jetcinema
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.shu.home.CheckState
 
-sealed class BottomNavigationScreens(val route: String, val label: String, val icon: ImageVector) {
-    data object MainScreen : BottomNavigationScreens(
-        route = "main_screen",
-        label = "Поиск",
-        icon = Icons.Default.Person
-    )
-
-    data object SearchScreen : BottomNavigationScreens(
-        route = "location_screen",
-        label = "Поиск",
-        icon = Icons.Default.Home
-    )
-
-    data object DetailScreen : BottomNavigationScreens(
-        route = "detail_screen",
-        label = "Movie",
-        icon = Icons.Default.Menu
-    )
-}
-
-val bottomNavigationItems = listOf(
-    BottomNavigationScreens.MainScreen,
-    //BottomNavigationScreens.SearchScreen,
-)
 
 @Composable
 fun MainNavHost(
@@ -49,9 +21,9 @@ fun MainNavHost(
     ) {
         composable(BottomNavigationScreens.MainScreen.route) {
             viewModel.changeStateTOpBar(true)
-            HomeScreen(viewModel)
+            CheckState()
         }
-        composable(BottomNavigationScreens.SearchScreen.route) {
+        composable(BottomNavigationScreens.PersonScreen.route) {
             /* viewModel.changeStateTOpBar(false)
              viewModel.getAllCity()
              CityScreen(viewModel, onCityClicked = {

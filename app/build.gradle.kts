@@ -68,6 +68,7 @@ dependencies {
     //Hilt
     implementation(libs.bundles.hilt)
     implementation(project(":feature:home"))
+    implementation(project(":core:models"))
     ksp(libs.bundles.hilt.ksp)
 
     testImplementation(libs.junit)

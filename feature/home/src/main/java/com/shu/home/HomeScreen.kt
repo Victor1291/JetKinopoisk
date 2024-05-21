@@ -1,38 +1,61 @@
 package com.shu.home
 
-import android.util.Log
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import com.shu.home.state.ErrorScreen
-import com.shu.home.state.LoadingScreen
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.shu.models.ManyScreens
 
 
 @Composable
 fun HomeScreen(
-    viewModel: MainViewModel,
+    manyScreens: ManyScreens,
+    modifier: Modifier = Modifier,
+    state: LazyListState = rememberLazyListState(),
+    // onCityClicked: (String?) -> Unit
 ) {
-    val viewState by viewModel.uiState.collectAsState()
 
-
-    when (viewState) {
-        is UiState.Loading -> LoadingScreen()
-        is UiState.Success -> {
-           /*  Log.d("success", "movie in state ${(viewState as UiState.Success).manyScreens.homeListScreen.size}")
-             Log.d("success", "size list first in state ${(viewState as UiState.Success).manyScreens.homeListScreen.first().size}")
-             Log.d("success", "size list second in state ${(viewState as UiState.Success).manyScreens.homeListScreen[1].size}")
-             Log.d("success", "size list third in state ${(viewState as UiState.Success).manyScreens.homeListScreen[2].size}")
-            *//* WeatherForecast(
-                 weather = (viewState as UiState.Success).weather,
-
-             )*/
-
-            MovieScreen(manyScreens = (viewState as UiState.Success).manyScreens)
-        }
-
-        is UiState.Error -> ErrorScreen(
-            retryAction = {  },
+    Column(
+        modifier = Modifier
+    ) {
+        Spacer(modifier = Modifier.height(15.dp))
+        Text(
+            text = " Kinopoisk ",
+            fontSize = 20.sp,
+            modifier = modifier.align(Alignment.CenterHorizontally) ,
+            color = MaterialTheme.colorScheme.primary
         )
+        LazyColumn(
+            contentPadding = PaddingValues(4.dp),
+            modifier = modifier.
+            padding(top = 10.dp,bottom = 110.dp),
+            state = state
+        ) {
 
+            items(manyScreens.homeListScreen.size) { num ->
+
+                ListHours(list = manyScreens.homeListScreen[num],num)
+
+            }
+        }
+        Spacer(modifier = Modifier.height(50.dp))
     }
 }
+
+
+
+
+
+
+

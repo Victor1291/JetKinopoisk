@@ -1,4 +1,4 @@
-package com.shu.home
+package com.shu.jetcinema
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun TopItem(
+fun TopBar(
     header: String,
     rightIconImageVector: ImageVector? = null,
     leftIconImageVector: ImageVector? = null,
@@ -96,7 +96,7 @@ fun TopItem(
 @Preview(showBackground = true)
 @Composable
 fun PreviewTopBar() {
-    TopItem(
+    TopBar(
         header = "Moscow",
         leftIconImageVector = Icons.Rounded.Search,
         rightIconImageVector = Icons.Rounded.Settings,
