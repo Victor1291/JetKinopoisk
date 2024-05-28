@@ -27,26 +27,13 @@ class MainActivity : ComponentActivity() {
             JetCinemaTheme {
                 val navController = rememberNavController()
                 val viewModel: MainViewModel = hiltViewModel()
-                val stateTopBar by viewModel.stateTOpBar.collectAsState()
+                //val stateTopBar by viewModel.stateTOpBar.collectAsState()
                 val bottomNavigationItems = listOf(
                     BottomNavigationScreens.MainScreen,
                     BottomNavigationScreens.SearchScreen,
                     BottomNavigationScreens.PersonScreen,
                 )
                 Scaffold(
-                    topBar = {
-                        if (stateTopBar) {
-                            TopBar(
-                                header = "CinemaWorld",
-                            )
-                        } else {
-                            TopBar(
-                                header = "",
-                                leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                onLeftIconClick = { navController.navigateUp() },
-                            )
-                        }
-                    },
                     content = { MainNavHost(navController, it, viewModel) },
                     bottomBar = {
                         BottomNav(navController, bottomNavigationItems)
@@ -54,21 +41,5 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    JetCinemaTheme {
-        Greeting("Android")
     }
 }

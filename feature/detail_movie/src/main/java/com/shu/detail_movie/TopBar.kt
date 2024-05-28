@@ -1,4 +1,4 @@
-package com.shu.jetcinema
+package com.shu.detail_movie
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +35,7 @@ fun TopBar(
     onRightIconClick: (() -> Unit)? = null,
     isLoading: Boolean = false
 ) {
+    Column {
         Row(
             modifier = Modifier
                 .height(60.dp)
@@ -91,6 +92,7 @@ fun TopBar(
                 }
             }
         }
+    }
 }
 
 @Preview(showBackground = true)

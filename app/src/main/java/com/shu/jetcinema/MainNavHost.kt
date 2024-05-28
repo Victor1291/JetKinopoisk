@@ -67,7 +67,7 @@ fun MainNavHost(
         ) {backStackEntry ->
             backStackEntry.arguments?.getInt(argumentKey)?.let {filmId ->
                 viewModel.changeStateTOpBar(false)
-                DetailCheckState(onMovieClick = {}, filmId = filmId)
+                DetailCheckState(onMovieClick = {}, navController = navController, filmId = filmId)
             }
             BackHandler {
                 navController.popBackStack()
