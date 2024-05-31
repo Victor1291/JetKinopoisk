@@ -1,5 +1,6 @@
 package com.shu.network.repository
 
+import android.icu.text.SimpleDateFormat
 import com.shu.models.ListCinema
 import com.shu.models.FilmVip
 import com.shu.network.ServiceMovieApi
@@ -9,6 +10,9 @@ import com.shu.models.ManyScreens
 import com.shu.network.models.mapFrom
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor(
@@ -30,17 +34,37 @@ class HomeRepositoryImpl @Inject constructor(
                  it.kinopoiskId?.let { it1 -> listId.add(it1) }
              }
              Log.d("mainUseCase", " listWatched ${listId.size}")*/
+            val currentTime = getTime()
+            val date = Date()
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            val year = calendar[Calendar.YEAR]
+            val month = calendar.getDisplayName(
+                Calendar.MONTH,
+                Calendar.LONG_FORMAT, Locale("en")
+            )
 
             launch {
                 launch {
+
+                    Log.d("repository" , " month  $month")
                     listPremier =
-                        getPremieres(2024, "MAY").items.take(20)
+                        getPremieres(year, month ?: "MAY").items
                 }
                 launch {
-                    listPopular = getPopular(1).items
+                    listPopular = getPremieres(year,  "JANUARY").items //  getPopular(1).items
                 }
                 launch {
-                    list250 = getTop250(1).items
+                    list250 = getPremieres(year,  "FEBRUARY").items//getTop250(1).items
+                }
+                launch {
+                    listUSA = getPremieres(year,  "MARCH").items//getTop250(1).items
+                }
+                launch {
+                    listFrance = getPremieres(year,  "APRIL").items//getTop250(1).items
+                }
+                launch {
+                    listSerials = getPremieres(year,  "MAY").items//getTop250(1).items
                 }
 //                launch {
 //                    val choice = choiceCountry(genreCountry)
@@ -70,9 +94,16 @@ class HomeRepositoryImpl @Inject constructor(
                     listPremier,
                     listPopular,
                     list250,
+                    listUSA,
+                    listFrance,
+                    listSerials
                 )
             )
         }
+    }
+
+    private suspend fun getTime(): String {
+        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
     }
 
     override suspend fun getPremieres(year: Int, month: String): ListCinema {

@@ -59,7 +59,14 @@ fun MovieItemCard(
                 color = MaterialTheme.colorScheme.primary
             )
 
-            cinemaItem.genres?.let {
+
+
+            cinemaItem.premiereRu?.let {
+                Text(
+                    text =  it,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            } ?: cinemaItem.genres?.let {
                 Text(
                     text =  it[0].genre,
                     color = MaterialTheme.colorScheme.primary
