@@ -1,10 +1,13 @@
 package  com.shu.network
 
+import com.shu.network.modelDetail.ActorsDto
 import com.shu.network.modelDetail.DetailMovieDto
 import com.shu.network.models.ListCollectionsDto
 import com.shu.network.models.ListPremiersDto
 import com.shu.network.models.ListFiltersFilmDto
 import com.shu.network.models.filters.ListFiltersDto
+import com.shu.network.models.gallery_models.ListGalleryItemsDto
+import com.shu.network.models.similar_models.ListSimilarDto
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
@@ -55,6 +58,19 @@ interface ServiceMovieApi {
         @Query("yearTo") yearTo: Int = 2023,
         @Query("page") page: Int = 1
     ): ListFiltersFilmDto
+
+    @GET("/api/v1/staff")
+    suspend fun actors(@Query("filmId") filmId: Int): List<ActorsDto>
+
+    @GET("/api/v2.2/films/{id}/similars")
+    suspend fun similar(@Path("id") id: Int?): ListSimilarDto
+
+    @GET("/api/v2.2/films/{id}/images")
+    suspend fun galleryTotal(
+        @Path("id") id: Int,
+        @Query("page") page: Int = 1,
+        @Query("type") type: String = "STILL",
+    ): ListGalleryItemsDto
 
 }
    /*

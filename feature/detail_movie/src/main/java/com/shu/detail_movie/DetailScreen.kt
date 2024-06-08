@@ -3,7 +3,6 @@ package com.shu.detail_movie
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -20,7 +19,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Place
@@ -32,9 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,8 +50,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.shu.models.details.Actor
 import com.shu.models.details.DetailMovie
-
+import com.shu.models.gallery_models.ListGalleryItems
+import com.shu.models.similar_models.ListSimilar
 
 val gray100 = Color(0xffe5e5e5)
 val gray200 = Color(0xffd0d0d0)
@@ -63,15 +61,18 @@ val gray200 = Color(0xffd0d0d0)
 @Composable
 fun DetailScreen(
     movie: DetailMovie,
+    actors: List<Actor>,
+    gallery: ListGalleryItems,
+    similar: ListSimilar,
     modifier: Modifier = Modifier,
-    state: LazyListState = rememberLazyListState(),
-    onMovieClick: (Int?) -> Unit
+    onMovieClick: (Int?) -> Unit,
+    onGalleryClick: (String?) -> Unit,
 ) {
     LazyColumn(
-        contentPadding = PaddingValues(4.dp), modifier = modifier, state = state
+        contentPadding = PaddingValues(4.dp), modifier = modifier.padding(bottom = 120.dp),
     ) {
         item {
-            Box( modifier = Modifier.clickable {
+            Box(modifier = Modifier.clickable {
 
             }) {
 
@@ -128,7 +129,7 @@ fun DetailScreen(
                     Shadow()
                 }
 
-               // Buttons()
+                // Buttons()
 
                 UserInputSelector(
                     onSelectorChange = {},
@@ -152,23 +153,29 @@ fun DetailScreen(
 
             Text(
                 text = movie.description ?: "",
-                lineHeight = 35.sp,
+                lineHeight = 20.sp,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium,
-               // maxLines = 2,
+                // maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
 
             Text(
                 text = movie.shortDescription ?: "",
-                lineHeight = 35.sp,
+                lineHeight = 20.sp,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium,
-              //  maxLines = 2,
+                //  maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
         }
+        item {
+            LazyRowGallery(gallery = gallery, onGalleryClick = onGalleryClick)
+        }
 
+        item {
+            LazyRowSimilar(similar = similar, onMovieClick = onMovieClick)
+        }
 
         /* items(manyScreens.homeListScreen.size) { num ->
 
@@ -244,13 +251,13 @@ fun UserInput(
             .fillMaxWidth()
             .height(320.dp)
     ) {
-            UserInputSelector(
-                onSelectorChange = {},
-                sendMessageEnabled = true,
-                onMessageSent = {},
-                currentInputSelector = InputSelector.DM,
-                modifier = Modifier.align(Alignment.BottomCenter)
-            )
+        UserInputSelector(
+            onSelectorChange = {},
+            sendMessageEnabled = true,
+            onMessageSent = {},
+            currentInputSelector = InputSelector.DM,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }
 
@@ -379,7 +386,7 @@ private fun InputSelectorButton(
         modifier = modifier //.then(backgroundModifier)
     ) {
         val tint = if (selected) {
-           Color.Red// contentColorFor(backgroundColor = LocalContentColor.current)
+            Color.Red// contentColorFor(backgroundColor = LocalContentColor.current)
         } else {
             Color.White//LocalContentColor.current
         }

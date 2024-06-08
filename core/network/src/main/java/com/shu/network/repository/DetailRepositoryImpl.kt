@@ -1,8 +1,14 @@
 package com.shu.network.repository
 
+import com.shu.models.details.Actor
 import com.shu.models.details.DetailMovie
+import com.shu.models.gallery_models.ListGalleryItems
+import com.shu.models.similar_models.ListSimilar
 import com.shu.network.ServiceMovieApi
 import com.shu.network.modelDetail.mapFrom
+import com.shu.network.modelDetail.toActor
+import com.shu.network.models.similar_models.toListSimilar
+import com.shu.network.models.gallery_models.toListGalleryItems
 import javax.inject.Inject
 
 class DetailRepositoryImpl @Inject constructor(
@@ -11,6 +17,18 @@ class DetailRepositoryImpl @Inject constructor(
 
     override suspend fun getFilm(kinopoiskId: Int): DetailMovie {
         return api.getFilm(kinopoiskId).mapFrom()
+    }
+
+    override suspend fun getActorFilm(kinopoiskId: Int): List<Actor> {
+        return api.actors(kinopoiskId).map { it.toActor() }
+    }
+
+    override suspend fun getSimilarsFilm(kinopoiskId: Int): ListSimilar {
+        return api.similar(kinopoiskId).toListSimilar()
+    }
+
+    override suspend fun getGallery(kinopoiskId: Int, type: String, page: Int): ListGalleryItems {
+        return api.galleryTotal(kinopoiskId).toListGalleryItems()
     }
 
     /* override suspend fun getActorFilm(kinopoiskId: Int): List<ActorItem> {
