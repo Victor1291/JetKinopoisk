@@ -67,6 +67,7 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     onMovieClick: (Int?) -> Unit,
     onGalleryClick: (String?) -> Unit,
+    onActorClick: (Int?) -> Unit,
 ) {
     LazyColumn(
         contentPadding = PaddingValues(4.dp), modifier = modifier.padding(bottom = 120.dp),
@@ -169,6 +170,11 @@ fun DetailScreen(
                 overflow = TextOverflow.Ellipsis
             )
         }
+
+        item {
+            GridActors(actors = actors, onActorClick = onActorClick)
+        }
+
         item {
             LazyRowGallery(gallery = gallery, onGalleryClick = onGalleryClick)
         }

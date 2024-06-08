@@ -34,13 +34,15 @@ fun DetailCheckState(
             when (val viewStateResult = viewState.value) {
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> {
+                    val actors = viewStateResult.actors
                     DetailScreen(
                         movie = viewStateResult.movie,
-                        actors = viewStateResult.actors,
+                        actors = if (actors.size < 20) actors else actors.take(20),
                         gallery = viewStateResult.gallery,
                         similar = viewStateResult.similar,
                         onMovieClick = onMovieClick,
-                        onGalleryClick = {}
+                        onGalleryClick = {},
+                        onActorClick = {},
                     )
                 }
 
