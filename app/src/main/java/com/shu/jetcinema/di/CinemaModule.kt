@@ -1,5 +1,7 @@
 package com.shu.jetcinema.di
 
+import com.shu.detail_movie.domain.DetailRepository
+import com.shu.home.domain.HomeRepository
 import com.shu.network.repository.*
 import com.shu.network.ServiceMovieApi
 import dagger.Module

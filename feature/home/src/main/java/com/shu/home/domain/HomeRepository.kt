@@ -1,4 +1,4 @@
-package com.shu.network.repository
+package com.shu.home.domain
 
 
 import com.shu.models.ListCinema

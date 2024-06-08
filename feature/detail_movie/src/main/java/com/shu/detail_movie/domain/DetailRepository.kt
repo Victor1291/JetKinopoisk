@@ -1,4 +1,4 @@
-package com.shu.network.repository
+package com.shu.detail_movie.domain
 
 import com.shu.models.details.DetailMovie
 

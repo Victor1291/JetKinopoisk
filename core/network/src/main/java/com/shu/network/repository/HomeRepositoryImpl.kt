@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
-) : HomeRepository {
+) : com.shu.home.domain.HomeRepository {
     override suspend fun getAllScreen(): ManyScreens {
         return coroutineScope {
 

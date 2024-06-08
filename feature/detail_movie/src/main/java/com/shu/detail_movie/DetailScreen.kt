@@ -155,7 +155,7 @@ fun DetailScreen(
                 lineHeight = 35.sp,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium,
-                maxLines = 2,
+               // maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
 
@@ -164,7 +164,7 @@ fun DetailScreen(
                 lineHeight = 35.sp,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium,
-                maxLines = 2,
+              //  maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
         }

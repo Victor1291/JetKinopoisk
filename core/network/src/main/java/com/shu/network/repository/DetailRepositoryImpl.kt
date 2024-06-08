@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class DetailRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
-) : DetailRepository {
+) : com.shu.detail_movie.domain.DetailRepository {
 
     override suspend fun getFilm(kinopoiskId: Int): DetailMovie {
         return api.getFilm(kinopoiskId).mapFrom()

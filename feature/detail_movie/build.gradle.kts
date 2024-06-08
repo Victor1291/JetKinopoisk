@@ -43,7 +43,6 @@ android {
 dependencies {
 
     implementation(project(":core:models"))
-    implementation(project(":core:network"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
@@ -57,7 +56,7 @@ dependencies {
     ksp(libs.bundles.hilt.ksp)
 
     //Coil
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

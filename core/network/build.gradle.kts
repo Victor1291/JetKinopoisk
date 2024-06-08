@@ -42,6 +42,9 @@ dependencies {
 
     implementation(project(":core:models"))
 
+    implementation(project(mapOf("path" to ":feature:home")))
+    implementation(project(mapOf("path" to ":feature:detail_movie")))
+
     //OkHttp
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
