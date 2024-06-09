@@ -72,6 +72,9 @@ interface ServiceMovieApi {
         @Query("type") type: String = "STILL",
     ): ListGalleryItemsDto
 
+    @GET("/api/v2.2/films/filters")
+    suspend fun genreCountry(): ListFiltersDto
+
 }
    /*
     @GET("/api/v2.2/films/{id}/facts")
