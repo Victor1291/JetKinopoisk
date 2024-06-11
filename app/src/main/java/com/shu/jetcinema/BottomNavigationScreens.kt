@@ -15,14 +15,14 @@ sealed class BottomNavigationScreens(val route: String, val label: String, val i
     )
 
     data object SearchScreen : BottomNavigationScreens(
-        route = "location_screen",
-        label = "Поиск",
+        route = "search_screen",
+        label = "Search",
         icon = Icons.Default.Search
     )
 
     data object PersonScreen : BottomNavigationScreens(
-        route = "location_screen",
-        label = "Профиль",
+        route = "person_screen",
+        label = "Person",
         icon = Icons.Default.Person
     )
 

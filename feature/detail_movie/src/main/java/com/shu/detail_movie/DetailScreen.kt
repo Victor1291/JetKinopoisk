@@ -132,15 +132,24 @@ fun DetailScreen(
                         contentDescription = "poster",
                         contentScale = ContentScale.FillBounds,
                     )
-                    // Buttons()
-                    UserInputSelector(
-                        onSelectorChange = {},
-                        sendMessageEnabled = true,
-                        onMessageSent = {},
-                        currentInputSelector = InputSelector.DM,
-                        modifier = Modifier.align(Alignment.BottomCenter)
-                    )
                 }
+                    // Buttons()
+                    ElevatedCard(
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        ),
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable { expanded = !expanded }
+                            .align(Alignment.BottomCenter),
+                    ) {
+                        UserInputSelector(
+                            onSelectorChange = {},
+                            sendMessageEnabled = true,
+                            onMessageSent = {},
+                            currentInputSelector = InputSelector.DM,
+                        )
+                    }
             }
         }
         item {
@@ -373,9 +382,10 @@ private fun UserInputSelector(
 ) {
     Row(
         modifier = modifier
-            .height(72.dp)
+           // .height(72.dp)
             .wrapContentHeight()
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+            .background(Color.Black),
+            //.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         InputSelectorButton(
