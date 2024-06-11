@@ -49,5 +49,22 @@ data class DetailMovie(
     val serial: Boolean?,
     val shortFilm: Boolean?,
     val completed: Boolean?,
-)
+) {
+    val countriesList: String
+        get() = countries.joinToString(","){it.country}
+    val genresList: String
+        get() = genres.joinToString(","){it.genre}
+    private val rate : String
+        get() = ratingAgeLimits?.replace("age", "+") ?: ""
+    private val hours = filmLength?.div(60)
+    private val minute = hours?.let { filmLength?.minus(it.times(60)) }
+    val lenght : String
+        get() = "$hours:$minute"
+
+
+    val cityRateFilmLength : String
+        get() = "$countriesList $lenght $rate"
+
+
+}
 

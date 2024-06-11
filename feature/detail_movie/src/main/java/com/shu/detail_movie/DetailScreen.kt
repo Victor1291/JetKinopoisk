@@ -1,5 +1,6 @@
 package com.shu.detail_movie
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,8 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -26,12 +25,18 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -69,6 +74,7 @@ fun DetailScreen(
     onGalleryClick: (String?) -> Unit,
     onActorClick: (Int?) -> Unit,
 ) {
+    var expanded by remember { mutableStateOf(false) }
     LazyColumn(
         contentPadding = PaddingValues(4.dp), modifier = modifier.padding(bottom = 120.dp),
     ) {
@@ -90,7 +96,7 @@ fun DetailScreen(
                         alpha = 0.8f
                     )
 
-                    Shadow()
+                    /*Shadow()
 
                     if (movie.logoUrl != null) {
                         AsyncImage(
@@ -114,7 +120,7 @@ fun DetailScreen(
                             textAlign = TextAlign.Center,
                             modifier = Modifier.align(Alignment.Center)
                         )
-                    }
+                    }*/
 
                 } else {
                     AsyncImage(
@@ -126,50 +132,119 @@ fun DetailScreen(
                         contentDescription = "poster",
                         contentScale = ContentScale.FillBounds,
                     )
-
-                    Shadow()
+                    // Buttons()
+                    UserInputSelector(
+                        onSelectorChange = {},
+                        sendMessageEnabled = true,
+                        onMessageSent = {},
+                        currentInputSelector = InputSelector.DM,
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    )
                 }
-
-                // Buttons()
-
-                UserInputSelector(
-                    onSelectorChange = {},
-                    sendMessageEnabled = true,
-                    onMessageSent = {},
-                    currentInputSelector = InputSelector.DM,
-                    modifier = Modifier.align(Alignment.BottomCenter)
+            }
+        }
+        item {
+            ElevatedCard(
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ), modifier = Modifier.padding(4.dp)
+            ) {
+                Text(
+                    text = movie.ratingKinopoisk?.let { "$it ${movie.nameRu}" }
+                        ?: "${movie.nameRu}",
+                    lineHeight = 35.sp,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                )
+                Text(
+                    text = movie.year?.let { year ->
+                        "$year ${movie.genresList}"
+                    } ?: movie.genresList,
+                    lineHeight = 20.sp,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                )
+                Text(
+                    text = movie.cityRateFilmLength,
+                    lineHeight = 20.sp,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
                 )
             }
         }
         item {
-            Text(
-                text = movie.nameRu ?: "",
-                lineHeight = 35.sp,
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Medium,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
-            )
 
-            Text(
-                text = movie.description ?: "",
-                lineHeight = 20.sp,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium,
-                // maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Text(
-                text = movie.shortDescription ?: "",
-                lineHeight = 20.sp,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium,
-                //  maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
+            if (movie.shortDescription != null) {
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { expanded = !expanded },
+                ) {
+                    AnimatedVisibility(!expanded) {
+                        Text(
+                            text = "${movie.shortDescription}...",
+                            lineHeight = 20.sp,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Medium,
+                            //  maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                    AnimatedVisibility(expanded) {
+                        Text(
+                            text = movie.description ?: "",
+                            lineHeight = 20.sp,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Medium,
+                            // maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            } else if (movie.description != null) {
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { expanded = !expanded },
+                ) {
+                    AnimatedVisibility(!expanded) {
+                        Text(
+                            text = movie.description.toString(),
+                            lineHeight = 20.sp,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Medium,
+                            maxLines = 3,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                    AnimatedVisibility(expanded) {
+                        Text(
+                            text = movie.description.toString(),
+                            lineHeight = 20.sp,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Medium,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
         }
+
 
         item {
             GridActors(actors = actors, onActorClick = onActorClick)
@@ -214,11 +289,9 @@ fun Buttons(
                 contentDescription = "icon for navigation item"
             )
             Icon(
-                imageVector = Icons.Filled.Favorite,
-                contentDescription = "icon for navigation item"
+                imageVector = Icons.Filled.Favorite, contentDescription = "icon for navigation item"
             )
-        }
-        /*Text("This text is drawn first", modifier = Modifier.align(Alignment.TopCenter))
+        }/*Text("This text is drawn first", modifier = Modifier.align(Alignment.TopCenter))
         Box(
             Modifier.align(Alignment.TopCenter).fillMaxHeight().width(
                 50.dp
@@ -244,8 +317,7 @@ fun Shadow(
                     )
                 ), shape = RectangleShape
             )
-    ) {
-    }
+    ) {}
 }
 
 @Composable
@@ -339,8 +411,7 @@ private fun UserInputSelector(
 
         val border = if (!sendMessageEnabled) {
             BorderStroke(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                width = 1.dp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
             )
         } else {
             null
@@ -350,8 +421,7 @@ private fun UserInputSelector(
         val disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
 
         val buttonColors = ButtonDefaults.buttonColors(
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = disabledContentColor
+            disabledContainerColor = Color.Transparent, disabledContentColor = disabledContentColor
         )
 
         // Send button
@@ -364,8 +434,7 @@ private fun UserInputSelector(
             contentPadding = PaddingValues(0.dp)
         ) {
             Text(
-                stringResource(id = R.string.dots),
-                modifier = Modifier.padding(horizontal = 16.dp)
+                stringResource(id = R.string.dots), modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
     }
@@ -381,15 +450,13 @@ private fun InputSelectorButton(
 ) {
     val backgroundModifier = if (selected) {
         Modifier.background(
-            color = LocalContentColor.current,
-            shape = RoundedCornerShape(14.dp)
+            color = LocalContentColor.current, shape = RoundedCornerShape(14.dp)
         )
     } else {
         Modifier
     }
     IconButton(
-        onClick = onClick,
-        modifier = modifier //.then(backgroundModifier)
+        onClick = onClick, modifier = modifier //.then(backgroundModifier)
     ) {
         val tint = if (selected) {
             Color.Red// contentColorFor(backgroundColor = LocalContentColor.current)
@@ -408,15 +475,9 @@ private fun InputSelectorButton(
 }
 
 enum class InputSelector {
-    NONE,
-    MAP,
-    DM,
-    EMOJI,
-    PHONE,
-    PICTURE
+    NONE, MAP, DM, EMOJI, PHONE, PICTURE
 }
 
 enum class EmojiStickerSelector {
-    EMOJI,
-    STICKER
+    EMOJI, STICKER
 }
