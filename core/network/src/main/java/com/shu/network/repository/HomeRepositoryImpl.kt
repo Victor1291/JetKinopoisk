@@ -6,6 +6,8 @@ import com.shu.models.FilmVip
 import com.shu.network.ServiceMovieApi
 import com.shu.network.models.filters.ListFiltersDto
 import android.util.Log
+import com.shu.list_movies.domain.PagingRepository
+import com.shu.home.domain.HomeRepository
 import com.shu.models.Choice
 import com.shu.models.CinemaItem
 import com.shu.models.ManyScreens
@@ -20,7 +22,7 @@ import kotlin.random.Random
 
 class HomeRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
-) : com.shu.home.domain.HomeRepository {
+) : HomeRepository, PagingRepository {
     override suspend fun getAllScreen(): ManyScreens {
         return coroutineScope {
 

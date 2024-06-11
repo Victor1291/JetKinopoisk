@@ -1,18 +1,17 @@
 package com.shu.models
 
 data class FilmVip(
-    val country : Int,
-    val genres : Int,
-    val order: String,
-    val type: String,
-    val ratingFrom: Int,
-    val ratingTo: Int,
-    val yearFrom: Int,
-    val yearTo: Int,
-    val page: Int,
-    val keyword: String,
-    val idFragment : Int,
-    val idTitle: Int,
-    val countryName: String,
-    val genresName: String
+    val country: Int = 1,
+    val genres: Int = 1,
+    val order: String = "NUM_VOTE",
+    val type: String = "FILM",
+    val ratingFrom: Int = 0,
+    val ratingTo: Int = 10,
+    val yearFrom: Int = 1990,
+    val yearTo: Int = 2024,
+    var page: Int = 1,
+    val keyword: String = "",
+    val title: ETitle = ETitle.Premieres,
+    var countryName: String = "",
+    var genresName: String = "",
 )

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shu.models.FilmVip
 import com.shu.models.ManyScreens
 
 
@@ -23,7 +24,8 @@ fun HomeScreen(
     manyScreens: ManyScreens,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
-    onMovieClick: (Int?) -> Unit
+    onMovieClick: (Int?) -> Unit,
+    onListClick: (FilmVip?) -> Unit,
 ) {
 
     Column(
@@ -40,7 +42,7 @@ fun HomeScreen(
 
             items(manyScreens.homeListScreen.size) { num ->
 
-                LazyRowMovie(list = manyScreens.homeListScreen[num],num, onMovieClick = onMovieClick)
+                LazyRowMovie(list = manyScreens.homeListScreen[num],num, onMovieClick = onMovieClick,onListClick = onListClick )
 
             }
         }

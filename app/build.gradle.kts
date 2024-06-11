@@ -53,6 +53,11 @@ android {
 
 dependencies {
 
+    implementation(project(":feature:home"))
+    implementation(project(":core:models"))
+    implementation(project(":feature:detail_movie"))
+    implementation(project(":feature:list_movies"))
+
     implementation(project(":core:network"))
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.core.ktx)
@@ -67,10 +72,11 @@ dependencies {
 
     //Hilt
     implementation(libs.bundles.hilt)
-    implementation(project(":feature:home"))
-    implementation(project(":core:models"))
-    implementation(project(":feature:detail_movie"))
+
     ksp(libs.bundles.hilt.ksp)
+
+    //Gson
+    implementation("com.google.code.gson:gson:2.11.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -32,4 +32,10 @@ sealed class BottomNavigationScreens(val route: String, val label: String, val i
         icon = Icons.Default.Menu
     )
 
+    data object ListMovies : BottomNavigationScreens(
+        route = "list_screen",
+        label = "Movies",
+        icon = Icons.Default.Menu
+    )
+
 }

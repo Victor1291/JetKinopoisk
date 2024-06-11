@@ -58,6 +58,16 @@ dependencies {
     //Coil
     implementation(libs.coil.compose)
 
+    //Paging
+    implementation("androidx.paging:paging-compose:3.3.0")
+
+    //Swipe to refresh
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.34.0")
+
+    implementation("androidx.compose.material:material:1.6.7")
+    // Needed to get a view model reference in Jetpack Compose
+    //implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

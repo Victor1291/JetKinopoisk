@@ -44,7 +44,8 @@ dependencies {
 
     implementation(project(mapOf("path" to ":feature:home")))
     implementation(project(mapOf("path" to ":feature:detail_movie")))
-
+    implementation(project(mapOf("path" to ":feature:list_movies")))
+    
     //OkHttp
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
@@ -56,6 +57,7 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
+
     ksp(libs.hilt.android.compiler)
 
 

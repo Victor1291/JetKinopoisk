@@ -2,6 +2,7 @@ package com.shu.jetcinema.di
 
 import com.shu.detail_movie.domain.DetailRepository
 import com.shu.home.domain.HomeRepository
+import com.shu.list_movies.domain.PagingRepository
 import com.shu.network.repository.*
 import com.shu.network.ServiceMovieApi
 import dagger.Module
@@ -25,6 +26,13 @@ class CinemaModule {
         api: ServiceMovieApi
     ): DetailRepository {
         return DetailRepositoryImpl(api)
+    }
+
+    @Provides
+    fun providesPagingRepository(
+        api: ServiceMovieApi
+    ): PagingRepository {
+        return HomeRepositoryImpl(api)
     }
 
 }

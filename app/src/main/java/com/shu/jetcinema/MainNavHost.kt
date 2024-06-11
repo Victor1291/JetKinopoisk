@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.shu.detail_movie.DetailCheckState
 import com.shu.home.CheckState
+import com.shu.list_movies.ListScreen
 
 
 private const val argumentKey = "arg"
@@ -25,11 +26,21 @@ fun MainNavHost(
     ) {
         composable(BottomNavigationScreens.MainScreen.route) {
             viewModel.changeStateTOpBar(true)
-            CheckState(onMovieClick = { filmId ->
-                navController.navigate(
-                    route = "${BottomNavigationScreens.DetailScreen.route}/${filmId}"
-                )
-            })
+            CheckState(
+                onMovieClick = { filmId ->
+                    navController.navigate(
+                        route = "${BottomNavigationScreens.DetailScreen.route}/${filmId}"
+                    )
+                },
+                onListClick = { vip ->
+                    val filmsLink = "${BottomNavigationScreens.ListMovies.route}/${
+                        FilmsParametersType.serializeAsValue(vip)
+                    }"
+                    navController.navigate(
+                        route = filmsLink
+                    )
+                }
+            )
         }
 
         composable(BottomNavigationScreens.SearchScreen.route) {
@@ -64,14 +75,47 @@ fun MainNavHost(
             arguments = listOf(navArgument(argumentKey) {
                 type = NavType.IntType
             })
-        ) {backStackEntry ->
-            backStackEntry.arguments?.getInt(argumentKey)?.let {filmId ->
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getInt(argumentKey)?.let { filmId ->
                 viewModel.changeStateTOpBar(false)
-                DetailCheckState(onMovieClick = {}, navController = navController, filmId = filmId)
+                DetailCheckState(onMovieClick = { filmId ->
+                    navController.navigate(
+                        route = "${BottomNavigationScreens.DetailScreen.route}/${filmId}"
+                    )
+                }, navController = navController, filmId = filmId)
             }
             BackHandler {
                 navController.popBackStack()
             }
         }
+
+        composable(
+            route = "${BottomNavigationScreens.ListMovies.route}/{$argumentKey}",
+            arguments = listOf(navArgument(argumentKey) {
+                type = FilmsParametersType
+            })
+        ) { navBackStackEntry ->
+
+            val arguments = navBackStackEntry.arguments
+            val params = arguments?.getString(argumentKey)
+
+            val paramsData = params?.let {
+                FilmsParametersType.parseValue(it)
+            }
+            ListScreen(
+                filmVip = paramsData,
+                navController = navController,
+                onMovieClick = { filmId ->
+                    viewModel.changeStateTOpBar(false)
+                    navController.navigate(
+                        route = "${BottomNavigationScreens.DetailScreen.route}/${filmId}"
+                    )
+                })
+
+            BackHandler {
+                navController.popBackStack()
+            }
+        }
+
     }
 }

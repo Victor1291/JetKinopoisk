@@ -1,14 +1,12 @@
-package com.shu.home.domain
+package com.shu.list_movies.domain
 
 
-import com.shu.models.ListCinema
-import com.shu.models.ManyScreens
 import com.shu.models.FilmVip
+import com.shu.models.ListCinema
 
-interface HomeRepository {
+interface PagingRepository {
 
-    suspend fun getAllScreen() : ManyScreens
-   /* suspend fun getPremieres(year: Int, month: String): ListCinema
+    suspend fun getPremieres(year: Int, month: String): ListCinema
 
     suspend fun getPopular(page: Int): ListCinema
 
@@ -16,7 +14,7 @@ interface HomeRepository {
 
     suspend fun getFilmVip(vip: FilmVip): ListCinema
     suspend fun getSerialVip(page: Int): ListCinema
-*/
+
      // suspend fun getGenreCountry(): ListFilters
 /*
       suspend fun getSimilarsFilm(kinopoiskId: Int): ListCinema
