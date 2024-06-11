@@ -21,8 +21,6 @@ import androidx.wear.compose.foundation.lazy.verticalNegativePadding
 @Preview
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
-
-
     Box(
         modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
@@ -35,14 +33,13 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .background(
                     Brush.linearGradient(
-                        0.0f to Color.Red,
-                        0.3f to Color.Green,
-                        1.0f to Color.Blue,
+                        0.0f to Color.White,
+                        0.3f to Color.Blue,
+                        1.0f to Color.Red,
                         start = Offset(0.0f, 50.0f),
                         end = Offset(0.0f, 100.0f)
                     ), shape = RectangleShape, alpha = 0.5F
-                )
-                .verticalNegativePadding(2.dp),
+                ),
             fontSize = 15.sp,
             color = Color.White,
         )

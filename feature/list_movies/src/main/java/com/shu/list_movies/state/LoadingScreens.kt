@@ -1,4 +1,4 @@
-package com.shu.detail_movie.state
+package com.shu.list_movies.state
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
