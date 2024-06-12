@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -96,13 +97,13 @@ fun DetailScreen(
                         alpha = 0.8f
                     )
 
-                    /*Shadow()
-
                     if (movie.logoUrl != null) {
                         AsyncImage(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(320.dp),
+                                .padding(bottom = 40.dp)
+                                .align(Alignment.BottomCenter)
+                            ,
                             model = ImageRequest.Builder(context = LocalContext.current)
                                 .data(movie.logoUrl).crossfade(true).build(),
                             contentDescription = "logo",
@@ -112,15 +113,17 @@ fun DetailScreen(
                         Text(
                             text = movie.nameRu ?: "",
                             lineHeight = 35.sp,
-                            fontSize = 25.sp,
+                            fontSize = 30.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color.White,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.align(Alignment.Center)
+                            modifier = Modifier
+                                .padding(bottom = 48.dp)
+                                .align(Alignment.BottomCenter)
                         )
-                    }*/
+                    }
 
                 } else {
                     AsyncImage(
@@ -134,29 +137,31 @@ fun DetailScreen(
                     )
                 }
                     // Buttons()
-                    ElevatedCard(
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 6.dp
-                        ),
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clickable { expanded = !expanded }
-                            .align(Alignment.BottomCenter),
-                    ) {
-                        UserInputSelector(
-                            onSelectorChange = {},
-                            sendMessageEnabled = true,
-                            onMessageSent = {},
-                            currentInputSelector = InputSelector.DM,
-                        )
-                    }
+
             }
         }
         item {
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
-                ), modifier = Modifier.padding(4.dp)
+                ),
+                modifier = Modifier
+                    .clickable { expanded = !expanded }
+            ) {
+                UserInputSelector(
+                    onSelectorChange = {},
+                    sendMessageEnabled = true,
+                    onMessageSent = {},
+                    currentInputSelector = InputSelector.DM,
+                )
+            }
+        }
+
+        item {
+            ElevatedCard(
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ), modifier = Modifier.padding(4.dp).fillMaxSize()
             ) {
                 Text(
                     text = movie.ratingKinopoisk?.let { "$it ${movie.nameRu}" }

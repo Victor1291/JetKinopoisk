@@ -17,7 +17,7 @@ open class AuthorizationInterceptor : Interceptor {
     private fun proceedRequestWithAuthorization(chain: Interceptor.Chain): Response {
         var request = chain.request()
         val url = request.url.newBuilder().build()
-        request = request.newBuilder().url(url).header(AUTHORIZATION_HEADER,BuildConfig.API_KEY2).build()
+        request = request.newBuilder().url(url).header(AUTHORIZATION_HEADER,BuildConfig.API_KEY).build()
         return chain.proceed(request)
     }
 }
