@@ -30,8 +30,8 @@ class DetailViewModel @Inject constructor(
     private val repository: DetailRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+  /*  private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()*/
 
     init {
         Log.d("Init DetailViewmodel", " *****   ***** ")

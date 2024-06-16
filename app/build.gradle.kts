@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":core:models"))
     implementation(project(":feature:detail_movie"))
     implementation(project(":feature:list_movies"))
+    implementation(project(":feature:detail_person"))
 
     implementation(project(":core:network"))
     implementation(libs.androidx.work.runtime.ktx)
@@ -78,11 +79,4 @@ dependencies {
     //Gson
     implementation("com.google.code.gson:gson:2.11.0")
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }

@@ -20,9 +20,6 @@ import javax.inject.Inject
 sealed interface UiState {
     data class Success(
         val person: Person,
-        val actors: List<Actor>,
-        val gallery: ListGalleryItems,
-        val similar: ListSimilar
     ) : UiState
 
     data object Error : UiState
@@ -34,24 +31,18 @@ sealed interface UiState {
 class PersonViewModel @Inject constructor(private val personRepository: PersonRepository) :
     ViewModel() {
 
-    private val _person = MutableStateFlow<List<ListItem>>(getItems())
-    val person: StateFlow<List<ListItem>> = _person.asStateFlow()
+    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    fun loadDetails(kinopoiskId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            kotlin.runCatching {
-                //_isLoading.value = true
-                personRepository.execute(kinopoiskId)
-            }.fold(
-                onSuccess = {
-                    Log.d("dataPerson", "${it.size} Пришло")
-                    _person.value = it
-                },
-                onFailure = {
-                    Log.e("ActorViewModel", "Error  ${it.message}")
-                }
+
+    suspend fun getInfo(id: Int): UiState {
+        return try {
+            UiState.Success(
+                person = personRepository.getPerson(id),
             )
-            //_isLoading.value = false
+        } catch (e: Exception) {
+            Log.e("viewmodelError", "Error $e")
+            UiState.Error
         }
     }
 }

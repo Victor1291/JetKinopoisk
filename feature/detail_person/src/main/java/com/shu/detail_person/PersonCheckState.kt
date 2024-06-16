@@ -1,4 +1,4 @@
-package com.shu.detail_movie
+package com.shu.detail_person
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -10,18 +10,17 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.shu.detail_movie.state.ErrorScreen
-import com.shu.detail_movie.state.LoadingScreen
+import com.shu.detail_person.state.ErrorScreen
+import com.shu.detail_person.state.LoadingScreen
 
 @Composable
-fun DetailCheckState(
-    filmId: Int,
-    viewModel: DetailViewModel = hiltViewModel(),
+fun PersonCheckState(
+    personId: Int,
+    viewModel: PersonViewModel = hiltViewModel(),
     navController: NavHostController,
-    onMovieClick: (Int?) -> Unit,
-    onActorClick: (Int?) -> Unit,
+    onMovieClick: (Int?) -> Unit
 ) {
-    val viewState: State<UiState> = getState(viewModel, filmId)
+    val viewState: State<UiState> = getState(viewModel, personId)
     Scaffold(
         topBar = {
             TopBar(
@@ -35,18 +34,11 @@ fun DetailCheckState(
             when (val viewStateResult = viewState.value) {
                 is UiState.Loading -> LoadingScreen()
                 is UiState.Success -> {
-                    val actors = viewStateResult.actors
-                    DetailScreen(
-                        movie = viewStateResult.movie,
-                        actors = if (actors.size < 20) actors else actors.take(20),
-                        gallery = viewStateResult.gallery,
-                        similar = viewStateResult.similar,
+                    PersonScreen(
+                       person = viewStateResult.person,
                         onMovieClick = onMovieClick,
-                        onGalleryClick = {},
-                        onActorClick = onActorClick,
                     )
                 }
-
                 is UiState.Error -> ErrorScreen(
                     retryAction = { },
                 )
@@ -55,8 +47,8 @@ fun DetailCheckState(
 }
 
 @Composable
-private fun getState(detailViewModel: DetailViewModel, filmId: Int): State<UiState> {
+private fun getState(personViewModel: PersonViewModel, personId: Int): State<UiState> {
     return produceState<UiState>(initialValue = UiState.Loading) {
-        value = detailViewModel.getFilm(filmId)
+        value = personViewModel.getInfo(personId)
     }
 }

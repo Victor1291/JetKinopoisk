@@ -1,6 +1,7 @@
 package com.shu.jetcinema.di
 
 import com.shu.detail_movie.domain.DetailRepository
+import com.shu.detail_person.domain.PersonRepository
 import com.shu.home.domain.HomeRepository
 import com.shu.list_movies.domain.PagingRepository
 import com.shu.network.repository.*
@@ -35,4 +36,10 @@ class CinemaModule {
         return HomeRepositoryImpl(api)
     }
 
+    @Provides
+    fun providesPersonRepository(
+        api: ServiceMovieApi
+    ): PersonRepository {
+        return PersonRepositoryImpl(api)
+    }
 }

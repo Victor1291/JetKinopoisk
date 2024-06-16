@@ -8,7 +8,7 @@ import com.shu.models.details.DetailMovie
 
 interface PersonRepository {
 
-    suspend fun getDPerson(personId: Int): Person
+    suspend fun getPerson(personId: Int): Person
 
     suspend fun getFilm(kinopoiskId: Int): DetailMovie
 

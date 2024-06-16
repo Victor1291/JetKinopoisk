@@ -1,6 +1,9 @@
 package com.shu.network.models_person
 
-data class MovieOfActorDto (
+import com.shu.models.detail_person.MovieOfActor
+import com.shu.models.detail_person.Spouses
+
+data class MovieOfActorDto(
     val filmId: Int,
     val nameRu: String?,
     val nameEn: String?,
@@ -9,3 +12,17 @@ data class MovieOfActorDto (
     val description: String?,
     val professionKey: String?,
 )
+
+fun MovieOfActorDto.toMovieOfActor(): MovieOfActor {
+    return with(this) {
+        MovieOfActor(
+            filmId = filmId,
+            nameRu = nameRu,
+            nameEn = nameEn,
+            rating = rating,
+            general = general,
+            description = description,
+            professionKey = professionKey,
+        )
+    }
+}

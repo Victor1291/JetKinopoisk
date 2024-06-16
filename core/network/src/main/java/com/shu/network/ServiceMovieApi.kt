@@ -3,12 +3,12 @@ package  com.shu.network
 import com.shu.network.modelDetail.ActorsDto
 import com.shu.network.modelDetail.DetailMovieDto
 import com.shu.network.models.ListCollectionsDto
-import com.shu.network.models.ListPremiersDto
 import com.shu.network.models.ListFiltersFilmDto
+import com.shu.network.models.ListPremiersDto
 import com.shu.network.models.filters.ListFiltersDto
 import com.shu.network.models.gallery_models.ListGalleryItemsDto
 import com.shu.network.models.similar_models.ListSimilarDto
-import com.shu.network.models_person.PersonDto
+import com.shu.network.models_person.MovieOfActorDto
 import com.shu.network.models_person.PersonDto
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -36,8 +36,8 @@ interface ServiceMovieApi {
 
     @GET("api/v2.2/films")
     suspend fun filmVip(
-        @Query("countries") country : Int = 1,
-        @Query("genres") genres : Int = 11,
+        @Query("countries") country: Int = 1,
+        @Query("genres") genres: Int = 11,
         @Query("order") order: String = "NUM_VOTE",
         @Query("type") type: String = "FILM",
         @Query("ratingFrom") ratingFrom: Int = 0,
@@ -84,67 +84,67 @@ interface ServiceMovieApi {
     suspend fun detailFilmography(@Path("id") id: Int?): MovieOfActorDto
 
 }
-   /*
-    @GET("/api/v2.2/films/{id}/facts")
-    suspend fun factList(@Path("id") id: Int): FactList
+/*
+ @GET("/api/v2.2/films/{id}/facts")
+ suspend fun factList(@Path("id") id: Int): FactList
 
 
 
-   /*
-    @GET("/api/v2.2/films/{id}")
-    suspend fun detailFilmography(@Path("id") id: Int?): MovieImageDto
+/*
+ @GET("/api/v2.2/films/{id}")
+ suspend fun detailFilmography(@Path("id") id: Int?): MovieImageDto
 */
-  //
-    @GET("/api/v2.2/films/filters")
-    suspend fun genreCountry(): ListFiltersDto
+//
+ @GET("/api/v2.2/films/filters")
+ suspend fun genreCountry(): ListFiltersDto
 
-   /*
-    @GET("/api/v2.2/films/{id}/seasons")
-    suspend fun serial(@Path("id") id: Int): SeasonsSerialDto
-
-
-    @GET("/api/v2.2/films/{id}/similars")
-    suspend fun similar(@Path("id") id: Int?): ListSimilarDto
+/*
+ @GET("/api/v2.2/films/{id}/seasons")
+ suspend fun serial(@Path("id") id: Int): SeasonsSerialDto
 
 
-    @GET("/api/v2.1/films/search-by-keyword")
-    suspend fun search(
-        @Query("page") page: Int,
-        @Query("keyword") keyword: String
-    ): SearchListDto
+ @GET("/api/v2.2/films/{id}/similars")
+ suspend fun similar(@Path("id") id: Int?): ListSimilarDto
 
 
-    @GET("/api/v2.2/films/{id}/images")
-    suspend fun gallery(
-        @Path("id") id: Int,
-        @Query("page") page: Int,
-        @Query("type") type: String = "STILL",
-    ): GalleryListDto
+ @GET("/api/v2.1/films/search-by-keyword")
+ suspend fun search(
+     @Query("page") page: Int,
+     @Query("keyword") keyword: String
+ ): SearchListDto
 
 
-    @GET("/api/v2.2/films/{id}/images")
-    suspend fun galleryTotal(
-        @Path("id") id: Int,
-        @Query("page") page: Int = 1,
-        @Query("type") type: String = "STILL",
-    ): GalleryTotalListDto*/
-
-   //
+ @GET("/api/v2.2/films/{id}/images")
+ suspend fun gallery(
+     @Path("id") id: Int,
+     @Query("page") page: Int,
+     @Query("type") type: String = "STILL",
+ ): GalleryListDto
 
 
-  /*  @Headers("X-API-KEY: $api_key")
-    @GET("/api/v1/staff")
-    suspend fun actors(@Query("filmId") filmId: Int): List<ActorsDto>
+ @GET("/api/v2.2/films/{id}/images")
+ suspend fun galleryTotal(
+     @Path("id") id: Int,
+     @Query("page") page: Int = 1,
+     @Query("type") type: String = "STILL",
+ ): GalleryTotalListDto*/
 
-    @Headers("X-API-KEY: $api_key")
-    @GET("/api/v1/staff/{id}")
-    suspend fun person(@Path("id") id: Int): PersonDto*/
+//
+
+
+/*  @Headers("X-API-KEY: $api_key")
+ @GET("/api/v1/staff")
+ suspend fun actors(@Query("filmId") filmId: Int): List<ActorsDto>
+
+ @Headers("X-API-KEY: $api_key")
+ @GET("/api/v1/staff/{id}")
+ suspend fun person(@Path("id") id: Int): PersonDto*/
 
 // order=RATING&type=FILM&ratingFrom=0&ratingTo=10&yearFrom=1000&yearTo=3000&page=1
-    /*
-    order = RATING, NUM_VOTE, YEAR
-    type = FILM, TV_SHOW, TV_SERIES,MINI_SERIES, ALL
-    imdbid : String = imdbid
+ /*
+ order = RATING, NUM_VOTE, YEAR
+ type = FILM, TV_SHOW, TV_SERIES,MINI_SERIES, ALL
+ imdbid : String = imdbid
 
 countries 1 - США 2- Швейцария 3 - Франция 4 - Польша 5 - Великобритания 6 -Швеция
 genres 1 - триллер 2 - драма 3 -криминал 4 - мелодрама 5- детектив 6 - фантастика
@@ -152,10 +152,10 @@ genres 1 - триллер 2 - драма 3 -криминал 4 - мелодра�
 7- Индия 8 - Испания 9 - германия
 
 7 - приключения 8 -биография 9 - фильм-нуар  10 - вестерн 11 - боевик
-     */
+  */
 }
 
 /*
 отсчёт страниц начинается с 1 а не с 0
- */
+*/
 */

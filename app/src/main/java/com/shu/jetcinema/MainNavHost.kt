@@ -9,11 +9,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.shu.detail_movie.DetailCheckState
+import com.shu.detail_person.PersonCheckState
 import com.shu.home.CheckState
 import com.shu.list_movies.ListScreen
 
 
 private const val argumentKey = "arg"
+private const val personKey = "person"
 
 @Composable
 fun MainNavHost(
@@ -44,28 +46,30 @@ fun MainNavHost(
         }
 
         composable(BottomNavigationScreens.SearchScreen.route) {
-            /* viewModel.changeStateTOpBar(false)
-             viewModel.getAllCity()
-             CityScreen(viewModel, onCityClicked = {
-                 viewModel.choiceCity = it ?: "Vladivostok"
-                 navController.navigate(
-                     BottomNavigationScreens.DetailScreen.route
-                 )
-             })*/
+
             BackHandler {
                 navController.popBackStack()
             }
         }
 
-        composable(BottomNavigationScreens.PersonScreen.route) {
-            /* viewModel.changeStateTOpBar(false)
-             viewModel.getAllCity()
-             CityScreen(viewModel, onCityClicked = {
-                 viewModel.choiceCity = it ?: "Vladivostok"
-                 navController.navigate(
-                     BottomNavigationScreens.DetailScreen.route
-                 )
-             })*/
+        composable(
+            route = "${BottomNavigationScreens.PersonScreen.route}/{$personKey}",
+            arguments = listOf(navArgument(personKey) {
+                type = NavType.IntType
+            })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getInt(personKey)?.let { personId ->
+                PersonCheckState(
+                    personId = personId,
+                    navController = navController,
+                    onMovieClick = { filmId ->
+                        navController.navigate(
+                            route = "${BottomNavigationScreens.DetailScreen.route}/${filmId}"
+                        )
+                    }
+                )
+
+            }
             BackHandler {
                 navController.popBackStack()
             }
@@ -78,11 +82,20 @@ fun MainNavHost(
         ) { backStackEntry ->
             backStackEntry.arguments?.getInt(argumentKey)?.let { filmId ->
                 viewModel.changeStateTOpBar(false)
-                DetailCheckState(onMovieClick = { filmId ->
-                    navController.navigate(
-                        route = "${BottomNavigationScreens.DetailScreen.route}/${filmId}"
-                    )
-                }, navController = navController, filmId = filmId)
+                DetailCheckState(
+                    onMovieClick = { filmId ->
+                        navController.navigate(
+                            route = "${BottomNavigationScreens.DetailScreen.route}/${filmId}"
+                        )
+                    },
+                    navController = navController,
+                    filmId = filmId,
+                    onActorClick = { personId ->
+                        navController.navigate(
+                            route = "${BottomNavigationScreens.PersonScreen.route}/${personId}"
+                        )
+                    }
+                )
             }
             BackHandler {
                 navController.popBackStack()
