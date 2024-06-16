@@ -94,7 +94,6 @@ fun DetailScreen(
                             .data(movie.coverUrl).crossfade(true).build(),
                         contentDescription = "poster",
                         contentScale = ContentScale.FillBounds,
-                        alpha = 0.8f
                     )
 
                     if (movie.logoUrl != null) {

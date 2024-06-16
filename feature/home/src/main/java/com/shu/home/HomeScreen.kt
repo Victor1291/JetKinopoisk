@@ -17,11 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shu.models.FilmVip
 import com.shu.models.ManyScreens
+import com.shu.models.media_posts.ListPosts
+import dagger.Lazy
 
 
 @Composable
 fun HomeScreen(
     manyScreens: ManyScreens,
+    posts: ListPosts,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     onMovieClick: (Int?) -> Unit,
@@ -35,14 +38,22 @@ fun HomeScreen(
 
         LazyColumn(
             contentPadding = PaddingValues(4.dp),
-            modifier = modifier.
-            padding(top = 10.dp,bottom = 110.dp),
+            modifier = modifier.padding(top = 10.dp, bottom = 110.dp),
             state = state
         ) {
 
+            item {
+                LazyRowPosts(posts = posts, onMovieClick = onMovieClick)
+            }
+
             items(manyScreens.homeListScreen.size) { num ->
 
-                LazyRowMovie(list = manyScreens.homeListScreen[num],num, onMovieClick = onMovieClick,onListClick = onListClick )
+                LazyRowMovie(
+                    list = manyScreens.homeListScreen[num],
+                    num,
+                    onMovieClick = onMovieClick,
+                    onListClick = onListClick
+                )
 
             }
         }

@@ -7,6 +7,7 @@ import com.shu.network.models.ListFiltersFilmDto
 import com.shu.network.models.ListPremiersDto
 import com.shu.network.models.filters.ListFiltersDto
 import com.shu.network.models.gallery_models.ListGalleryItemsDto
+import com.shu.network.models.media_posts.ListPostsDto
 import com.shu.network.models.similar_models.ListSimilarDto
 import com.shu.network.models_person.MovieOfActorDto
 import com.shu.network.models_person.PersonDto
@@ -82,6 +83,12 @@ interface ServiceMovieApi {
 
     @GET("/api/v2.2/films/{id}")
     suspend fun detailFilmography(@Path("id") id: Int?): MovieOfActorDto
+
+    /**   /api/v1/media_posts
+     *  получить медиа новости с сайта кинопоиск
+     */
+    @GET("/api/v1/media_posts")
+    suspend fun getPosts(@Query("page") page: Int): ListPostsDto
 
 }
 /*

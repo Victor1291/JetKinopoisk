@@ -11,7 +11,9 @@ import com.shu.home.domain.HomeRepository
 import com.shu.models.Choice
 import com.shu.models.CinemaItem
 import com.shu.models.ManyScreens
+import com.shu.models.media_posts.ListPosts
 import com.shu.network.models.mapFrom
+import com.shu.network.models.media_posts.toListPosts
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -77,15 +79,19 @@ class HomeRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getPosts(page: Int): ListPosts {
+        return api.getPosts(page).toListPosts()
+    }
+
     private suspend fun choiceCountry(lists: ListFiltersDto): List<CinemaItem> {
 
         val randomIdCountry = Random.nextInt(20)
         val randomIdGenre = Random.nextInt(13)
 
-        val country = lists.countries[randomIdCountry].country ?: "USA"
-        val genre = lists.genres[randomIdGenre].genre ?: "Action"
-        val idCountry = lists.countries[randomIdCountry].id ?: 1
-        val idGenres = lists.genres[randomIdGenre].id ?: 11
+        val country = lists.countries[randomIdCountry].country
+        val genre = lists.genres[randomIdGenre].genre
+        val idCountry = lists.countries[randomIdCountry].id
+        val idGenres = lists.genres[randomIdGenre].id
 
         val vip = Choice(
             page = 1,
@@ -110,7 +116,7 @@ class HomeRepositoryImpl @Inject constructor(
         ).items.map { it.mapFrom() }
     }
 
-    private suspend fun getTime(): String {
+    private fun getTime(): String {
         return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
     }
 

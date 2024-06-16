@@ -31,10 +31,6 @@ sealed interface UiState {
 class PersonViewModel @Inject constructor(private val personRepository: PersonRepository) :
     ViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
-
     suspend fun getInfo(id: Int): UiState {
         return try {
             UiState.Success(

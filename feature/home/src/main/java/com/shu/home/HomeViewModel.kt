@@ -2,22 +2,21 @@ package com.shu.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.shu.models.ManyScreens
 import com.shu.home.domain.HomeRepository
+import com.shu.models.ManyScreens
+import com.shu.models.media_posts.ListPosts
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
 import javax.inject.Inject
 
 sealed interface UiState {
-    data class Success(val manyScreens: ManyScreens) : UiState
+    data class Success(
+        val manyScreens: ManyScreens,
+        val posts: ListPosts
+    ) : UiState
+
     data object Error : UiState
     data object Loading : UiState
 }
@@ -26,9 +25,6 @@ sealed interface UiState {
 class HomeViewModel @Inject constructor(
     private val repository: HomeRepository
 ) : ViewModel() {
-
-    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     private fun getTime(): String {
         val date = Date()
@@ -42,19 +38,17 @@ class HomeViewModel @Inject constructor(
 
     init {
         Log.d("Init HomeViewmodel", " *****  ${getTime()} ***** ")
-        getMovies()
     }
 
-    private fun getMovies() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _uiState.value = UiState.Loading
-            _uiState.value =
-                try {
-                    UiState.Success(repository.getAllScreen())
-                } catch (e: Exception) {
-                    Log.e("viewmodelError", "Error $e")
-                    UiState.Error
-                }
+    suspend fun getInfo(): UiState {
+        return try {
+            UiState.Success(
+                manyScreens = repository.getAllScreen(),
+                posts = repository.getPosts(1)
+            )
+        } catch (e: Exception) {
+            Log.e("viewmodelError", "Error $e")
+            UiState.Error
         }
     }
 }
