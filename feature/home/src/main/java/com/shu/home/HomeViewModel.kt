@@ -2,14 +2,20 @@ package com.shu.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.shu.home.domain.HomeRepository
 import com.shu.models.ManyScreens
 import com.shu.models.media_posts.ListPosts
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
 import javax.inject.Inject
+import kotlin.random.Random
 
 sealed interface UiState {
     data class Success(
@@ -26,6 +32,10 @@ class HomeViewModel @Inject constructor(
     private val repository: HomeRepository
 ) : ViewModel() {
 
+
+    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
     private fun getTime(): String {
         val date = Date()
         val calendar: Calendar = GregorianCalendar()
@@ -37,18 +47,26 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
+        getInfo()
         Log.d("Init HomeViewmodel", " *****  ${getTime()} ***** ")
     }
 
-    suspend fun getInfo(): UiState {
-        return try {
-            UiState.Success(
-                manyScreens = repository.getAllScreen(),
-                posts = repository.getPosts(1)
-            )
-        } catch (e: Exception) {
-            Log.e("viewmodelError", "Error $e")
-            UiState.Error
+    private fun getInfo() {
+        viewModelScope.launch {
+            try {
+                _uiState.value = UiState.Success(
+                    manyScreens = repository.getAllScreen(),
+                    posts = repository.getPosts(Random.nextInt(32))
+                )
+            } catch (e: Exception) {
+                Log.e("viewmodelError", "Error $e")
+                _uiState.value = UiState.Error
+            }
         }
+    }
+
+
+    fun retry() {
+        getInfo()
     }
 }

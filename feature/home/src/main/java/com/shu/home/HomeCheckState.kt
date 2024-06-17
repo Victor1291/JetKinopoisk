@@ -1,8 +1,8 @@
 package com.shu.home
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.shu.home.state.ErrorScreen
 import com.shu.home.state.LoadingScreen
@@ -14,28 +14,21 @@ fun CheckState(
     onMovieClick: (Int?) -> Unit,
     onListClick: (FilmVip?) -> Unit,
 ) {
-    val viewState: State<UiState> = getState(viewModel)
+    val viewState by viewModel.uiState.collectAsState()
 
-    when (val viewStateResult = viewState.value) {
+    when (viewState) {
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> {
             HomeScreen(
-                manyScreens = viewStateResult.manyScreens,
-                posts = viewStateResult.posts,
+                manyScreens = (viewState as UiState.Success).manyScreens,
+                posts = (viewState as UiState.Success).posts,
                 onMovieClick = onMovieClick,
                 onListClick = onListClick
             )
         }
 
         is UiState.Error -> ErrorScreen(
-            retryAction = { },
+            retryAction = { viewModel.retry() },
         )
-    }
-}
-
-@Composable
-private fun getState(viewModel: HomeViewModel): State<UiState> {
-    return produceState<UiState>(initialValue = UiState.Loading) {
-        value = viewModel.getInfo()
     }
 }
