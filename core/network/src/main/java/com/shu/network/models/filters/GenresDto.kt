@@ -1,5 +1,7 @@
 package com.shu.network.models.filters
 
+import com.example.database.modelDbo.CountriesDbo
+import com.example.database.modelDbo.GenresDbo
 import com.google.gson.annotations.SerializedName
 import com.shu.models.Genres
 
@@ -12,6 +14,14 @@ fun GenresDto.mapFrom(): Genres {
     return with(this) {
         Genres(
             id = id,
+            genre = genre
+        )
+    }
+}
+
+fun GenresDto.mapToBd(): GenresDbo {
+    return with(this) {
+        GenresDbo(
             genre = genre
         )
     }

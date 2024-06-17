@@ -24,9 +24,9 @@ data class ColectionsDto(
     @SerializedName("ratingImbd")
     val ratingImbd: String?,
     @SerializedName("year")
-    var year: String?,
+    val year: String?,
     @SerializedName("type")
-    var type: String?,
+    val type: String?,
     @SerializedName("posterUrl")
     val posterUrl: String?,
     @SerializedName("posterUrlPreview")

@@ -1,10 +1,12 @@
 package com.shu.network.modelDetail
 
+import com.example.database.modelDbo.MovieDbo
 import com.google.gson.annotations.SerializedName
 import com.shu.models.details.DetailMovie
 import com.shu.network.models.filters.CountriesDto
 import com.shu.network.models.filters.GenresDto
 import com.shu.network.models.filters.mapFrom
+import com.shu.network.models.filters.mapToBd
 
 data class DetailMovieDto(
     @SerializedName("kinopoiskId") var kinopoiskId: Int? = null,
@@ -55,7 +57,7 @@ data class DetailMovieDto(
 
 )
 
-fun DetailMovieDto.mapFrom(): DetailMovie {
+fun DetailMovieDto.mapFromApi(): DetailMovie {
     return with(this) {
 
         DetailMovie(
@@ -104,6 +106,27 @@ fun DetailMovieDto.mapFrom(): DetailMovie {
             serial = serial,
             shortFilm = shortFilm,
             completed = completed,
+        )
+    }
+}
+
+fun DetailMovieDto.mapToBd(): MovieDbo {
+    return with(this) {
+        MovieDbo(
+            id = kinopoiskId ?: 0,
+            kinopoiskId = kinopoiskId,
+            nameRu = nameRu,
+            nameEn = nameEn,
+            nameOriginal = nameOriginal,
+            countries = countries.map { it.mapToBd() },
+            genres = genres.map { it.mapToBd() },
+            ratingKinopoisk = ratingKinopoisk.toString(),
+            ratingImbd = ratingImdb.toString(),
+            year = year.toString(),
+            type = type,
+            posterUrl = posterUrl,
+            posterUrlPreview = posterUrlPreview,
+            imdbId = imdbId,
         )
     }
 }

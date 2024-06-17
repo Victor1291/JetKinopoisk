@@ -1,5 +1,6 @@
 package com.shu.models.details
 
+import com.shu.models.CinemaItem
 import com.shu.models.Countries
 import com.shu.models.Genres
 
@@ -67,4 +68,5 @@ data class DetailMovie(
 
 
 }
+
 

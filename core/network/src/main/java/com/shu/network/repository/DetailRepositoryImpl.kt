@@ -1,22 +1,29 @@
 package com.shu.network.repository
 
+import com.example.database.MovieDao
 import com.shu.models.details.Actor
 import com.shu.models.details.DetailMovie
 import com.shu.models.gallery_models.ListGalleryItems
 import com.shu.models.similar_models.ListSimilar
 import com.shu.network.ServiceMovieApi
-import com.shu.network.modelDetail.mapFrom
+import com.shu.network.modelDetail.mapFromApi
+import com.shu.network.modelDetail.mapToBd
 import com.shu.network.modelDetail.toActor
-import com.shu.network.models.similar_models.toListSimilar
 import com.shu.network.models.gallery_models.toListGalleryItems
+import com.shu.network.models.similar_models.toListSimilar
 import javax.inject.Inject
 
 class DetailRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
+    private val movieDao: MovieDao,
 ) : com.shu.detail_movie.domain.DetailRepository {
 
     override suspend fun getFilm(kinopoiskId: Int): DetailMovie {
-        return api.getFilm(kinopoiskId).mapFrom()
+
+        val detailMovie = api.getFilm(kinopoiskId)
+        movieDao.insert(detailMovie.mapToBd())
+
+        return detailMovie.mapFromApi()
     }
 
     override suspend fun getActorFilm(kinopoiskId: Int): List<Actor> {

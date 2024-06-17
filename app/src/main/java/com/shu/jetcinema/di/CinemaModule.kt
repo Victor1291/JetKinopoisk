@@ -1,5 +1,6 @@
 package com.shu.jetcinema.di
 
+import com.example.database.MovieDao
 import com.example.search.domain.PagingSearchRepository
 import com.shu.detail_movie.domain.DetailRepository
 import com.shu.detail_person.domain.PersonRepository
@@ -28,9 +29,10 @@ class CinemaModule {
 
     @Provides
     fun providesDetailRepository(
-        api: ServiceMovieApi
+        api: ServiceMovieApi,
+        dao: MovieDao
     ): DetailRepository {
-        return DetailRepositoryImpl(api)
+        return DetailRepositoryImpl(api,dao)
     }
 
     @Provides

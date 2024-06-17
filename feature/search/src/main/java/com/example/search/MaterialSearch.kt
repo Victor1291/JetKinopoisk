@@ -41,10 +41,11 @@ fun MaterialSearch(
         onQueryChange = { text ->
             viewModel.setTitle(FilmVip(keyword = text))
             onRefreshClick()
-            // mainList.value = Utils.search(text, city)
+            // mainList.value = Utils.search(text, originUsersList)
         },
-        onSearch = {
-
+        onSearch = {text ->
+            viewModel.setTitle(FilmVip(keyword = text))
+            onRefreshClick()
             isActive.value = false
         },
         placeholder = {
@@ -54,7 +55,7 @@ fun MaterialSearch(
         onActiveChange = {
             isActive.value = it
         }) {
-       /* LazyColumn {
+        LazyColumn {
             items(mainList.value.size) { item ->
                 Box(
                     modifier = Modifier
@@ -62,13 +63,14 @@ fun MaterialSearch(
                         .padding(dimensionResource(R.dimen.padding_medium))
                         .clickable {
                             viewModel.setTitle(FilmVip(keyword = mainList.value[item]))
+                            onRefreshClick()
                             isActive.value = false
                         }, contentAlignment = Alignment.Center
                 ) {
                     Text(text = mainList.value[item])
                 }
             }
-        }*/
+        }
     }
 }
 

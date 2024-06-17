@@ -59,6 +59,7 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     implementation(project(":feature:search"))
+    implementation(project(":core:database"))
 
     ksp(libs.hilt.android.compiler)
 

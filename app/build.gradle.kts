@@ -61,6 +61,7 @@ dependencies {
     implementation(project(":feature:search"))
 
     implementation(project(":core:network"))
+    implementation(project(":core:database"))
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

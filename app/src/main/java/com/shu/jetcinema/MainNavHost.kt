@@ -48,7 +48,6 @@ fun MainNavHost(
 
         composable(BottomNavigationScreens.SearchScreen.route) {
             SearchScreen(
-                navController = navController,
                 onMovieClick = { filmId ->
                     viewModel.changeStateTOpBar(false)
                     navController.navigate(
