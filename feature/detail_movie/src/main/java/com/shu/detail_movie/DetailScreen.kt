@@ -101,9 +101,8 @@ fun DetailScreen(
                         AsyncImage(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 40.dp)
-                                .align(Alignment.BottomCenter)
-                            ,
+                                .padding(bottom = 8.dp)
+                                .align(Alignment.BottomCenter),
                             model = ImageRequest.Builder(context = LocalContext.current)
                                 .data(movie.logoUrl).crossfade(true).build(),
                             contentDescription = "logo",
@@ -120,7 +119,7 @@ fun DetailScreen(
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
-                                .padding(bottom = 48.dp)
+                                .padding(bottom = 8.dp)
                                 .align(Alignment.BottomCenter)
                         )
                     }
@@ -136,18 +135,14 @@ fun DetailScreen(
                         contentScale = ContentScale.FillBounds,
                     )
                 }
-                    // Buttons()
+                // Buttons()
 
             }
         }
         item {
-            ElevatedCard(
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ),
-                modifier = Modifier
-                    .clickable { expanded = !expanded }
-            ) {
+            ElevatedCard(elevation = CardDefaults.cardElevation(
+                defaultElevation = 6.dp
+            ), modifier = Modifier.clickable { expanded = !expanded }) {
                 UserInputSelector(
                     onSelectorChange = {},
                     sendMessageEnabled = true,
@@ -161,9 +156,11 @@ fun DetailScreen(
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
-                ), modifier = Modifier.padding(4.dp).fillMaxSize()
+                ), modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxSize()
             ) {
-                Text(
+              /*  Text(
                     text = movie.ratingKinopoisk?.let { "$it ${movie.nameRu}" }
                         ?: "${movie.nameRu}",
                     lineHeight = 35.sp,
@@ -172,13 +169,13 @@ fun DetailScreen(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Center,
-                )
+                )*/
                 Text(
                     text = movie.year?.let { year ->
                         "$year ${movie.genresList}"
                     } ?: movie.genresList,
-                    lineHeight = 20.sp,
-                    fontSize = 18.sp,
+                    lineHeight = 16.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -186,8 +183,8 @@ fun DetailScreen(
                 )
                 Text(
                     text = movie.cityRateFilmLength,
-                    lineHeight = 20.sp,
-                    fontSize = 18.sp,
+                    lineHeight = 16.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -343,8 +340,7 @@ fun UserInput(
             .fillMaxWidth()
             .height(320.dp)
     ) {
-        UserInputSelector(
-            onSelectorChange = {},
+        UserInputSelector(onSelectorChange = {},
             sendMessageEnabled = true,
             onMessageSent = {},
             currentInputSelector = InputSelector.DM,
@@ -387,10 +383,10 @@ private fun UserInputSelector(
 ) {
     Row(
         modifier = modifier
-           // .height(72.dp)
+            // .height(72.dp)
             .wrapContentHeight()
             .background(Color.Black),
-            //.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+        //.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         InputSelectorButton(

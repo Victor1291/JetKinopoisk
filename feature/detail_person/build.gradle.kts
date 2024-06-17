@@ -1,13 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.secrets)
+    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.shu.network"
+    namespace = "com.shu.detail_actor"
     compileSdk = 34
 
     defaultConfig {
@@ -34,7 +33,10 @@ android {
         jvmTarget = "17"
     }
     buildFeatures {
-        buildConfig = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
 }
 
@@ -42,25 +44,21 @@ dependencies {
 
     implementation(project(":core:models"))
 
-    implementation(project(mapOf("path" to ":feature:home")))
-    implementation(project(mapOf("path" to ":feature:detail_movie")))
-    implementation(project(mapOf("path" to ":feature:detail_person")))
-    implementation(project(mapOf("path" to ":feature:list_movies")))
-
-    //OkHttp
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-
-
-    // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.compose)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
 
     //Hilt
-    implementation(libs.hilt.android)
+    implementation(libs.bundles.hilt)
+    implementation(libs.androidx.compose.foundation)
+    ksp(libs.bundles.hilt.ksp)
 
-    ksp(libs.hilt.android.compiler)
-
+    //Coil
+    implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

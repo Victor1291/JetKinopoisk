@@ -8,8 +8,9 @@ import com.shu.network.models.ListFiltersFilmDto
 import com.shu.network.models.filters.ListFiltersDto
 import com.shu.network.models.gallery_models.ListGalleryItemsDto
 import com.shu.network.models.similar_models.ListSimilarDto
+import com.shu.network.models_person.PersonDto
+import com.shu.network.models_person.PersonDto
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -74,6 +75,13 @@ interface ServiceMovieApi {
 
     @GET("/api/v2.2/films/filters")
     suspend fun genreCountry(): ListFiltersDto
+
+
+    @GET("/api/v1/staff/{id}")
+    suspend fun person(@Path("id") id: Int): PersonDto
+
+    @GET("/api/v2.2/films/{id}")
+    suspend fun detailFilmography(@Path("id") id: Int?): MovieOfActorDto
 
 }
    /*
