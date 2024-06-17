@@ -35,6 +35,7 @@ fun PremierDto.mapFrom(): CinemaItem {
             kinopoiskId = kinopoiskId,
             nameRu = nameRu,
             nameEn = nameEn,
+            nameOriginal = nameEn,
             posterUrl = posterUrl,
             posterUrlPreview = posterUrlPreview,
             year = year,

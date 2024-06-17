@@ -261,11 +261,16 @@ fun DetailScreen(
         }
 
         item {
-            LazyRowGallery(gallery = gallery, onGalleryClick = onGalleryClick)
+
+            if (gallery.items.isNotEmpty()) {
+                LazyRowGallery(gallery = gallery, onGalleryClick = onGalleryClick)
+            }
         }
 
         item {
-            LazyRowSimilar(similar = similar, onMovieClick = onMovieClick)
+            if (similar.items.isNotEmpty()) {
+                LazyRowSimilar(similar = similar, onMovieClick = onMovieClick)
+            }
         }
 
         /* items(manyScreens.homeListScreen.size) { num ->

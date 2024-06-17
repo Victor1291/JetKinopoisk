@@ -58,6 +58,7 @@ dependencies {
     implementation(project(":feature:detail_movie"))
     implementation(project(":feature:list_movies"))
     implementation(project(":feature:detail_person"))
+    implementation(project(":feature:search"))
 
     implementation(project(":core:network"))
     implementation(libs.androidx.work.runtime.ktx)

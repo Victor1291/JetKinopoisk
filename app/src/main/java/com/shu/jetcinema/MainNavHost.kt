@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.search.SearchScreen
 import com.shu.detail_movie.DetailCheckState
 import com.shu.detail_person.PersonCheckState
 import com.shu.home.CheckState
@@ -46,7 +47,14 @@ fun MainNavHost(
         }
 
         composable(BottomNavigationScreens.SearchScreen.route) {
-
+            SearchScreen(
+                navController = navController,
+                onMovieClick = { filmId ->
+                    viewModel.changeStateTOpBar(false)
+                    navController.navigate(
+                        route = "${BottomNavigationScreens.DetailScreen.route}/${filmId}"
+                    )
+                })
             BackHandler {
                 navController.popBackStack()
             }

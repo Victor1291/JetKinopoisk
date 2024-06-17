@@ -41,6 +41,7 @@ fun FiltersFilmDto.mapFrom(): CinemaItem {
             kinopoiskId = kinopoiskId,
             nameRu = nameRu,
             nameEn = nameEn,
+            nameOriginal = nameOriginal,
             posterUrl = posterUrl,
             posterUrlPreview = posterUrlPreview,
             year = year,
