@@ -6,12 +6,14 @@ import com.shu.models.FilmVip
 import com.shu.network.ServiceMovieApi
 import com.shu.network.models.filters.ListFiltersDto
 import android.util.Log
+import com.example.database.MovieDao
 import com.shu.list_movies.domain.PagingRepository
 import com.shu.home.domain.HomeRepository
 import com.shu.models.Choice
 import com.shu.models.CinemaItem
 import com.shu.models.ManyScreens
 import com.shu.models.media_posts.ListPosts
+import com.shu.network.models.filters.mapToBd
 import com.shu.network.models.mapFrom
 import com.shu.network.models.media_posts.toListPosts
 import kotlinx.coroutines.coroutineScope
@@ -24,6 +26,7 @@ import kotlin.random.Random
 
 class HomeRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
+    private val movieDao: MovieDao,
 ) : HomeRepository, PagingRepository {
     override suspend fun getAllScreen(): ManyScreens {
         return coroutineScope {
@@ -36,6 +39,8 @@ class HomeRepositoryImpl @Inject constructor(
             var listSerials: List<CinemaItem> = emptyList()
 
             val genreCountry = api.genreCountry()
+            movieDao.addCountry(genreCountry.countries.map { it.mapToBd() })
+            movieDao.addGenres(genreCountry.genres.map { it.mapToBd() })
             val date = Date()
             val calendar = Calendar.getInstance()
             calendar.time = date

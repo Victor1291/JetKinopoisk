@@ -35,6 +35,7 @@ fun MainNavHost(
                         route = "${BottomNavigationScreens.DetailScreen.route}/${filmId}"
                     )
                 },
+                onPostClick = {},
                 onListClick = { vip ->
                     val filmsLink = "${BottomNavigationScreens.ListMovies.route}/${
                         FilmsParametersType.serializeAsValue(vip)
@@ -87,7 +88,7 @@ fun MainNavHost(
                 type = NavType.IntType
             })
         ) { backStackEntry ->
-            backStackEntry.arguments?.getInt(argumentKey)?.let { filmId ->
+            backStackEntry.arguments?.getInt(argumentKey)?.let { kinopoiskId ->
                 viewModel.changeStateTOpBar(false)
                 DetailCheckState(
                     onMovieClick = { filmId ->
@@ -96,7 +97,7 @@ fun MainNavHost(
                         )
                     },
                     navController = navController,
-                    filmId = filmId,
+                    filmId = kinopoiskId,
                     onActorClick = { personId ->
                         navController.navigate(
                             route = "${BottomNavigationScreens.PersonScreen.route}/${personId}"

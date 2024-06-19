@@ -11,6 +11,7 @@ import com.example.database.modelDbo.CollectionsMovieDbo
 import com.example.database.modelDbo.CountriesDbo
 import com.example.database.modelDbo.GenresDbo
 import com.example.database.modelDbo.InterestingMovieDbo
+import com.example.database.modelDbo.MovieCountriesJoin
 import com.example.database.modelDbo.MovieCountryDbo
 import com.example.database.modelDbo.MovieDbo
 import com.example.database.modelDbo.MovieGenresDbo
@@ -19,6 +20,7 @@ import com.example.database.modelDbo.SimilarMovieDbo
 @Database(
     entities = [
         MovieDbo::class,
+        MovieCountriesJoin::class,
         CollectionsDbo::class,
         CollectionsMovieDbo::class,
         InterestingMovieDbo::class,

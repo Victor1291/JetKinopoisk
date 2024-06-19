@@ -1,7 +1,6 @@
 package com.shu.home
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LazyRowPosts(
     posts: ListPosts,
-    onMovieClick: (Int?) -> Unit,
+    onPostClick: (Int?) -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
 ) {
@@ -49,7 +48,7 @@ fun LazyRowPosts(
         posts.items.size.let { size ->
             items(size) { index ->
                 //TODO по клику окрывать url или искать сериал или фильм по id
-                PostItemCard(posts.items[index], onMovieClick = {  }, onExpandedClick = { expanded = it } ,  modifier = modifier, expanded = expanded)
+                PostItemCard(posts.items[index], onPostClick = onPostClick, onExpandedClick = { expanded = it } ,  modifier = modifier, expanded = expanded)
             }
         }
     }

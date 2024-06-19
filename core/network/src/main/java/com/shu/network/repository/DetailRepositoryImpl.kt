@@ -1,6 +1,7 @@
 package com.shu.network.repository
 
 import com.example.database.MovieDao
+import com.example.database.modelDbo.MovieCountriesJoin
 import com.shu.models.details.Actor
 import com.shu.models.details.DetailMovie
 import com.shu.models.gallery_models.ListGalleryItems
@@ -9,6 +10,7 @@ import com.shu.network.ServiceMovieApi
 import com.shu.network.modelDetail.mapFromApi
 import com.shu.network.modelDetail.mapToBd
 import com.shu.network.modelDetail.toActor
+import com.shu.network.models.filters.mapToBd
 import com.shu.network.models.gallery_models.toListGalleryItems
 import com.shu.network.models.similar_models.toListSimilar
 import javax.inject.Inject
@@ -21,7 +23,18 @@ class DetailRepositoryImpl @Inject constructor(
     override suspend fun getFilm(kinopoiskId: Int): DetailMovie {
 
         val detailMovie = api.getFilm(kinopoiskId)
-        movieDao.insert(detailMovie.mapToBd())
+        movieDao.save(detailMovie.mapToBd())
+        val listJoins = mutableListOf<MovieCountriesJoin>()
+        detailMovie.countries.forEach { country ->
+            listJoins.add(
+                MovieCountriesJoin(
+                    kinopoiskId = detailMovie.kinopoiskId,
+                    country = country.country
+                )
+            )
+        }
+        val arrayJoins = listJoins.toList().toTypedArray()
+        movieDao.save(*arrayJoins)
 
         return detailMovie.mapFromApi()
     }

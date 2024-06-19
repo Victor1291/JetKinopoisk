@@ -12,6 +12,7 @@ import com.shu.models.FilmVip
 fun CheckState(
     viewModel: HomeViewModel = hiltViewModel(),
     onMovieClick: (Int?) -> Unit,
+    onPostClick: (Int?) -> Unit,
     onListClick: (FilmVip?) -> Unit,
 ) {
     val viewState by viewModel.uiState.collectAsState()
@@ -22,6 +23,7 @@ fun CheckState(
             HomeScreen(
                 manyScreens = (viewState as UiState.Success).manyScreens,
                 posts = (viewState as UiState.Success).posts,
+                onPostClick = onPostClick,
                 onMovieClick = onMovieClick,
                 onListClick = onListClick
             )

@@ -10,10 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +27,7 @@ import com.shu.models.media_posts.Post
 @Composable
 fun PostItemCard(
     post: Post,
-    onMovieClick: (Int?) -> Unit,
+    onPostClick: (Int?) -> Unit,
     onExpandedClick: (Boolean) -> Unit,
     modifier: Modifier,
     expanded: Boolean
@@ -43,7 +39,7 @@ fun PostItemCard(
                 .width(350.dp)
                 .height(270.dp)
                 .clickable {
-                    onMovieClick(post.kinopoiskId)
+                    onPostClick(post.kinopoiskId)
                     onExpandedClick(!expanded)
                 },
         ) {

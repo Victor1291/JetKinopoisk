@@ -8,17 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.shu.models.FilmVip
 import com.shu.models.ManyScreens
 import com.shu.models.media_posts.ListPosts
-import dagger.Lazy
 
 
 @Composable
@@ -28,6 +23,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     onMovieClick: (Int?) -> Unit,
+    onPostClick: (Int?) -> Unit,
     onListClick: (FilmVip?) -> Unit,
 ) {
 
@@ -43,7 +39,7 @@ fun HomeScreen(
         ) {
 
             item {
-                LazyRowPosts(posts = posts, onMovieClick = onMovieClick)
+                LazyRowPosts(posts = posts, onPostClick = onPostClick)
             }
 
             items(manyScreens.homeListScreen.size) { num ->

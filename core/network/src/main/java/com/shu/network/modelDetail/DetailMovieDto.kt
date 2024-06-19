@@ -9,7 +9,7 @@ import com.shu.network.models.filters.mapFrom
 import com.shu.network.models.filters.mapToBd
 
 data class DetailMovieDto(
-    @SerializedName("kinopoiskId") var kinopoiskId: Int? = null,
+    @SerializedName("kinopoiskId") val kinopoiskId: Int,
     @SerializedName("kinopoiskHDId") var kinopoiskHDId: String? = null,
     @SerializedName("imdbId") var imdbId: String? = null,
     @SerializedName("nameRu") var nameRu: String? = null,
@@ -113,7 +113,6 @@ fun DetailMovieDto.mapFromApi(): DetailMovie {
 fun DetailMovieDto.mapToBd(): MovieDbo {
     return with(this) {
         MovieDbo(
-            id = kinopoiskId ?: 0,
             kinopoiskId = kinopoiskId,
             nameRu = nameRu,
             nameEn = nameEn,

@@ -10,12 +10,13 @@ import com.example.database.modelDbo.BestMovieDbo
 import com.example.database.modelDbo.CollectionsDbo
 import com.example.database.modelDbo.CollectionsMovieDbo
 import com.example.database.modelDbo.CountriesDbo
+import com.example.database.modelDbo.CountryAndMovies
 import com.example.database.modelDbo.GenresDbo
 import com.example.database.modelDbo.InterestingMovieDbo
+import com.example.database.modelDbo.MovieCountriesJoin
 import com.example.database.modelDbo.MovieCountryDbo
 import com.example.database.modelDbo.MovieDbo
 import com.example.database.modelDbo.MovieGenresDbo
-import com.example.database.modelDbo.MovieWithListsDbo
 import com.example.database.modelDbo.SimilarMovieDbo
 import kotlinx.coroutines.flow.Flow
 
@@ -27,9 +28,30 @@ interface MovieDao {
     fun getAllMovies(): Flow<List<MovieDbo>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(movie: MovieDbo)
+    suspend fun save(movie: MovieDbo)
 
-    @Query("DELETE FROM movies WHERE kinopoisk_id = :id")
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun save(vararg movie: MovieDbo)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun save(joins: MovieCountriesJoin)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun save(vararg joins: MovieCountriesJoin)
+
+    @Transaction
+    @Query("SELECT * FROM countries")
+    suspend fun loadAll(): List<CountryAndMovies>
+
+    @Transaction
+    @Query("SELECT * FROM countries WHERE country = :country")
+    suspend fun loadByCountryId(country: String): CountryAndMovies
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveCountry(country: CountriesDbo)
+
+
+    @Query("DELETE FROM movies WHERE kinopoiskId = :id")
     suspend fun delete(id: Int)
 
     @Query(value = "SELECT * FROM movies WHERE movies.watched = 1")
@@ -52,7 +74,7 @@ interface MovieDao {
 
     @Query(
         "SELECT * FROM movies " +
-                "INNER JOIN collections_movie ON collections_movie.kinopoisk_id = movies.kinopoisk_id " +
+                "INNER JOIN collections_movie ON collections_movie.kinopoisk_id = movies.kinopoiskId " +
                 "INNER JOIN collections ON collections.collection_id = collections_movie.collection_id " +
                 "WHERE collections.collection_id = :collectionId"
     )
@@ -61,7 +83,7 @@ interface MovieDao {
 
     @Query(
         "SELECT * FROM movies " +
-                "INNER JOIN collections_movie ON collections_movie.kinopoisk_id = movies.kinopoisk_id " +
+                "INNER JOIN collections_movie ON collections_movie.kinopoisk_id = movies.kinopoiskId " +
                 "WHERE collections_movie.collection_id = :collectionId"
     )
     suspend fun getFromCollection(collectionId: Int): List<MovieDbo>
@@ -69,7 +91,7 @@ interface MovieDao {
     //TODO сделать вывод списка interesting в обратном порядке не ASC , а DESC?
     @Query(
         "SELECT * FROM movies " +
-                "INNER JOIN interesting ON interesting.kinopoisk_id = movies.kinopoisk_id "
+                "INNER JOIN interesting ON interesting.kinopoisk_id = movies.kinopoiskId "
     )
     suspend fun getMovieFromInteresting(): List<MovieDbo>
 
@@ -145,7 +167,7 @@ interface MovieDao {
     suspend fun resetCollection(collectionId: Int)
 
 
-    @Query("SELECT * FROM movies WHERE kinopoisk_id = :id")
+    @Query("SELECT * FROM movies WHERE kinopoiskId = :id")
     suspend fun getMovie(id: Int?): MovieDbo?
 
     //удаляем фильм из коллекции в диалоге BotomSheet

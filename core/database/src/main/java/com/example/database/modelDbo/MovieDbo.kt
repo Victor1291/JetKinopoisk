@@ -7,10 +7,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "movies")
 data class MovieDbo(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    val id: Int = 0,
-    @ColumnInfo(name = "kinopoisk_id")
+    @PrimaryKey
+    @ColumnInfo(name = "kinopoiskId")
     val kinopoiskId: Int?,
     @ColumnInfo(name = "name_ru")
     val nameRu: String?,

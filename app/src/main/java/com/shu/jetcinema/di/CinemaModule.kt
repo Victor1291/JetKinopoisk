@@ -22,9 +22,10 @@ class CinemaModule {
 
     @Provides
     fun providesRepository(
-        api: ServiceMovieApi
+        api: ServiceMovieApi,
+        dao: MovieDao
     ): HomeRepository {
-        return HomeRepositoryImpl(api)
+        return HomeRepositoryImpl(api,dao)
     }
 
     @Provides
@@ -37,9 +38,10 @@ class CinemaModule {
 
     @Provides
     fun providesPagingRepository(
-        api: ServiceMovieApi
+        api: ServiceMovieApi,
+        dao: MovieDao
     ): PagingRepository {
-        return HomeRepositoryImpl(api)
+        return HomeRepositoryImpl(api,dao)
     }
 
     @Provides
