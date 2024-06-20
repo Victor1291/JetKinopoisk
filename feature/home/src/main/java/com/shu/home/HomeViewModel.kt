@@ -23,7 +23,7 @@ sealed interface UiState {
         val posts: ListPosts
     ) : UiState
 
-    data object Error : UiState
+    data class Error(val message: String) : UiState
     data object Loading : UiState
 }
 
@@ -56,11 +56,11 @@ class HomeViewModel @Inject constructor(
             try {
                 _uiState.value = UiState.Success(
                     manyScreens = repository.getAllScreen(),
-                    posts = repository.getPosts(Random.nextInt(32))
+                    posts = repository.getPosts(Random.nextInt(31) + 1)
                 )
             } catch (e: Exception) {
                 Log.e("viewmodelError", "Error $e")
-                _uiState.value = UiState.Error
+                _uiState.value = UiState.Error(e.toString())
             }
         }
     }

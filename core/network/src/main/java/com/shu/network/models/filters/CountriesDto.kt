@@ -23,7 +23,17 @@ fun CountriesDto.mapFrom(): Countries {
 fun CountriesDto.mapToBd(): CountriesDbo {
     return with(this) {
         CountriesDbo(
-            country = country
+            country = country,
+            id = id
+        )
+    }
+}
+
+fun CountriesDbo.mapFromBd(): Countries {
+    return with(this) {
+        Countries(
+            country = country,
+            id = id
         )
     }
 }

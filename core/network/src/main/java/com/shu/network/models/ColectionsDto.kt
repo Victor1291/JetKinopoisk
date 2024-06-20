@@ -1,10 +1,12 @@
 package com.shu.network.models
 
+import com.example.database.modelDbo.CollectionsDbo
 import com.google.gson.annotations.SerializedName
 import com.shu.models.CinemaItem
 import com.shu.network.models.filters.CountriesDto
 import com.shu.network.models.filters.GenresDto
 import com.shu.network.models.filters.mapFrom
+import com.shu.models.collections.Collections
 
 data class ColectionsDto(
     @SerializedName(value = "filmId", alternate = ["kinopoiskId"])
@@ -47,6 +49,18 @@ fun ColectionsDto.mapFrom(): CinemaItem {
             countries = countries.map { it.mapFrom() },
             genres = genres.map { it.mapFrom() },
             premiereRu = null,
+        )
+    }
+}
+
+fun CollectionsDbo.mapFromBd(): Collections {
+    return with(this) {
+        Collections(
+            collectionId = collectionId,
+            name = name,
+            total = total,
+            icon = icon,
+            checked = checked,
         )
     }
 }

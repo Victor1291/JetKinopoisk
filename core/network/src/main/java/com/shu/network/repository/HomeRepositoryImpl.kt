@@ -4,15 +4,20 @@ import android.icu.text.SimpleDateFormat
 import com.shu.models.ListCinema
 import com.shu.models.FilmVip
 import com.shu.network.ServiceMovieApi
-import com.shu.network.models.filters.ListFiltersDto
 import android.util.Log
 import com.example.database.MovieDao
+import com.example.database.modelDbo.FiltersDbo
 import com.shu.list_movies.domain.PagingRepository
 import com.shu.home.domain.HomeRepository
 import com.shu.models.Choice
 import com.shu.models.CinemaItem
+import com.shu.models.Countries
+import com.shu.models.Genres
+import com.shu.models.ListFilters
 import com.shu.models.ManyScreens
 import com.shu.models.media_posts.ListPosts
+import com.shu.network.models.filters.mapFromApi
+import com.shu.network.models.filters.mapFromBd
 import com.shu.network.models.filters.mapToBd
 import com.shu.network.models.mapFrom
 import com.shu.network.models.media_posts.toListPosts
@@ -37,10 +42,19 @@ class HomeRepositoryImpl @Inject constructor(
             var list250: List<CinemaItem> = emptyList()
             var listFrance: List<CinemaItem> = emptyList()
             var listSerials: List<CinemaItem> = emptyList()
+            var genres  : List<Genres> = emptyList()
 
-            val genreCountry = api.genreCountry()
-            movieDao.addCountry(genreCountry.countries.map { it.mapToBd() })
-            movieDao.addGenres(genreCountry.genres.map { it.mapToBd() })
+            val genreCountryBd  : FiltersDbo? = movieDao.getFilters()
+
+            val genreCountry : ListFilters? = if (genreCountryBd?.countries.isNullOrEmpty() ) {
+                val genreCountryApi = api.genreCountry()
+                val gCBd = genreCountryApi.mapToBd()
+                movieDao.saveToBd(gCBd)
+                genreCountryApi.mapFromApi()
+            } else {
+                movieDao.getFilters()?.mapFromBd()
+            }
+
             val date = Date()
             val calendar = Calendar.getInstance()
             calendar.time = date
@@ -61,10 +75,14 @@ class HomeRepositoryImpl @Inject constructor(
                     list250 = getTop250(1).items
                 }
                 launch {
-                    listUSA = choiceCountry(genreCountry)
+                    if (genreCountry != null) {
+                        listUSA = choiceCountry(genreCountry.countries, genreCountry.genres)
+                    }
                 }
                 launch {
-                    listFrance = choiceCountry(genreCountry)
+                    if (genreCountry != null) {
+                        listFrance = choiceCountry(genreCountry.countries, genreCountry.genres)
+                    }
                 }
                 launch {
                     listSerials = getSerialVip(1).items
@@ -88,15 +106,15 @@ class HomeRepositoryImpl @Inject constructor(
         return api.getPosts(page).toListPosts()
     }
 
-    private suspend fun choiceCountry(lists: ListFiltersDto): List<CinemaItem> {
+    private suspend fun choiceCountry(countries: List<Countries>,genres: List<Genres>): List<CinemaItem> {
 
         val randomIdCountry = Random.nextInt(20)
         val randomIdGenre = Random.nextInt(13)
 
-        val country = lists.countries[randomIdCountry].country
-        val genre = lists.genres[randomIdGenre].genre
-        val idCountry = lists.countries[randomIdCountry].id
-        val idGenres = lists.genres[randomIdGenre].id
+        val country = countries[randomIdCountry].country
+        val genre = genres[randomIdGenre].genre
+        val idCountry = countries[randomIdCountry].id
+        val idGenres = genres[randomIdGenre].id
 
         val vip = Choice(
             page = 1,
@@ -104,7 +122,11 @@ class HomeRepositoryImpl @Inject constructor(
             genres = idGenres,
             countryName = country,
             genresName = genre,
-            type = "FILM"
+            type = "FILM",
+            yearFrom = 2000,
+            yearTo = 2024,
+            ratingFrom = 7,
+            ratingTo = 10,
         )
 
         return api.filmVip(

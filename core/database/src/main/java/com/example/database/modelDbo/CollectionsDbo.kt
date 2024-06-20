@@ -3,6 +3,7 @@ package com.example.database.modelDbo
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Collections
 
 /**
 таблица с коллекциями.
@@ -21,4 +22,7 @@ data class CollectionsDbo(
     @ColumnInfo(name = "checked")
     var checked: Boolean,
 )
+
+
+
 

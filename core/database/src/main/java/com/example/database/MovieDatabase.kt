@@ -9,6 +9,7 @@ import com.example.database.modelDbo.BestMovieDbo
 import com.example.database.modelDbo.CollectionsDbo
 import com.example.database.modelDbo.CollectionsMovieDbo
 import com.example.database.modelDbo.CountriesDbo
+import com.example.database.modelDbo.FiltersDbo
 import com.example.database.modelDbo.GenresDbo
 import com.example.database.modelDbo.InterestingMovieDbo
 import com.example.database.modelDbo.MovieCountriesJoin
@@ -29,7 +30,8 @@ import com.example.database.modelDbo.SimilarMovieDbo
         GenresDbo::class,
         CountriesDbo::class,
         MovieCountryDbo::class,
-        MovieGenresDbo::class
+        MovieGenresDbo::class,
+        FiltersDbo::class,
     ], version = 1, exportSchema = false
 )
 @TypeConverters(CountryConverters::class, GenresConverters::class)

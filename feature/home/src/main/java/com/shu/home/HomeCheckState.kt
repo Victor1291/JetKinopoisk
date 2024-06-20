@@ -30,6 +30,7 @@ fun CheckState(
         }
 
         is UiState.Error -> ErrorScreen(
+            message = (viewState as UiState.Error).message,
             retryAction = { viewModel.retry() },
         )
     }

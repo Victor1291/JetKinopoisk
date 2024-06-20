@@ -4,15 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.shu.jetcinema.ui.theme.JetCinemaTheme
@@ -20,21 +14,30 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             JetCinemaTheme {
                 val navController = rememberNavController()
+                val sheetState = rememberModalBottomSheetState()
                 val viewModel: MainViewModel = hiltViewModel()
                 //val stateTopBar by viewModel.stateTOpBar.collectAsState()
                 val bottomNavigationItems = listOf(
-                    BottomNavigationScreens.MainScreen,
-                    BottomNavigationScreens.SearchScreen,
-                    BottomNavigationScreens.PersonScreen,
+                    NavigationScreens.MainScreen,
+                    NavigationScreens.SearchScreen,
+                    NavigationScreens.PersonScreen,
                 )
                 Scaffold(
-                    content = { MainNavHost(navController, it, viewModel) },
+                    content = { padding ->
+                        MainNavHost(
+                            navController = navController,
+                            paddingValues = padding,
+                            viewModel = viewModel,
+                            sheetState = sheetState,
+                        )
+                    },
                     bottomBar = {
                         BottomNav(navController, bottomNavigationItems)
                     }

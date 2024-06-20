@@ -11,6 +11,7 @@ import com.example.database.modelDbo.CollectionsDbo
 import com.example.database.modelDbo.CollectionsMovieDbo
 import com.example.database.modelDbo.CountriesDbo
 import com.example.database.modelDbo.CountryAndMovies
+import com.example.database.modelDbo.FiltersDbo
 import com.example.database.modelDbo.GenresDbo
 import com.example.database.modelDbo.InterestingMovieDbo
 import com.example.database.modelDbo.MovieCountriesJoin
@@ -133,14 +134,20 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addGenres(genres: List<GenresDbo>)
 
-    @Query(value = "SELECT * FROM genres")
-    suspend fun getGenres(): List<GenresDbo>
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveFilters(filters: FiltersDbo)
+
+    @Query(value = "SELECT * FROM filters")
+    suspend fun getFilters(): FiltersDbo?
 
     @Query(value = "SELECT * FROM genres WHERE genres.name LIKE :word ")
     fun getGenresFlow(word: String): Flow<List<GenresDbo>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addCountry(countries: List<CountriesDbo>)
+
+    @Query(value = "SELECT * FROM genres")
+    suspend fun getGenres(): List<GenresDbo>
 
     @Query(value = "SELECT * FROM countries")
     suspend fun getCountries(): List<CountriesDbo>
@@ -173,4 +180,21 @@ interface MovieDao {
     //удаляем фильм из коллекции в диалоге BotomSheet
     @Query("DELETE FROM collections_movie WHERE collection_id = :collectionId AND kinopoisk_id = :filmId")
     fun deleteMovieInDB(collectionId: Int, filmId: Int): Int
+
+    @Transaction
+    suspend fun saveToBd(gCBd: FiltersDbo) {
+     saveFilters(gCBd)
+     addGenres(gCBd.genres)
+     addCountry(gCBd.countries)
+    }
+
+    /*  @Query("UPDATE movies SET watched = 0 ")
+      suspend fun clearWatched()
+
+      @Query("UPDATE movies SET favorite = 0 ")
+      suspend fun clearFavorite()
+
+      @Query("UPDATE movies SET see_later = 0 ")
+      suspend fun clearSeeLater()*/
+
 }

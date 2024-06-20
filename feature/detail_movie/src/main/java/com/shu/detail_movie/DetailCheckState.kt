@@ -12,6 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.shu.detail_movie.state.ErrorScreen
 import com.shu.detail_movie.state.LoadingScreen
+import com.shu.models.details.DetailMovie
 
 @Composable
 fun DetailCheckState(
@@ -20,6 +21,7 @@ fun DetailCheckState(
     navController: NavHostController,
     onMovieClick: (Int?) -> Unit,
     onActorClick: (Int?) -> Unit,
+    onMessageSent: (DetailMovie?) -> Unit,
 ) {
     val viewState: State<UiState> = getState(viewModel, filmId)
     Scaffold(
@@ -44,6 +46,9 @@ fun DetailCheckState(
                         onMovieClick = onMovieClick,
                         onGalleryClick = {},
                         onActorClick = onActorClick,
+                        onMessageSent = { onMessageSent(
+                            viewStateResult.movie
+                        ) },
                     )
                 }
 

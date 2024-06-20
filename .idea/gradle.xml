@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/core/models" />
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/bottom_sheet" />
             <option value="$PROJECT_DIR$/feature/detail_movie" />
             <option value="$PROJECT_DIR$/feature/detail_person" />
             <option value="$PROJECT_DIR$/feature/home" />

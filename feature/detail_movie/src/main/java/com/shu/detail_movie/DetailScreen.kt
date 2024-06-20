@@ -74,6 +74,7 @@ fun DetailScreen(
     onMovieClick: (Int?) -> Unit,
     onGalleryClick: (String?) -> Unit,
     onActorClick: (Int?) -> Unit,
+    onMessageSent: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     LazyColumn(
@@ -145,7 +146,7 @@ fun DetailScreen(
                 UserInputSelector(
                     onSelectorChange = {},
                     sendMessageEnabled = true,
-                    onMessageSent = {},
+                    onMessageSent = {  onMessageSent() },
                     currentInputSelector = InputSelector.DM,
                 )
             }

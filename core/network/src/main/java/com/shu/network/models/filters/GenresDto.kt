@@ -26,3 +26,12 @@ fun GenresDto.mapToBd(): GenresDbo {
         )
     }
 }
+
+fun GenresDbo.mapFromBd(): Genres {
+    return with(this) {
+        Genres(
+            id = genreId,
+            genre = genre
+        )
+    }
+}

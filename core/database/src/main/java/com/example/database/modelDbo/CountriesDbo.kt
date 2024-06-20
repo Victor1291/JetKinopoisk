@@ -9,4 +9,6 @@ data class CountriesDbo(
     @PrimaryKey
     @ColumnInfo(name = "country")
     val country: String,
+    @ColumnInfo(name = "id")
+    val id: Int,
 )

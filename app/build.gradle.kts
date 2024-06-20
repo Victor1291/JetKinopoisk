@@ -59,6 +59,7 @@ dependencies {
     implementation(project(":feature:list_movies"))
     implementation(project(":feature:detail_person"))
     implementation(project(":feature:search"))
+    implementation(project(":feature:bottom_sheet"))
 
     implementation(project(":core:network"))
     implementation(project(":core:database"))
