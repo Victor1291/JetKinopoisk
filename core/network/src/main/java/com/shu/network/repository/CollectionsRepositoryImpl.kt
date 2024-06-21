@@ -1,5 +1,6 @@
 package com.shu.network.repository
 
+import android.util.Log
 import com.example.bottom_sheet.domain.CollectionsRepository
 import com.example.database.MovieDao
 import com.example.database.modelDbo.BestMovieDbo
@@ -92,6 +93,11 @@ class CollectionsRepositoryImpl  @Inject constructor(
                 kinopoiskId = movieId
             )
         )
+        //увеличиваем счётчик в total + 1 , если фильм добавился
+        if (answer != -1L) {
+            movieDao.updateCollection(collectionId)
+        }
+
         //помечаем фильм если фильм добавляем в коллекцию "Любимые"
        /* if (collectionId == 1) {
             movieDao.updateFavorite(movieId, true)
@@ -101,19 +107,18 @@ class CollectionsRepositoryImpl  @Inject constructor(
             movieDao.updateSeeLater(movieId, true)
         }
         //Log.d("dao","answer addMovie $answer")
-        //увеличиваем счётчик в total + 1 , если фильм добавился
-        if (answer != -1L) {
-            movieDao.updateCollection(collectionId)
-        }*/
+        */
     }
 
     //удаление фильма из коллекции
     override suspend fun removeMovieInDb(collectionId: Int, movieId: Int) {
+         movieDao.deleteMovieFromCollection(collectionId,movieId)
+
         //если успешно удаление уменьшаем, Delete возвращает число удалёных row
-        val answer = movieDao.deleteMovieInDB(collectionId, movieId)
+       /* val answer = movieDao.deleteMovieInDB(collectionId, movieId)
         if (answer > 0) {
             movieDao.updateCollectionDel(collectionId)
-        }
+        }*/
     }
 
 

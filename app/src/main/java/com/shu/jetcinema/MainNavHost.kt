@@ -2,32 +2,16 @@ package com.shu.jetcinema
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -35,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import com.example.bottom_sheet.BottomSheetScreen
+import com.example.bottom_sheet.InputDialogView
 import com.example.search.SearchScreen
 import com.shu.detail_movie.DetailCheckState
 import com.shu.detail_person.PersonCheckState
@@ -198,6 +183,11 @@ fun MainNavHost(
             })
         ) { backStackEntry ->
             backStackEntry.arguments?.getInt(argumentKey)?.let { kinopoiskId ->
+                InputDialogView(
+                    onDismiss = {
+                        navController.popBackStack()
+                    }
+                )
             }
             BackHandler {
                 navController.popBackStack()
@@ -209,12 +199,16 @@ fun MainNavHost(
             onDismissRequest = { showBottomSheet = showBottomSheet.copy(isShow = false) },
             sheetState = sheetState
         ) {
-            showBottomSheet.film?.let {
+            showBottomSheet.film?.let { filmId ->
                 BottomSheetScreen(
-                    film = it,
-                    onClick = {
-                        showBottomSheet = showBottomSheet.copy(isShow = false)
-                        Toast.makeText(context, "Story", Toast.LENGTH_LONG).show()
+                    film = filmId,
+                    onCreateClick = {
+                       // showBottomSheet = showBottomSheet.copy(isShow = false)
+                        navController.navigate(
+                            route = "${NavigationScreens.BottomDialog.route}/${filmId.kinopoiskId}"
+                        )
+
+                        Toast.makeText(context, "Create", Toast.LENGTH_LONG).show()
 //                    navController.navigate() {
 //          popUpTo(0)
 //                    }

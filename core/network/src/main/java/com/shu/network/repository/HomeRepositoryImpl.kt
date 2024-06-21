@@ -44,8 +44,10 @@ class HomeRepositoryImpl @Inject constructor(
             var listSerials: List<CinemaItem> = emptyList()
             var genres  : List<Genres> = emptyList()
 
+            //Получаю списки Стран и жанров из базы данных
             val genreCountryBd  : FiltersDbo? = movieDao.getFilters()
 
+            //Проверка, и получение списка из Апи.
             val genreCountry : ListFilters? = if (genreCountryBd?.countries.isNullOrEmpty() ) {
                 val genreCountryApi = api.genreCountry()
                 val gCBd = genreCountryApi.mapToBd()

@@ -164,10 +164,16 @@ interface MovieDao {
     @Delete
     suspend fun deleteCollection(collections: CollectionsDbo)
 
-    @Query("UPDATE collections SET total = total + 1 WHERE collection_id = :collectionId ")
+    @Query("UPDATE collections SET total = total + 1 WHERE collection_id = :collectionId")
     suspend fun updateCollection(collectionId: Int)
 
-    @Query("UPDATE collections SET total = total - 1 WHERE collection_id = :collectionId ")
+    @Transaction
+    suspend fun deleteMovieFromCollection(collectionId: Int, filmId: Int) {
+        deleteMovieInDB(collectionId,filmId)
+        updateCollectionDel(collectionId)
+    }
+
+    @Query("UPDATE collections SET total = total - 1 WHERE collection_id = :collectionId")
     suspend fun updateCollectionDel(collectionId: Int)
 
     @Query("UPDATE collections SET total = 0 WHERE collection_id = :collectionId ")
@@ -176,6 +182,8 @@ interface MovieDao {
 
     @Query("SELECT * FROM movies WHERE kinopoiskId = :id")
     suspend fun getMovie(id: Int?): MovieDbo?
+
+
 
     //удаляем фильм из коллекции в диалоге BotomSheet
     @Query("DELETE FROM collections_movie WHERE collection_id = :collectionId AND kinopoisk_id = :filmId")

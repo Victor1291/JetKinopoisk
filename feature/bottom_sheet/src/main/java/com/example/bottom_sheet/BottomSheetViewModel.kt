@@ -26,7 +26,7 @@ class BottomSheetViewModel @Inject constructor(
     private val collectionsAll = collectionsRepository.getCollection(movieId)
 
     private val _getCheckedCollection = MutableStateFlow<List<Collections>>(emptyList())
-    val getCheckedCollection = _getCheckedCollection.asStateFlow()
+    private val getCheckedCollection = _getCheckedCollection.asStateFlow()
 
     var favorite = false
     var select = false
