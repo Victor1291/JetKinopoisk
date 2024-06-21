@@ -2,7 +2,7 @@ package com.shu.jetcinema.di
 
 import com.example.database.MovieDao
 import com.example.search.domain.PagingSearchRepository
-import com.example.bottom_sheet.domain.CollectionsRepository
+import com.shu.models.domain.CollectionsRepository
 import com.shu.detail_movie.domain.DetailRepository
 import com.shu.detail_person.domain.PersonRepository
 import com.shu.home.domain.HomeRepository

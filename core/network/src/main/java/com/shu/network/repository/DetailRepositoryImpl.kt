@@ -1,6 +1,7 @@
 package com.shu.network.repository
 
 import com.example.database.MovieDao
+import com.example.database.modelDbo.InterestingMovieDbo
 import com.example.database.modelDbo.MovieCountriesJoin
 import com.shu.models.details.Actor
 import com.shu.models.details.DetailMovie
@@ -21,6 +22,8 @@ class DetailRepositoryImpl @Inject constructor(
 ) : com.shu.detail_movie.domain.DetailRepository {
 
     override suspend fun getFilm(kinopoiskId: Int): DetailMovie {
+
+        movieDao.addInterestingMovie(InterestingMovieDbo(kinopoiskId = kinopoiskId))
 
         val detailMovie = api.getFilm(kinopoiskId)
         movieDao.save(detailMovie.mapToBd())

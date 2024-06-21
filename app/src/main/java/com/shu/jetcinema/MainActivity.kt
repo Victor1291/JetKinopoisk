@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 val bottomNavigationItems = listOf(
                     NavigationScreens.MainScreen,
                     NavigationScreens.SearchScreen,
-                    NavigationScreens.PersonScreen,
+                    NavigationScreens.ProfileScreen,
                 )
                 Scaffold(
                     content = { padding ->

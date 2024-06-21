@@ -20,6 +20,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import com.example.bottom_sheet.BottomSheetScreen
 import com.example.bottom_sheet.InputDialogView
+import com.example.profile.ProfileScreen
 import com.example.search.SearchScreen
 import com.shu.detail_movie.DetailCheckState
 import com.shu.detail_person.PersonCheckState
@@ -84,6 +85,23 @@ fun MainNavHost(
             BackHandler {
                 navController.popBackStack()
             }
+        }
+
+        composable(NavigationScreens.ProfileScreen.route) {
+            viewModel.changeStateTOpBar(true)
+            ProfileScreen(
+                onMovieClick = { filmId ->
+                    navController.navigate(
+                        route = "${NavigationScreens.DetailScreen.route}/${filmId}"
+                    )
+                },
+                onCreateClick = {
+                    val filmId = 0
+                    navController.navigate(
+                        route = "${NavigationScreens.BottomDialog.route}/${filmId}"
+                    )
+                },
+            )
         }
 
         composable(

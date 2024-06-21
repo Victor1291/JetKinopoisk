@@ -1,7 +1,7 @@
 package com.shu.network.repository
 
 import android.util.Log
-import com.example.bottom_sheet.domain.CollectionsRepository
+import com.shu.models.domain.CollectionsRepository
 import com.example.database.MovieDao
 import com.example.database.modelDbo.BestMovieDbo
 import com.example.database.modelDbo.CollectionsDbo

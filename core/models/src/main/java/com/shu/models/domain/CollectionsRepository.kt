@@ -1,4 +1,4 @@
-package com.example.bottom_sheet.domain
+package com.shu.models.domain
 
 import com.shu.models.CinemaItem
 import com.shu.models.collections.Collections
