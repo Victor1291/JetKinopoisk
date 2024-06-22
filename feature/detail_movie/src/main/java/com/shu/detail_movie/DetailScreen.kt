@@ -75,6 +75,7 @@ fun DetailScreen(
     onGalleryClick: (String?) -> Unit,
     onActorClick: (Int?) -> Unit,
     onMessageSent: () -> Unit,
+    onAllClick: (Int?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     LazyColumn(
@@ -264,7 +265,7 @@ fun DetailScreen(
         item {
 
             if (gallery.items.isNotEmpty()) {
-                LazyRowGallery(gallery = gallery, onGalleryClick = onGalleryClick)
+                LazyRowGallery(gallery = gallery, onAllClick = { onAllClick(movie.kinopoiskId) }, onGalleryClick = onGalleryClick)
             }
         }
 

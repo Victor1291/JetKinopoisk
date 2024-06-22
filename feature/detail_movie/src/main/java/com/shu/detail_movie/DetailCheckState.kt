@@ -11,6 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.shu.detail_movie.state.ErrorScreen
+import com.shu.detail_movie.state.LoadingScreen
 import com.shu.models.details.DetailMovie
 import kotlinx.coroutines.launch
 
@@ -22,54 +24,58 @@ fun DetailCheckState(
     onMovieClick: (Int?) -> Unit,
     onActorClick: (Int?) -> Unit,
     onMessageSent: (DetailMovie?) -> Unit,
+    onAllClick: (Int?) -> Unit,
 ) {
     val viewState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(key1 = true) {
-        launch {
-            viewModel.getFilm(filmId)
-        }
-        launch {
-            viewModel.getActorFilm(filmId)
-        }
-        launch {
-            viewModel.getGallery(filmId)
-        }
-        launch {
-            viewModel.getSimilarsFilm(filmId)
-        }
+       viewModel.getDetailUi(filmId)
     }
-    Scaffold(
-        topBar = {
-            TopBar(
-                header = "",
-                leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                onLeftIconClick = { navController.navigateUp() },
-            )
-        },
-        content = { innerPadding ->
-            val modifier = Modifier.padding(innerPadding)
 
-            DetailScreen(
-                movie = viewState.film,
-                actors = if (viewState.actorFilm.size < 20) viewState.actorFilm else viewState.actorFilm.take(
-                    20
-                ),
-                gallery = viewState.gallery,
-                similar = viewState.similarsFilm,
-                onMovieClick = onMovieClick,
-                onGalleryClick = {},
-                onActorClick = onActorClick,
-                onMessageSent = {
-                    onMessageSent(
-                        viewState.film
+    when (viewState) {
+        is UiState.Loading -> LoadingScreen()
+        is UiState.Success -> {
+            Scaffold(
+                topBar = {
+                    TopBar(
+                        header = "",
+                        leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                        onLeftIconClick = { navController.navigateUp() },
                     )
                 },
+                content = { innerPadding ->
+                    val modifier = Modifier.padding(innerPadding)
+                    with(viewState as UiState.Success) {
+                        DetailScreen(
+                            movie = result.film,
+                            actors = if (result.actorFilm.size < 20) result.actorFilm else result.actorFilm.take(
+                                20
+                            ),
+                            gallery = result.gallery,
+                            similar = result.similarsFilm,
+                            onMovieClick = onMovieClick,
+                            onGalleryClick = {},
+                            onActorClick = onActorClick,
+                            onMessageSent = {
+                                onMessageSent(
+                                    result.film
+                                )
+
+                            },
+                            onAllClick = onAllClick
+                        )
+                    }
+                }
             )
         }
-    )
-}
 
+        is UiState.Error -> ErrorScreen(
+            message = (viewState as UiState.Error).message,
+            retryAction = { navController.navigateUp() },
+        )
+
+    }
+}
 /*@Composable
 private fun getState(detailViewModel: DetailViewModel, filmId: Int): State<UiState> {
     return produceState<UiState>(initialValue = UiState.Loading) {

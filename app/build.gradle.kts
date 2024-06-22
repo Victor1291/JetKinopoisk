@@ -61,6 +61,7 @@ dependencies {
     implementation(project(":feature:search"))
     implementation(project(":feature:bottom_sheet"))
     implementation(project(":feature:profile"))
+    implementation(project(":feature:gallery"))
 
     implementation(project(":core:network"))
     implementation(project(":core:database"))

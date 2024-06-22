@@ -20,6 +20,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import com.example.bottom_sheet.BottomSheetScreen
 import com.example.bottom_sheet.InputDialogView
+import com.example.gallery.GalleryScreen
 import com.example.profile.ProfileScreen
 import com.example.search.SearchScreen
 import com.shu.detail_movie.DetailCheckState
@@ -157,8 +158,32 @@ fun MainNavHost(
                         /*  navController.navigate(
                           route = "${BottomNavigationScreens.BottomDialog.route}/${filmId}"
                       )*/
+                    },
+                    onAllClick = {filmId ->
+                        navController.navigate(
+                            route = "${NavigationScreens.GalleryScreen.route}/${filmId}"
+                        )
                     }
 
+                )
+            }
+            BackHandler {
+                navController.popBackStack()
+            }
+        }
+
+        composable(
+            route = "${NavigationScreens.GalleryScreen.route}/{$argumentKey}",
+            arguments = listOf(navArgument(argumentKey) {
+                type = NavType.IntType
+            })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getInt(argumentKey)?.let { kinopoiskId ->
+                //TODO changeStateTOpBar
+                viewModel.changeStateTOpBar(false)
+                GalleryScreen(
+                    navController = navController,
+                    filmId = kinopoiskId,
                 )
             }
             BackHandler {

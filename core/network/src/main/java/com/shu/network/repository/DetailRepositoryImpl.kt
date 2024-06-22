@@ -3,8 +3,11 @@ package com.shu.network.repository
 import com.example.database.MovieDao
 import com.example.database.modelDbo.InterestingMovieDbo
 import com.example.database.modelDbo.MovieCountriesJoin
+import com.shu.models.CinemaItem
+import com.shu.models.ManyScreens
 import com.shu.models.details.Actor
 import com.shu.models.details.DetailMovie
+import com.shu.models.details.DetailUi
 import com.shu.models.gallery_models.ListGalleryItems
 import com.shu.models.similar_models.ListSimilar
 import com.shu.network.ServiceMovieApi
@@ -14,55 +17,91 @@ import com.shu.network.modelDetail.toActor
 import com.shu.network.models.filters.mapToBd
 import com.shu.network.models.gallery_models.toListGalleryItems
 import com.shu.network.models.similar_models.toListSimilar
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DetailRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
     private val movieDao: MovieDao,
 ) : com.shu.detail_movie.domain.DetailRepository {
+    override suspend fun getDetailUi(filmId: Int, type: String, page: Int): DetailUi {
+        return coroutineScope {
 
-    override suspend fun getFilm(kinopoiskId: Int): DetailMovie {
+            var film: DetailMovie = DetailMovie()
+            var actorFilm: List<Actor> = emptyList()
+            var gallery: ListGalleryItems = ListGalleryItems()
+            var similarsFilm: ListSimilar = ListSimilar()
+            launch {
+                launch {
+                    film =getFilm(filmId)
+                }
+                launch {
+                    actorFilm = getActorFilm(filmId)
+                }
+                launch {
+                    gallery = getGallery(filmId,type,page)
+                }
+                launch {
+                    similarsFilm = getSimilarsFilm(filmId)
+                }
+            }.join()
 
-        movieDao.addInterestingMovie(InterestingMovieDbo(kinopoiskId = kinopoiskId))
-
-        val detailMovie = api.getFilm(kinopoiskId)
-        movieDao.save(detailMovie.mapToBd())
-        val listJoins = mutableListOf<MovieCountriesJoin>()
-        detailMovie.countries.forEach { country ->
-            listJoins.add(
-                MovieCountriesJoin(
-                    kinopoiskId = detailMovie.kinopoiskId,
-                    country = country.country
-                )
+            return@coroutineScope DetailUi(
+                film = film,
+                actorFilm = actorFilm,
+                gallery = gallery,
+                similarsFilm = similarsFilm
             )
         }
-        val arrayJoins = listJoins.toList().toTypedArray()
-        movieDao.save(*arrayJoins)
-
-        return detailMovie.mapFromApi()
     }
 
-    override suspend fun getActorFilm(kinopoiskId: Int): List<Actor> {
-        return api.actors(kinopoiskId).map { it.toActor() }
-    }
+        override suspend fun getFilm(kinopoiskId: Int): DetailMovie {
 
-    override suspend fun getSimilarsFilm(kinopoiskId: Int): ListSimilar {
-        return api.similar(kinopoiskId).toListSimilar()
-    }
+            movieDao.addInterestingMovie(InterestingMovieDbo(kinopoiskId = kinopoiskId))
 
-    override suspend fun getGallery(kinopoiskId: Int, type: String, page: Int): ListGalleryItems {
-        return api.galleryTotal(kinopoiskId).toListGalleryItems()
-    }
+            val detailMovie = api.getFilm(kinopoiskId)
+            movieDao.save(detailMovie.mapToBd())
+            val listJoins = mutableListOf<MovieCountriesJoin>()
+            detailMovie.countries.forEach { country ->
+                listJoins.add(
+                    MovieCountriesJoin(
+                        kinopoiskId = detailMovie.kinopoiskId,
+                        country = country.country
+                    )
+                )
+            }
+            val arrayJoins = listJoins.toList().toTypedArray()
+            movieDao.save(*arrayJoins)
 
-    /* override suspend fun getActorFilm(kinopoiskId: Int): List<ActorItem> {
-         return api.actors(kinopoiskId)
-     }
+            return detailMovie.mapFromApi()
+        }
 
-     override suspend fun getSimilarsFilm(kinopoiskId: Int): ListCinema {
+        override suspend fun getActorFilm(kinopoiskId: Int): List<Actor> {
+            return api.actors(kinopoiskId).map { it.toActor() }
+        }
 
-         val listSimilar = api.similar(kinopoiskId)
+        override suspend fun getSimilarsFilm(kinopoiskId: Int): ListSimilar {
+            return api.similar(kinopoiskId).toListSimilar()
+        }
 
-         *//*listSimilar.items = listSimilar.items.map{
+        override suspend fun getGallery(
+            kinopoiskId: Int,
+            type: String,
+            page: Int
+        ): ListGalleryItems {
+            return api.galleryTotal(kinopoiskId).toListGalleryItems()
+        }
+
+        /* override suspend fun getActorFilm(kinopoiskId: Int): List<ActorItem> {
+             return api.actors(kinopoiskId)
+         }
+
+         override suspend fun getSimilarsFilm(kinopoiskId: Int): ListCinema {
+
+             val listSimilar = api.similar(kinopoiskId)
+
+             *//*listSimilar.items = listSimilar.items.map{
 
             //связываем id с id похожих
             movieDao.addSimilar(
@@ -181,5 +220,5 @@ class DetailRepositoryImpl @Inject constructor(
         )
 
     }*/
-}
+    }
 

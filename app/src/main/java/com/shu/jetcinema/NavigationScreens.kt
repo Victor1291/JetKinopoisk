@@ -49,5 +49,11 @@ sealed class NavigationScreens(val route: String, val label: String, val icon: I
         label = "Profile",
         icon = Icons.Default.Person
     )
+
+    data object GalleryScreen : NavigationScreens(
+        route = "gallery_screen",
+        label = "Gallery",
+        icon = Icons.Default.Person
+    )
     //TODO разделить на разные sealed class.
 }

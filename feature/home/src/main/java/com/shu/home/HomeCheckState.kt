@@ -20,13 +20,15 @@ fun CheckState(
     when (viewState) {
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> {
-            HomeScreen(
-                manyScreens = (viewState as UiState.Success).manyScreens,
-                posts = (viewState as UiState.Success).posts,
-                onPostClick = onPostClick,
-                onMovieClick = onMovieClick,
-                onListClick = onListClick
-            )
+            with(viewState as UiState.Success) {
+                HomeScreen(
+                    manyScreens = manyScreens,
+                    posts = posts,
+                    onPostClick = onPostClick,
+                    onMovieClick = onMovieClick,
+                    onListClick = onListClick
+                )
+            }
         }
 
         is UiState.Error -> ErrorScreen(

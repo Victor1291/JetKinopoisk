@@ -1,6 +1,7 @@
 package com.shu.jetcinema.di
 
 import com.example.database.MovieDao
+import com.example.gallery.domain.GalleryRepository
 import com.example.search.domain.PagingSearchRepository
 import com.shu.models.domain.CollectionsRepository
 import com.shu.detail_movie.domain.DetailRepository
@@ -10,6 +11,7 @@ import com.shu.list_movies.domain.PagingRepository
 import com.shu.network.ServiceMovieApi
 import com.shu.network.repository.CollectionsRepositoryImpl
 import com.shu.network.repository.DetailRepositoryImpl
+import com.shu.network.repository.GalleryRepositoryImpl
 import com.shu.network.repository.HomeRepositoryImpl
 import com.shu.network.repository.PagingSearchRepositoryImpl
 import com.shu.network.repository.PersonRepositoryImpl
@@ -58,6 +60,13 @@ class CinemaModule {
         api: ServiceMovieApi
     ): PersonRepository {
         return PersonRepositoryImpl(api)
+    }
+
+    @Provides
+    fun providesGalleryRepository(
+        api: ServiceMovieApi
+    ): GalleryRepository {
+        return GalleryRepositoryImpl(api)
     }
 
     @Provides
