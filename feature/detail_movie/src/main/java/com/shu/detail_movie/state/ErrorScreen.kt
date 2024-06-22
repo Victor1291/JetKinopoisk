@@ -11,13 +11,18 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
+fun ErrorScreen(
+    message: String,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Loading Failed")
+        Text(text = message)
         Button(onClick = retryAction) {
             Text(text = "RETRY")
         }

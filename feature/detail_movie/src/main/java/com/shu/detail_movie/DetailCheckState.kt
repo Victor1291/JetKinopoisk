@@ -5,14 +5,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.shu.detail_movie.state.ErrorScreen
-import com.shu.detail_movie.state.LoadingScreen
 import com.shu.models.details.DetailMovie
+import kotlinx.coroutines.launch
 
 @Composable
 fun DetailCheckState(
@@ -23,7 +23,22 @@ fun DetailCheckState(
     onActorClick: (Int?) -> Unit,
     onMessageSent: (DetailMovie?) -> Unit,
 ) {
-    val viewState: State<UiState> = getState(viewModel, filmId)
+    val viewState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = true) {
+        launch {
+            viewModel.getFilm(filmId)
+        }
+        launch {
+            viewModel.getActorFilm(filmId)
+        }
+        launch {
+            viewModel.getGallery(filmId)
+        }
+        launch {
+            viewModel.getSimilarsFilm(filmId)
+        }
+    }
     Scaffold(
         topBar = {
             TopBar(
@@ -34,34 +49,30 @@ fun DetailCheckState(
         },
         content = { innerPadding ->
             val modifier = Modifier.padding(innerPadding)
-            when (val viewStateResult = viewState.value) {
-                is UiState.Loading -> LoadingScreen()
-                is UiState.Success -> {
-                    val actors = viewStateResult.actors
-                    DetailScreen(
-                        movie = viewStateResult.movie,
-                        actors = if (actors.size < 20) actors else actors.take(20),
-                        gallery = viewStateResult.gallery,
-                        similar = viewStateResult.similar,
-                        onMovieClick = onMovieClick,
-                        onGalleryClick = {},
-                        onActorClick = onActorClick,
-                        onMessageSent = { onMessageSent(
-                            viewStateResult.movie
-                        ) },
-                    )
-                }
 
-                is UiState.Error -> ErrorScreen(
-                    retryAction = { },
-                )
-            }
-        })
+            DetailScreen(
+                movie = viewState.film,
+                actors = if (viewState.actorFilm.size < 20) viewState.actorFilm else viewState.actorFilm.take(
+                    20
+                ),
+                gallery = viewState.gallery,
+                similar = viewState.similarsFilm,
+                onMovieClick = onMovieClick,
+                onGalleryClick = {},
+                onActorClick = onActorClick,
+                onMessageSent = {
+                    onMessageSent(
+                        viewState.film
+                    )
+                },
+            )
+        }
+    )
 }
 
-@Composable
+/*@Composable
 private fun getState(detailViewModel: DetailViewModel, filmId: Int): State<UiState> {
     return produceState<UiState>(initialValue = UiState.Loading) {
         value = detailViewModel.getFilm(filmId)
     }
-}
+}*/
