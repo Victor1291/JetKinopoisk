@@ -1,5 +1,6 @@
 package com.example.gallery
 
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,8 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -27,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -63,6 +65,11 @@ fun GalleryScreen(
     val mainList = remember {
         mutableStateOf<List<String>>(list)
     }
+    val cellConfiguration = if (LocalConfiguration.current.orientation == ORIENTATION_LANDSCAPE) {
+        StaggeredGridCells.Adaptive(minSize = 175.dp)
+    } else StaggeredGridCells.Fixed(2)
+
+
     LaunchedEffect(key1 = true) {
         if (filmId != null) {
             viewModel.setId(filmId)
@@ -80,7 +87,7 @@ fun GalleryScreen(
             val modifier = Modifier.padding(innerPadding)
 
             Column(
-                modifier = modifier,
+                modifier = Modifier.padding(top = 8.dp, bottom = 100.dp),
             ) {
 
                 LazyRow(
@@ -107,31 +114,30 @@ fun GalleryScreen(
                         .fillMaxSize()
                         .pullRefresh(swipeRefreshState)
                 ) {
-                    LazyVerticalGrid(
-                        modifier = Modifier.padding(bottom = 80.dp),
-                        columns = GridCells.Adaptive(150.dp),
-                        contentPadding = PaddingValues(4.dp),
+                    LazyVerticalStaggeredGrid(
+                        columns = cellConfiguration,
                     ) {
-                        if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
-                            item {
-                                Text(
-                                    text = "Waiting for items to load from the backend",
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .wrapContentWidth(Alignment.CenterHorizontally)
-                                )
-                                CircularProgressIndicator(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .wrapContentWidth(Alignment.CenterHorizontally)
-                                )
-                            }
-                        }
+
                         items(count = lazyPagingItems.itemCount) { index ->
                             val item = lazyPagingItems[index]
                             if (item != null) {
                                 GalleryItemCard(item, onMovieClick = {})
                             }
+                        }
+                    }
+                    if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
+                        Column(modifier = Modifier.align(Alignment.Center)) {
+                            Text(
+                                text = "Loading...",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentWidth(Alignment.CenterHorizontally)
+                            )
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentWidth(Alignment.CenterHorizontally)
+                            )
                         }
                     }
                     PullRefreshIndicator(

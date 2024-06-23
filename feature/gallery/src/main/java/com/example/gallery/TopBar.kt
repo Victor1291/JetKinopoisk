@@ -38,9 +38,9 @@ fun TopBar(
     Column {
         Row(
             modifier = Modifier
-                .height(60.dp)
+                .height(30.dp)
                 .fillMaxWidth()
-                .padding(top = 8.dp, bottom = 4.dp),
+                .padding(top = 16.dp, bottom = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(

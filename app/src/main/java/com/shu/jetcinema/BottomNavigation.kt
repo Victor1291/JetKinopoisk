@@ -23,7 +23,7 @@ fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) 
                         contentDescription = "icon for navigation item"
                     )
                 },
-                label = { Text(text = screen.label) },
+               // label = { Text(text = screen.label) },
                 onClick = {
                     if (currentRoute != screen.route) {
                         navController.navigate(screen.route) {

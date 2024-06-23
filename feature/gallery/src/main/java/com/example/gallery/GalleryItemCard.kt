@@ -27,18 +27,16 @@ fun GalleryItemCard(
         ),
         modifier = Modifier
             .padding(4.dp)
-            .width(180.dp)
-            .height(240.dp)
             .clickable { },
 
         ) {
 
         AsyncImage(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier,
             model = ImageRequest.Builder(context = LocalContext.current)
                 .data(gallery.imageUrl).build(),
             contentDescription = "picture",
-            contentScale = ContentScale.FillBounds,
+          //  contentScale = ContentScale.FillBounds,
         )
     }
 }
