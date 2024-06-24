@@ -50,6 +50,9 @@ data class DetailMovie(
     val serial: Boolean? = null,
     val shortFilm: Boolean? = null,
     val completed: Boolean? = null,
+    var favorite: Boolean = false,
+    var watched: Boolean = false,
+    var seeLater: Boolean = false,
 ) {
     val countriesList: String
         get() = countries.joinToString(","){it.country}

@@ -29,6 +29,8 @@ class DetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+    var filmId : Int? = null
+
     init {
         Log.d("Init DetailViewmodel", " *****   ***** ")
     }
@@ -43,4 +45,17 @@ class DetailViewModel @Inject constructor(
                 _uiState.value = UiState.Error(e.toString())
             }
     }
+
+    fun toggleFavoriteStatus(favorite: Boolean) = viewModelScope.launch {
+        repository.heart(filmId, favorite)
+    }
+
+    fun toggleSeeLaterStatus( favorite: Boolean) = viewModelScope.launch {
+        repository.seeLater(filmId, favorite)
+    }
+
+    fun toggleWatchedStatus(favorite: Boolean) = viewModelScope.launch {
+        repository.watched(filmId, favorite)
+    }
+
 }

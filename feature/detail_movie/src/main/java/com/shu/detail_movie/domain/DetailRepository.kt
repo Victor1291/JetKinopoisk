@@ -19,4 +19,8 @@ interface DetailRepository {
 
     //suspend fun getSerial(kinopoiskId: Int): SeasonsSerial
 
+    suspend fun heart(id: Int?, select: Boolean)
+    suspend fun seeLater(id: Int?, select: Boolean)
+    suspend fun watched(id: Int?, select: Boolean)
+
 }

@@ -19,7 +19,7 @@ class GalleryViewModel @Inject constructor(
     private val galleryRepository: GalleryRepository,
 ) : ViewModel() {
 
-    private var title = "STILL"
+    var title = "STILL"
     private var filmId = 1
 
     val pagedMovies: Flow<PagingData<GalleryItem>> = Pager(
@@ -36,7 +36,4 @@ class GalleryViewModel @Inject constructor(
         this.filmId = id
     }
 
-    fun setTitle(titleNew: String) {
-        title = titleNew
-    }
 }

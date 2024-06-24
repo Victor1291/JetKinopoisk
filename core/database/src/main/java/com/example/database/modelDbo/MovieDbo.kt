@@ -20,9 +20,9 @@ data class MovieDbo(
     val countries: List<CountriesDbo>,
     @ColumnInfo(name = "genres")
     val genres: List<GenresDbo>,
-    @ColumnInfo(name = "watched")
+    @ColumnInfo(name = "rating_kinopoisk")
     val ratingKinopoisk: String?,
-    @ColumnInfo(name = "see_later")
+    @ColumnInfo(name = "rating_imbd")
     val ratingImbd: String?,
     @ColumnInfo(name = "year")
     val year: String?,
@@ -34,5 +34,11 @@ data class MovieDbo(
     val posterUrlPreview: String?,
     @ColumnInfo(name = "imdb_id")
     val imdbId: String?,
+    @ColumnInfo(name = "favorite")
+    var favorite: Boolean = false,
+    @ColumnInfo(name = "watched")
+    var watched: Boolean = false,
+    @ColumnInfo(name = "see_later")
+    var seeLater: Boolean = false,
 )
 

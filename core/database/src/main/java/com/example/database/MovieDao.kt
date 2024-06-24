@@ -169,7 +169,7 @@ interface MovieDao {
 
     @Transaction
     suspend fun deleteMovieFromCollection(collectionId: Int, filmId: Int) {
-        deleteMovieInDB(collectionId,filmId)
+        deleteMovieInDB(collectionId, filmId)
         updateCollectionDel(collectionId)
     }
 
@@ -184,25 +184,34 @@ interface MovieDao {
     suspend fun getMovie(id: Int?): MovieDbo?
 
 
-
     //удаляем фильм из коллекции в диалоге BotomSheet
     @Query("DELETE FROM collections_movie WHERE collection_id = :collectionId AND kinopoisk_id = :filmId")
     fun deleteMovieInDB(collectionId: Int, filmId: Int): Int
 
     @Transaction
     suspend fun saveToBd(gCBd: FiltersDbo) {
-     saveFilters(gCBd)
-     addGenres(gCBd.genres)
-     addCountry(gCBd.countries)
+        saveFilters(gCBd)
+        addGenres(gCBd.genres)
+        addCountry(gCBd.countries)
     }
 
-    /*  @Query("UPDATE movies SET watched = 0 ")
-      suspend fun clearWatched()
+    @Query("UPDATE movies SET favorite = :selected WHERE kinopoiskId = :movieId")
+    suspend fun updateFavorite(movieId: Int?, selected: Boolean)
 
-      @Query("UPDATE movies SET favorite = 0 ")
-      suspend fun clearFavorite()
+    @Query("UPDATE movies SET watched = :selected WHERE kinopoiskId = :movieId")
+    suspend fun updateWatched(movieId: Int?, selected: Boolean)
 
-      @Query("UPDATE movies SET see_later = 0 ")
-      suspend fun clearSeeLater()*/
+    @Query("UPDATE movies SET see_later = :selected WHERE kinopoiskId = :movieId")
+    suspend fun updateSeeLater(movieId: Int?, selected: Boolean)
+
+    @Query("UPDATE movies SET watched = 0 ")
+    suspend fun clearWatched()
+
+    @Query("UPDATE movies SET favorite = 0 ")
+    suspend fun clearFavorite()
+
+    @Query("UPDATE movies SET see_later = 0 ")
+    suspend fun clearSeeLater()
+
 
 }

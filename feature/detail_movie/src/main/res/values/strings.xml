@@ -2,4 +2,9 @@
 <resources>
     <string name="emoji_selector_bt_desc">Mood</string>
     <string name="dots">***</string>
+    <string name="share">share</string>
+    <string name="see">see</string>
+    <string name="select">select</string>
+    <string name="heart">heart</string>
+    <string name="brouser">brouser</string>
 </resources>

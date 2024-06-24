@@ -6,6 +6,7 @@ import com.shu.models.details.DetailMovie
 import com.shu.network.models.filters.CountriesDto
 import com.shu.network.models.filters.GenresDto
 import com.shu.network.models.filters.mapFrom
+import com.shu.network.models.filters.mapFromBd
 import com.shu.network.models.filters.mapToBd
 
 data class DetailMovieDto(
@@ -126,6 +127,28 @@ fun DetailMovieDto.mapToBd(): MovieDbo {
             posterUrl = posterUrl,
             posterUrlPreview = posterUrlPreview,
             imdbId = imdbId,
+        )
+    }
+}
+
+fun MovieDbo.mapFromBd(): DetailMovie {
+    return with(this) {
+        DetailMovie(
+            kinopoiskId = kinopoiskId,
+            nameRu = nameRu,
+            nameEn = nameEn,
+            nameOriginal = nameOriginal,
+            countries = countries.map { it.mapFromBd() },
+            genres = genres.map { it.mapFromBd() },
+            ratingKinopoisk = ratingKinopoisk?.toDouble(),
+            year = year?.toInt(),
+            type = type,
+            posterUrl = posterUrl,
+            posterUrlPreview = posterUrlPreview,
+            imdbId = imdbId,
+            favorite = favorite,
+            watched = watched,
+            seeLater = seeLater
         )
     }
 }

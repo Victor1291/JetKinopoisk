@@ -23,9 +23,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -40,7 +42,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 fun GalleryScreen(
     filmId: Int?,
     viewModel: GalleryViewModel = hiltViewModel(),
-    list: List<String> = listOf<String>(
+    list: List<String> = listOf(
         "STILL",
         "SHOOTING",
         "POSTER",
@@ -62,14 +64,11 @@ fun GalleryScreen(
     val select = remember {
         mutableIntStateOf(0)
     }
-    val mainList = remember {
-        mutableStateOf<List<String>>(list)
-    }
     val cellConfiguration = if (LocalConfiguration.current.orientation == ORIENTATION_LANDSCAPE) {
         StaggeredGridCells.Adaptive(minSize = 175.dp)
     } else StaggeredGridCells.Fixed(2)
 
-
+    var expanded by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = true) {
         if (filmId != null) {
             viewModel.setId(filmId)
@@ -100,8 +99,10 @@ fun GalleryScreen(
                         InputChip(
                             onClick = {
                                 select.intValue = category
-                                viewModel.setTitle(list[category])
-                                lazyPagingItems.refresh()
+                                if (viewModel.title != list[category]) {
+                                    viewModel.title = list[category]
+                                    lazyPagingItems.refresh()
+                                }
                             },
                             label = { Text(list[category]) },
                             selected = category == select.intValue,
@@ -118,11 +119,26 @@ fun GalleryScreen(
                         columns = cellConfiguration,
                     ) {
 
-                        items(count = lazyPagingItems.itemCount) { index ->
-                            val item = lazyPagingItems[index]
-                            if (item != null) {
-                                GalleryItemCard(item, onMovieClick = {})
+                        if (lazyPagingItems.itemCount != 0) {
+                            expanded = false
+                            items(count = lazyPagingItems.itemCount) { index ->
+                                val item = lazyPagingItems[index]
+                                if (item != null) {
+                                    GalleryItemCard(item, onMovieClick = {})
+                                }
                             }
+                        } else {
+                            expanded = true
+                        }
+                    }
+                    if (expanded) {
+                        Column(modifier = Modifier.align(Alignment.Center)) {
+                            Text(
+                                text = "No picture. Sorry...",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentWidth(Alignment.CenterHorizontally),
+                            )
                         }
                     }
                     if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
