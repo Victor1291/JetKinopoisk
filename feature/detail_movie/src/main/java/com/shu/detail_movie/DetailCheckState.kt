@@ -2,7 +2,6 @@ package com.shu.detail_movie
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -13,11 +12,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.shu.detail_movie.state.ErrorScreen
 import com.shu.detail_movie.state.LoadingScreen
 import com.shu.models.details.DetailMovie
+
 
 @Composable
 fun DetailCheckState(
@@ -28,10 +31,10 @@ fun DetailCheckState(
     onActorClick: (Int?) -> Unit,
     onMessageSent: (DetailMovie?) -> Unit,
     onAllClick: (Int?) -> Unit,
-    context: Context? = LocalContext.current.applicationContext
 ) {
     val viewState by viewModel.uiState.collectAsState()
-
+    val context: Context = LocalContext.current.applicationContext
+    val uriHandler = LocalUriHandler.current
     LaunchedEffect(key1 = true) {
         viewModel.getDetailUi(filmId)
         viewModel.filmId = filmId
@@ -69,21 +72,22 @@ fun DetailCheckState(
 
                             },
                             onShareClick = { imdb ->
-                                Intent(Intent.ACTION_SEND).also { intent ->
-                                    intent.putExtra(Intent.EXTRA_TEXT, imdb)
-                                    intent.type = "text/plain"
-                                    if (context?.packageManager?.let { intent.resolveActivity(it) } != null) {
-                                        context.startActivity(intent)
-                                    }
-                                }
+
+                                val shareIntent = Intent(Intent.ACTION_SEND)
+                                shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                shareIntent.setType("text/plain")
+                                shareIntent.putExtra(Intent.EXTRA_TEXT,imdb)
+                                val newIntent = Intent.createChooser(shareIntent, "ShareWith")
+                                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                                ContextCompat.startActivity(
+                                    context,
+                                    newIntent,
+                                    null
+                                )
                             },
                             onBrowsingClick = { webUrl ->
-                                Intent(Intent.ACTION_VIEW).also { intent ->
-                                    intent.data = Uri.parse(webUrl)
-                                    if (context?.packageManager?.let { intent.resolveActivity(it) } != null) {
-                                        context.startActivity(intent)
-                                    }
-                                }
+                                uriHandler.openUri(webUrl)
                             },
                             onAllClick = onAllClick
                         )
