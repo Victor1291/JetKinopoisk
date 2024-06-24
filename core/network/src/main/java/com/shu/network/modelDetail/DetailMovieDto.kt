@@ -153,4 +153,26 @@ fun MovieDbo.mapFromBd(): DetailMovie {
     }
 }
 
+fun DetailMovie.mapToBd(): MovieDbo {
+    return with(this) {
+        MovieDbo(
+            kinopoiskId = kinopoiskId,
+            nameRu = nameRu,
+            nameEn = nameEn,
+            nameOriginal = nameOriginal,
+            countries = countries.map { it.mapToBd() },
+            genres = genres.map { it.mapToBd() },
+            ratingKinopoisk = ratingKinopoisk?.toString(),
+            year = year.toString(),
+            type = type,
+            posterUrl = posterUrl,
+            posterUrlPreview = posterUrlPreview,
+            imdbId = imdbId,
+            favorite = favorite,
+            watched = watched,
+            seeLater = seeLater,
+            ratingImbd = ratingImdb.toString()
+        )
+    }
+}
 

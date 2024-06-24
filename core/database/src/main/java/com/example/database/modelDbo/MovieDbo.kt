@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class MovieDbo(
     @PrimaryKey
     @ColumnInfo(name = "kinopoiskId")
-    val kinopoiskId: Int?,
+    val kinopoiskId: Int,
     @ColumnInfo(name = "name_ru")
     val nameRu: String?,
     @ColumnInfo(name = "name_en")

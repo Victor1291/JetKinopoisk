@@ -37,3 +37,12 @@ fun CountriesDbo.mapFromBd(): Countries {
         )
     }
 }
+
+fun Countries.mapToBd(): CountriesDbo {
+    return with(this) {
+        CountriesDbo(
+            country = country,
+            id = id
+        )
+    }
+}

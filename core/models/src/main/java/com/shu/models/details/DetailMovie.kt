@@ -5,7 +5,7 @@ import com.shu.models.Countries
 import com.shu.models.Genres
 
 data class DetailMovie(
-    val kinopoiskId: Int? = null,
+    val kinopoiskId: Int = 0,
     val kinopoiskHDId: String? = null,
     val imdbId: String? = null,
     val nameRu: String? = null,

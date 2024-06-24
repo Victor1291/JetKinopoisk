@@ -20,7 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,6 +61,16 @@ fun DetailScreen(
     onAllClick: (Int?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
+
+    var favorite by remember {
+        mutableStateOf(movie.favorite)
+    }
+    var seeLater by remember {
+        mutableStateOf(movie.seeLater)
+    }
+    var watched by remember {
+        mutableStateOf(movie.watched)
+    }
     LazyColumn(
         contentPadding = PaddingValues(4.dp), modifier = modifier.padding(bottom = 120.dp),
     ) {
@@ -128,13 +137,70 @@ fun DetailScreen(
             ElevatedCard(elevation = CardDefaults.cardElevation(
                 defaultElevation = 6.dp
             ), modifier = Modifier.clickable { expanded = !expanded }) {
-                UserInputSelector(
-                    movie = movie,
-                    viewModel = viewModel,
-                    onCollectionClick = { onCollectionClick() },
-                    onShareClick = { movie.imdbId?.let { onShareClick(it) } },
-                    onBrowsingClick = { movie.webUrl?.let { onBrowsingClick(it) } },
-                )
+                Row(
+                    modifier = modifier
+                        .wrapContentHeight()
+                        .background(Color.Black),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    InputSelectorButton(
+                        onClick = {
+                            favorite = !favorite
+                            viewModel.toggleFavoriteStatus(favorite)
+                        },
+                        icon = painterResource(id = R.drawable.icon_heart),
+                        selected = favorite,
+                        description = stringResource(id = R.string.heart)
+                    )
+                    InputSelectorButton(
+                        onClick = {
+                            seeLater = !seeLater
+                            viewModel.toggleSeeLaterStatus(seeLater)
+                        },
+                        icon = painterResource(id = R.drawable.icon_select),
+                        selected = seeLater,
+                        description = stringResource(id = R.string.select)
+                    )
+                    InputSelectorButton(
+                        onClick = {
+                            watched = !watched
+                            viewModel.toggleWatchedStatus(watched)
+                        },
+                        icon = painterResource(id = R.drawable.icon_see_movie),
+                        selected = watched,
+                        description = stringResource(id = R.string.see)
+                    )
+                    InputSelectorButton(
+                        onClick = { movie.imdbId?.let { onShareClick(it) } },
+                        icon = painterResource(id = R.drawable.icon_share),
+                        selected = false,
+                        description = stringResource(id = R.string.share)
+                    )
+                    InputSelectorButton(
+                        onClick = { movie.webUrl?.let { onBrowsingClick(it) } },
+                        icon = painterResource(id = android.R.drawable.ic_dialog_info),
+                        selected = false,
+                        description = stringResource(id = R.string.brouser)
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    // Send button
+                    IconButton(
+                        modifier = Modifier.height(36.dp),
+                        enabled = true,
+                        onClick = onCollectionClick,
+                    ) {
+                        Icon(
+                            painterResource(id = R.drawable.icon_menu),
+                            tint = Color.White,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .size(56.dp),
+                            contentDescription = "collection"
+                        )
+                    }
+                }
             }
         }
 
@@ -267,25 +333,18 @@ fun DetailScreen(
 }
 
 
-@Composable
+/*@Composable
 private fun UserInputSelector(
     viewModel: DetailViewModel,
     movie: DetailMovie,
     onCollectionClick: () -> Unit,
     onShareClick: () -> Unit,
     onBrowsingClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    favorite: Boolean,
+    seeLater: Boolean,
+    watched: Boolean,
 ) {
-    var favorite by remember {
-        mutableStateOf(movie.favorite)
-    }
-    var seeLater by remember {
-        mutableStateOf(movie.seeLater)
-    }
-    var watched by remember {
-        mutableStateOf(movie.watched)
-    }
-
     Row(
         modifier = modifier
             .wrapContentHeight()
@@ -352,7 +411,7 @@ private fun UserInputSelector(
             )
         }
     }
-}
+}*/
 
 @Composable
 private fun InputSelectorButton(
