@@ -55,5 +55,4 @@ sealed class NavigationScreens(val route: String, val label: String, val icon: I
         label = "Gallery",
         icon = Icons.Default.Person
     )
-    //TODO разделить на разные sealed class.
 }
