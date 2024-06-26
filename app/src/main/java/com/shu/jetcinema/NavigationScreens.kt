@@ -1,5 +1,6 @@
 package com.shu.jetcinema
 
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
@@ -7,52 +8,52 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class NavigationScreens(val route: String, val label: String, val icon: ImageVector) {
+sealed class NavigationScreens(val route: String, @StringRes val label: Int, val icon: ImageVector) {
     data object MainScreen : NavigationScreens(
         route = "main_screen",
-        label = "Home",
+        label = R.string.home,
         icon = Icons.Default.Home
     )
 
     data object SearchScreen : NavigationScreens(
         route = "search_screen",
-        label = "Search",
+        label = R.string.search,
         icon = Icons.Default.Search
     )
 
     data object PersonScreen : NavigationScreens(
         route = "person_screen",
-        label = "Person",
+        label = R.string.person,
         icon = Icons.Default.Person
     )
 
     data object DetailScreen : NavigationScreens(
         route = "detail_screen",
-        label = "Movie",
+        label = R.string.movie,
         icon = Icons.Default.Menu
     )
 
     data object ListMovies : NavigationScreens(
         route = "list_screen",
-        label = "Movies",
+        label = R.string.movies,
         icon = Icons.Default.Menu
     )
 
     data object BottomDialog : NavigationScreens(
         route = "bottom_screen",
-        label = "Collections",
+        label = R.string.collections,
         icon = Icons.Default.Menu
     )
 
     data object ProfileScreen : NavigationScreens(
         route = "profile_screen",
-        label = "Profile",
+        label = R.string.profile,
         icon = Icons.Default.Person
     )
 
     data object GalleryScreen : NavigationScreens(
         route = "gallery_screen",
-        label = "Gallery",
+        label = R.string.gallery,
         icon = Icons.Default.Person
     )
 }

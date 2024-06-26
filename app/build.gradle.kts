@@ -76,12 +76,30 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation)
 
+    //Room
+    implementation(libs.bundles.room)
+    ksp(libs.androidx.room.compiler)
+
     //Hilt
     implementation(libs.bundles.hilt)
 
     ksp(libs.bundles.hilt.ksp)
 
     //Gson
-    implementation("com.google.code.gson:gson:2.11.0")
+    implementation(libs.gson)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.androidx.test.rules)
+    kspAndroidTest(libs.hilt.android.compiler)
+    androidTestImplementation(libs.androidx.compose.ui.test)
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+
 
 }

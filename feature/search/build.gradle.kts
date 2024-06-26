@@ -67,8 +67,4 @@ dependencies {
     implementation("androidx.compose.material:material:1.6.7")
     // Needed to get a view model reference in Jetpack Compose
     //implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }

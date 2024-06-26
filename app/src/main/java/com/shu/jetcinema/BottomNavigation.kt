@@ -3,8 +3,10 @@ package com.shu.jetcinema
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -23,6 +25,7 @@ fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) 
                         contentDescription = "icon for navigation item"
                     )
                 },
+                label = { Text(text = stringResource(id = screen.label)) },
                 onClick = {
 
                     navController.navigate(screen.route) {
