@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -51,7 +52,7 @@ fun DetailScreen(
     actors: List<Actor>,
     gallery: ListGalleryItems,
     similar: ListSimilar,
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     onMovieClick: (Int?) -> Unit,
     onGalleryClick: (String?) -> Unit,
     onActorClick: (Int?) -> Unit,
@@ -71,148 +72,153 @@ fun DetailScreen(
     var watched by remember {
         mutableStateOf(movie.watched)
     }
-    LazyColumn(
-        contentPadding = PaddingValues(4.dp), modifier = modifier,
+    Box(
+       modifier =  modifier
+            .fillMaxSize()
+           .padding(bottom = 120.dp)
     ) {
-        item {
-            Box(modifier = Modifier.clickable {
+        LazyColumn(
+            contentPadding = PaddingValues(4.dp),  modifier = Modifier,
+        ) {
+            item {
+                Box(modifier = Modifier.clickable {
 
-            }) {
+                }) {
 
-                if (movie.coverUrl != null) {
+                    if (movie.coverUrl != null) {
 
-                    AsyncImage(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(320.dp),
-                        model = ImageRequest.Builder(context = LocalContext.current)
-                            .data(movie.coverUrl).crossfade(true).build(),
-                        contentDescription = "poster",
-                        contentScale = ContentScale.FillBounds,
-                    )
-
-                    if (movie.logoUrl != null) {
                         AsyncImage(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 8.dp)
-                                .align(Alignment.BottomCenter),
+                                .height(320.dp),
                             model = ImageRequest.Builder(context = LocalContext.current)
-                                .data(movie.logoUrl).crossfade(true).build(),
-                            contentDescription = "logo",
+                                .data(movie.coverUrl).crossfade(true).build(),
+                            contentDescription = "poster",
+                            contentScale = ContentScale.FillBounds,
+                        )
 
+                        if (movie.logoUrl != null) {
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 8.dp)
+                                    .align(Alignment.BottomCenter),
+                                model = ImageRequest.Builder(context = LocalContext.current)
+                                    .data(movie.logoUrl).crossfade(true).build(),
+                                contentDescription = "logo",
+
+                                )
+                        } else {
+                            Text(
+                                text = movie.nameRu ?: "",
+                                lineHeight = 35.sp,
+                                fontSize = 30.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.White,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .padding(bottom = 8.dp)
+                                    .align(Alignment.BottomCenter)
                             )
+                        }
+
                     } else {
-                        Text(
-                            text = movie.nameRu ?: "",
-                            lineHeight = 35.sp,
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.White,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center,
+                        AsyncImage(
                             modifier = Modifier
-                                .padding(bottom = 8.dp)
-                                .align(Alignment.BottomCenter)
+                                .fillMaxWidth()
+                                .height(320.dp),
+                            model = ImageRequest.Builder(context = LocalContext.current)
+                                .data(movie.posterUrl).crossfade(true).build(),
+                            contentDescription = "poster",
+                            contentScale = ContentScale.FillBounds,
                         )
                     }
+                    // Buttons()
 
-                } else {
-                    AsyncImage(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(320.dp),
-                        model = ImageRequest.Builder(context = LocalContext.current)
-                            .data(movie.posterUrl).crossfade(true).build(),
-                        contentDescription = "poster",
-                        contentScale = ContentScale.FillBounds,
-                    )
-                }
-                // Buttons()
-
-            }
-        }
-        item {
-            ElevatedCard(elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ), modifier = Modifier.clickable { expanded = !expanded }) {
-                Row(
-                    modifier = modifier
-                        .wrapContentHeight()
-                        .background(Color.Black),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    InputSelectorButton(
-                        onClick = {
-                            favorite = !favorite
-                            viewModel.toggleFavoriteStatus(favorite)
-                        },
-                        icon = painterResource(id = R.drawable.icon_heart),
-                        selected = favorite,
-                        description = stringResource(id = R.string.heart)
-                    )
-                    InputSelectorButton(
-                        onClick = {
-                            seeLater = !seeLater
-                            viewModel.toggleSeeLaterStatus(seeLater)
-                        },
-                        icon = painterResource(id = R.drawable.icon_select),
-                        selected = seeLater,
-                        description = stringResource(id = R.string.select)
-                    )
-                    InputSelectorButton(
-                        onClick = {
-                            watched = !watched
-                            viewModel.toggleWatchedStatus(watched)
-                        },
-                        icon = painterResource(id = R.drawable.icon_see_movie),
-                        selected = watched,
-                        description = stringResource(id = R.string.see)
-                    )
-                    InputSelectorButton(
-                        onClick = { movie.imdbId?.let { onShareClick(it) } },
-                        icon = painterResource(id = R.drawable.icon_share),
-                        selected = false,
-                        description = stringResource(id = R.string.share)
-                    )
-                    InputSelectorButton(
-                        onClick = { movie.webUrl?.let { onBrowsingClick(it) } },
-                        icon = painterResource(id = android.R.drawable.ic_dialog_info),
-                        selected = false,
-                        description = stringResource(id = R.string.brouser)
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    // Send button
-                    IconButton(
-                        modifier = Modifier.height(36.dp),
-                        enabled = true,
-                        onClick = onCollectionClick,
-                    ) {
-                        Icon(
-                            painterResource(id = R.drawable.icon_menu),
-                            tint = Color.White,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .size(56.dp),
-                            contentDescription = "collection"
-                        )
-                    }
                 }
             }
-        }
-
-        item {
-            ElevatedCard(
-                elevation = CardDefaults.cardElevation(
+            item {
+                ElevatedCard(elevation = CardDefaults.cardElevation(
                     defaultElevation = 6.dp
-                ), modifier = Modifier
-                    .padding(4.dp)
-                    .fillMaxSize()
-            ) {
-                /*  Text(
+                ), modifier = Modifier.clickable { expanded = !expanded }) {
+                    Row(
+                        modifier = modifier
+                            .wrapContentHeight()
+                            .background(Color.Black),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        InputSelectorButton(
+                            onClick = {
+                                favorite = !favorite
+                                viewModel.toggleFavoriteStatus(favorite)
+                            },
+                            icon = painterResource(id = R.drawable.icon_heart),
+                            selected = favorite,
+                            description = stringResource(id = R.string.heart)
+                        )
+                        InputSelectorButton(
+                            onClick = {
+                                seeLater = !seeLater
+                                viewModel.toggleSeeLaterStatus(seeLater)
+                            },
+                            icon = painterResource(id = R.drawable.icon_select),
+                            selected = seeLater,
+                            description = stringResource(id = R.string.select)
+                        )
+                        InputSelectorButton(
+                            onClick = {
+                                watched = !watched
+                                viewModel.toggleWatchedStatus(watched)
+                            },
+                            icon = painterResource(id = R.drawable.icon_see_movie),
+                            selected = watched,
+                            description = stringResource(id = R.string.see)
+                        )
+                        InputSelectorButton(
+                            onClick = { movie.imdbId?.let { onShareClick(it) } },
+                            icon = painterResource(id = R.drawable.icon_share),
+                            selected = false,
+                            description = stringResource(id = R.string.share)
+                        )
+                        InputSelectorButton(
+                            onClick = { movie.webUrl?.let { onBrowsingClick(it) } },
+                            icon = painterResource(id = android.R.drawable.ic_dialog_info),
+                            selected = false,
+                            description = stringResource(id = R.string.brouser)
+                        )
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        // Send button
+                        IconButton(
+                            modifier = Modifier.height(36.dp),
+                            enabled = true,
+                            onClick = onCollectionClick,
+                        ) {
+                            Icon(
+                                painterResource(id = R.drawable.icon_menu),
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .size(56.dp),
+                                contentDescription = "collection"
+                            )
+                        }
+                    }
+                }
+            }
+
+            item {
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ), modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxSize()
+                ) {
+                    /*  Text(
                       text = movie.ratingKinopoisk?.let { "$it ${movie.nameRu}" }
                           ?: "${movie.nameRu}",
                       lineHeight = 35.sp,
@@ -222,111 +228,112 @@ fun DetailScreen(
                       overflow = TextOverflow.Ellipsis,
                       textAlign = TextAlign.Center,
                   )*/
-                Text(
-                    text = movie.year?.let { year ->
-                        "$year ${movie.genresList}"
-                    } ?: movie.genresList,
-                    lineHeight = 16.sp,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                )
-                Text(
-                    text = movie.cityRateFilmLength,
-                    lineHeight = 16.sp,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
-        item {
-
-            if (movie.shortDescription != null) {
-                ElevatedCard(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { expanded = !expanded },
-                ) {
-                    AnimatedVisibility(!expanded) {
-                        Text(
-                            text = "${movie.shortDescription}...",
-                            lineHeight = 20.sp,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Medium,
-                            //  maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                    AnimatedVisibility(expanded) {
-                        Text(
-                            text = movie.description ?: "",
-                            lineHeight = 20.sp,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Medium,
-                            // maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                }
-            } else if (movie.description != null) {
-                ElevatedCard(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { expanded = !expanded },
-                ) {
-                    AnimatedVisibility(!expanded) {
-                        Text(
-                            text = movie.description.toString(),
-                            lineHeight = 20.sp,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Medium,
-                            maxLines = 3,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                    AnimatedVisibility(expanded) {
-                        Text(
-                            text = movie.description.toString(),
-                            lineHeight = 20.sp,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Medium,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
+                    Text(
+                        text = movie.year?.let { year ->
+                            "$year ${movie.genresList}"
+                        } ?: movie.genresList,
+                        lineHeight = 16.sp,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                    Text(
+                        text = movie.cityRateFilmLength,
+                        lineHeight = 16.sp,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
                 }
             }
-        }
+            item {
 
-
-        item {
-            GridActors(actors = actors, onActorClick = onActorClick)
-        }
-
-        item {
-
-            if (gallery.items.isNotEmpty()) {
-                LazyRowGallery(
-                    gallery = gallery,
-                    onAllClick = { onAllClick(movie.kinopoiskId) },
-                    onGalleryClick = onGalleryClick
-                )
+                if (movie.shortDescription != null) {
+                    ElevatedCard(
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        ),
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable { expanded = !expanded },
+                    ) {
+                        AnimatedVisibility(!expanded) {
+                            Text(
+                                text = "${movie.shortDescription}...",
+                                lineHeight = 20.sp,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Medium,
+                                //  maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        AnimatedVisibility(expanded) {
+                            Text(
+                                text = movie.description ?: "",
+                                lineHeight = 20.sp,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Medium,
+                                // maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                } else if (movie.description != null) {
+                    ElevatedCard(
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        ),
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable { expanded = !expanded },
+                    ) {
+                        AnimatedVisibility(!expanded) {
+                            Text(
+                                text = movie.description.toString(),
+                                lineHeight = 20.sp,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Medium,
+                                maxLines = 3,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        AnimatedVisibility(expanded) {
+                            Text(
+                                text = movie.description.toString(),
+                                lineHeight = 20.sp,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Medium,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                }
             }
-        }
 
-        item {
-            if (similar.items.isNotEmpty()) {
-                LazyRowSimilar(similar = similar, onMovieClick = onMovieClick)
+
+            item {
+                GridActors(actors = actors, onActorClick = onActorClick)
+            }
+
+            item {
+
+                if (gallery.items.isNotEmpty()) {
+                    LazyRowGallery(
+                        gallery = gallery,
+                        onAllClick = { onAllClick(movie.kinopoiskId) },
+                        onGalleryClick = onGalleryClick
+                    )
+                }
+            }
+
+            item {
+                if (similar.items.isNotEmpty()) {
+                    LazyRowSimilar(similar = similar, onMovieClick = onMovieClick)
+                }
             }
         }
     }

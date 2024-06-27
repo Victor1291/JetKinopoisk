@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,7 +43,8 @@ fun ProfileScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(18.dp),
+            .padding(start = 18.dp, bottom = 120 .dp, end = 18.dp,top = 18.dp)
+        ,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 

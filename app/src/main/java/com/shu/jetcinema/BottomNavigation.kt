@@ -1,19 +1,21 @@
 package com.shu.jetcinema
 
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) {
-    BottomAppBar {
+    BottomAppBar(
+    ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { screen ->
@@ -21,11 +23,12 @@ fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) 
                 selected = currentRoute == screen.route,
                 icon = {
                     Icon(
+                        modifier = Modifier.size(24.dp),
                         imageVector = screen.icon,
                         contentDescription = "icon for navigation item"
                     )
                 },
-                label = { Text(text = stringResource(id = screen.label)) },
+                // label = { Text(text = stringResource(id = screen.label)) },
                 onClick = {
 
                     navController.navigate(screen.route) {

@@ -8,4 +8,5 @@
     <string name="collections">Collections</string>
     <string name="profile">Profile</string>
     <string name="gallery">Gallery</string>
+    <string name="filter">Filter</string>
 </resources>

@@ -116,6 +116,7 @@ fun GalleryScreen(
                     Modifier
                         .fillMaxSize()
                         .pullRefresh(swipeRefreshState)
+                        .padding(bottom = 90.dp)
                 ) {
                     LazyVerticalStaggeredGrid(
                         columns = cellConfiguration,

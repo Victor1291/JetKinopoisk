@@ -3,4 +3,6 @@
     <string name="holder">фильмы и актёры</string>
     <string name="personsearch">personSearch</string>
     <string name="tuning">tuning</string>
+    <string name="search_movie">поиск фильмов</string>
+    <string name="search_person">поиск актёров</string>
 </resources>

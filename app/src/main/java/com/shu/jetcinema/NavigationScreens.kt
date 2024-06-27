@@ -56,4 +56,10 @@ sealed class NavigationScreens(val route: String, @StringRes val label: Int, val
         label = R.string.gallery,
         icon = Icons.Default.Person
     )
+
+    data object FilterScreen : NavigationScreens(
+        route = "filter_screen",
+        label = R.string.filter,
+        icon = Icons.Default.Person
+    )
 }

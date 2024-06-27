@@ -1,4 +1,4 @@
-package com.example.search
+package com.example.search.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -7,14 +7,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,7 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.search.Utils.originUsersList
+import com.example.search.ListViewModel
+import com.example.search.components.Utils.originUsersList
 import com.shu.models.FilmVip
 import com.shu.mylibrary.R
 
@@ -31,13 +34,15 @@ import com.shu.mylibrary.R
 @Composable
 fun MaterialSearch(
     viewModel: ListViewModel,
+    searchTextState: State<FilmVip>,
     onRefreshClick: () -> Unit,
     onPersonClick: () -> Unit,
+    onTuneClick: () -> Unit,
+    isSearchPersonActive : MutableState<Boolean>
 ) {
     val isActive = remember {
         mutableStateOf(false)
     }
-    val searchTextState = viewModel.title.collectAsState()
     val mainList = remember {
         mutableStateOf(originUsersList)
     }
@@ -56,22 +61,23 @@ fun MaterialSearch(
             isActive.value = false
         },
         placeholder = {
-            Text(text = stringResource(R.string.holder))
+            Text(text = if (isSearchPersonActive.value) stringResource(R.string.search_movie) else stringResource(
+                R.string.search_person))
         },
         active = isActive.value,
         onActiveChange = {
             isActive.value = it
         },
         leadingIcon = {
-            Icon(
-                Icons.Default.AccountBox,
-                tint = Color.Black,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(56.dp)
-                    .clickable { onPersonClick() },
-                contentDescription = stringResource(R.string.personsearch)
-            )
+                Icon(
+                    if (isSearchPersonActive.value) Icons.Default.Person else Icons.Default.PlayArrow,
+                    tint = Color.Black,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(48.dp)
+                        .clickable { onPersonClick() },
+                    contentDescription = stringResource(R.string.personsearch)
+                )
         },
         trailingIcon = {
             Icon(
@@ -80,7 +86,7 @@ fun MaterialSearch(
                 modifier = Modifier
                     .padding(8.dp)
                     .size(56.dp)
-                    .clickable { },
+                    .clickable { onTuneClick() },
                 contentDescription = stringResource(R.string.tuning)
             )
         }

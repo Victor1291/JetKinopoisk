@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.shu.list_movies"
+    namespace = "com.example.filter"
     compileSdk = 34
 
     defaultConfig {
@@ -43,6 +43,7 @@ android {
 dependencies {
 
     implementation(project(":core:models"))
+    implementation(project(":shared:cinema_elements"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
@@ -53,20 +54,8 @@ dependencies {
     //Hilt
     implementation(libs.bundles.hilt)
     implementation(libs.androidx.compose.foundation)
-    implementation(project(":shared:cinema_elements"))
     ksp(libs.bundles.hilt.ksp)
 
     //Coil
     implementation(libs.coil.compose)
-
-    //Paging
-    implementation("androidx.paging:paging-compose:3.3.0")
-
-    //Swipe to refresh
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.34.0")
-
-    implementation("androidx.compose.material:material:1.6.8")
-    // Needed to get a view model reference in Jetpack Compose
-    //implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-
 }

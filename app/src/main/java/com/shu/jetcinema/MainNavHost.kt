@@ -20,6 +20,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import com.example.bottom_sheet.BottomSheetScreen
 import com.example.bottom_sheet.InputDialogView
+import com.example.filter.FilterSearch
 import com.example.gallery.GalleryScreen
 import com.example.profile.ProfileScreen
 import com.example.search.SearchScreen
@@ -53,7 +54,7 @@ fun MainNavHost(
     val context = LocalContext.current.applicationContext
 
     NavHost(
-        navController = navController, startDestination = NavigationScreens.MainScreen.route
+        navController = navController, startDestination = NavigationScreens.SearchScreen.route
     ) {
         composable(NavigationScreens.MainScreen.route) {
             viewModel.changeStateTOpBar(true)
@@ -74,7 +75,7 @@ fun MainNavHost(
                 }
             )
         }
-
+        //SearchScreen
         composable(NavigationScreens.SearchScreen.route) {
             SearchScreen(
                 onMovieClick = { filmId ->
@@ -83,17 +84,26 @@ fun MainNavHost(
                         route = "${NavigationScreens.DetailScreen.route}/${filmId}"
                     )
                 },
-                onActorClick = {personId ->
+                onActorClick = { personId ->
                     navController.navigate(
                         route = "${NavigationScreens.PersonScreen.route}/${personId}"
                     )
+                },
+                onTuneClick = { vip ->
+                    val filmsLink = "${NavigationScreens.FilterScreen.route}/${
+                        FilmsParametersType.serializeAsValue(vip)
+                    }"
+                    navController.navigate(
+                        route = filmsLink
+                    )
                 }
+
             )
             BackHandler {
                 navController.popBackStack()
             }
         }
-
+        //ProfileScreen
         composable(NavigationScreens.ProfileScreen.route) {
             viewModel.changeStateTOpBar(true)
             ProfileScreen(
@@ -111,7 +121,7 @@ fun MainNavHost(
                 //TODO open ListScreen when click on collection
             )
         }
-
+        //PersonScreen
         composable(
             route = "${NavigationScreens.PersonScreen.route}/{$personKey}",
             arguments = listOf(navArgument(personKey) {
@@ -134,6 +144,7 @@ fun MainNavHost(
                 navController.popBackStack()
             }
         }
+        //DetailScreen
         composable(
             route = "${NavigationScreens.DetailScreen.route}/{$argumentKey}",
             arguments = listOf(navArgument(argumentKey) {
@@ -165,7 +176,7 @@ fun MainNavHost(
                           route = "${BottomNavigationScreens.BottomDialog.route}/${filmId}"
                       )*/
                     },
-                    onAllClick = {filmId ->
+                    onAllClick = { filmId ->
                         navController.navigate(
                             route = "${NavigationScreens.GalleryScreen.route}/${filmId}"
                         )
@@ -177,7 +188,7 @@ fun MainNavHost(
                 navController.popBackStack()
             }
         }
-
+        //GalleryScreen
         composable(
             route = "${NavigationScreens.GalleryScreen.route}/{$argumentKey}",
             arguments = listOf(navArgument(argumentKey) {
@@ -197,6 +208,32 @@ fun MainNavHost(
             }
         }
 
+        //FilterScreen
+        composable(
+            route = "${NavigationScreens.FilterScreen.route}/{$argumentKey}",
+            arguments = listOf(navArgument(argumentKey) {
+                type = FilmsParametersType
+            })
+        ) { navBackStackEntry ->
+
+            val arguments = navBackStackEntry.arguments
+            val params = arguments?.getString(argumentKey)
+
+            val paramsData = params?.let {
+                FilmsParametersType.parseValue(it)
+            }
+            if (paramsData != null) {
+                FilterSearch(
+                    filmVip = paramsData,
+                    onBackClick = { navController.popBackStack() },
+                )
+            }
+
+            BackHandler {
+                navController.popBackStack()
+            }
+        }
+        //ListMovies
         composable(
             route = "${NavigationScreens.ListMovies.route}/{$argumentKey}",
             arguments = listOf(navArgument(argumentKey) {
@@ -253,7 +290,7 @@ fun MainNavHost(
                 BottomSheetScreen(
                     film = filmId,
                     onCreateClick = {
-                       // showBottomSheet = showBottomSheet.copy(isShow = false)
+                        // showBottomSheet = showBottomSheet.copy(isShow = false)
                         navController.navigate(
                             route = "${NavigationScreens.BottomDialog.route}/${filmId.kinopoiskId}"
                         )

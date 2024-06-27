@@ -14,4 +14,5 @@ data class FilmVip(
     val title: ETitle = ETitle.Premieres,
     var countryName: String = "",
     var genresName: String = "",
+    var isSearchPerson: Boolean = true,
 )
