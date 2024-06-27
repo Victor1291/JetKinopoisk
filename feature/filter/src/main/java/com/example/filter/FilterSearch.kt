@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.cinema_elements.RowTwoText
 import com.example.cinema_elements.TopBar
-import com.example.composerangeslider.RangeSlider
+import com.example.cinema_elements.RangeSlider
 import com.example.filter.components.MaterialButtonToggleGroup
 
 import com.shu.models.FilmVip
@@ -75,7 +75,9 @@ fun FilterSearch(
                 rangeColor = Color(73, 147, 236),
                 backColor = Color(203, 225, 246),
                 barHeight = 8.dp,
-                circleRadius = 10.dp,
+                circleRadius = 15.dp,
+                radiusRotate = 30.dp,
+                radius = 15.dp,
                 progress1InitialValue = 0.3f,
                 progress2InitialValue = 0.8f,
                 tooltipSpacing = 10.dp,

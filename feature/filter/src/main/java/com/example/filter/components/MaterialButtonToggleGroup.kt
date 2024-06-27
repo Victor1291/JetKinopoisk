@@ -28,7 +28,7 @@ fun MaterialButtonToggleGroup(
 
     val (selectedIndex, onIndexSelected) = remember { mutableStateOf<Int?>(selected) }
     Row(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(4.dp)
     ) {
         items.forEachIndexed { index, item ->
             OutlinedButton(
@@ -93,12 +93,12 @@ fun MaterialButtonToggleGroup(
             ) {
                 Text(
                     text = item,
+                    maxLines = 1,
                     color = if (selectedIndex == index) {
                         MaterialTheme.colorScheme.onPrimary
                     } else {
                         Color.DarkGray.copy(alpha = 0.9f)
                     },
-                    modifier = Modifier.padding(horizontal = 4.dp),
                     fontSize = 16.sp,
                 )
             }
