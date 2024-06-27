@@ -12,7 +12,7 @@ data class FilmVip(
     var page: Int = 1,
     val keyword: String = "",
     val title: ETitle = ETitle.Premieres,
-    var countryName: String = "",
-    var genresName: String = "",
+    var countryName: String = "США",
+    var genresName: String = "приключения",
     var isSearchPerson: Boolean = true,
 )

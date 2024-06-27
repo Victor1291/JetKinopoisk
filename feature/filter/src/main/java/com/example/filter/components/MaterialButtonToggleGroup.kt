@@ -15,11 +15,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 
 @Composable
 fun MaterialButtonToggleGroup(
-    modifier: Modifier,
     items: List<String>,
     selected: Int,
     onClick: (index: Int) -> Unit = {}
@@ -28,7 +28,7 @@ fun MaterialButtonToggleGroup(
 
     val (selectedIndex, onIndexSelected) = remember { mutableStateOf<Int?>(selected) }
     Row(
-        modifier = modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp)
     ) {
         items.forEachIndexed { index, item ->
             OutlinedButton(
@@ -98,7 +98,8 @@ fun MaterialButtonToggleGroup(
                     } else {
                         Color.DarkGray.copy(alpha = 0.9f)
                     },
-                    modifier = Modifier.padding(horizontal = 8.dp)
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    fontSize = 16.sp,
                 )
             }
         }
