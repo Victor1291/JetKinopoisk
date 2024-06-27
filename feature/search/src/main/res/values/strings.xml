@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="holder">фильмы и актёры</string>
+    <string name="personsearch">personSearch</string>
+    <string name="tuning">tuning</string>
 </resources>

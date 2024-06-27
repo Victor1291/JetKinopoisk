@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -18,6 +19,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,23 +28,35 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.shu.models.CinemaItem
 import com.shu.models.FilmVip
-import com.shu.weather_main.MaterialSearch
+import com.shu.models.detail_person.SearchPerson
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SearchScreen(
     listViewModel: ListViewModel = hiltViewModel(),
-    onMovieClick: (Int?) -> Unit
+    onMovieClick: (Int?) -> Unit,
+    onActorClick: (Int?) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val lazyPagingItems = listViewModel.pagedMovies.collectAsLazyPagingItems()
+    val isSearchPersonActive = remember {
+        mutableStateOf(false)
+    }
+
+    val lazyPagingItems =
+        if (isSearchPersonActive.value) listViewModel.pagedMovies.collectAsLazyPagingItems()
+        else listViewModel.pagedPerson.collectAsLazyPagingItems()
 
     Scaffold(topBar = {
         MaterialSearch(listViewModel, onRefreshClick = {
             lazyPagingItems.refresh()
-        })
+        },
+            onPersonClick = {
+                isSearchPersonActive.value = !isSearchPersonActive.value
+            }
+        )
     }, content = { innerPadding ->
         val modifier = Modifier.padding(innerPadding)
         val swipeRefreshState =
@@ -58,11 +73,12 @@ fun SearchScreen(
 
         Box(
             Modifier
+                .padding(innerPadding)
                 .fillMaxSize()
                 .pullRefresh(swipeRefreshState)
         ) {
             LazyVerticalGrid(
-                modifier = Modifier.padding(bottom = 80.dp),
+                modifier = Modifier,
                 columns = GridCells.Adaptive(150.dp),
                 contentPadding = PaddingValues(4.dp),
                 state = state,
@@ -91,20 +107,12 @@ fun SearchScreen(
                 items(count = lazyPagingItems.itemCount) { index ->
                     val item = lazyPagingItems[index]
                     if (item != null) {
-                        MovieItemCard(item, onMovieClick = onMovieClick)
+                        if (isSearchPersonActive.value)
+                            MovieItemCard(item as CinemaItem, onMovieClick = onMovieClick)
+                        else
+                            PersonItemCard(item as SearchPerson, onActorClick = onActorClick)
                     }
-                    //  Text("Index=$index: $item", fontSize = 20.sp)
-                }/*item {
-
-                    *//* if (lazyPagingItems.loadState.append == LoadState.Loading) {
-
-                             CircularProgressIndicator(
-                                 modifier = Modifier
-                                     .fillMaxWidth()
-                                     .wrapContentWidth(Alignment.CenterHorizontally)
-                             )
-                         }*//*
-                }*/
+                }
             }
             PullRefreshIndicator(
                 lazyPagingItems.loadState.append == LoadState.Loading,

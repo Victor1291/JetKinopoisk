@@ -2,6 +2,7 @@ package com.shu.detail_movie
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -50,9 +51,10 @@ fun DetailCheckState(
                     )
                 },
                 content = { innerPadding ->
-                    val modifier = Modifier.padding(innerPadding)
                     with(viewState as UiState.Success) {
                         DetailScreen(
+                            modifier = Modifier
+                                .padding(innerPadding),
                             viewModel = viewModel,
                             movie = result.film,
                             actors = if (result.actorFilm.size < 20) result.actorFilm else result.actorFilm.take(

@@ -4,8 +4,11 @@ import android.util.Log
 import com.example.search.domain.PagingSearchRepository
 import com.shu.models.FilmVip
 import com.shu.models.ListCinema
+import com.shu.models.detail_person.ListSearchPerson
+
 import com.shu.network.ServiceMovieApi
 import com.shu.network.models.mapFrom
+import com.shu.network.models_person.toListSearchPerson
 import javax.inject.Inject
 
 class PagingSearchRepositoryImpl @Inject constructor(
@@ -27,6 +30,10 @@ class PagingSearchRepositoryImpl @Inject constructor(
             yearTo = vip.yearTo,
             keyword = vip.keyword
         ).mapFrom()
+    }
+
+    override suspend fun searchPerson(name: String, page: Int): ListSearchPerson {
+        return api.searchPerson(name,page).toListSearchPerson()
     }
 
 }

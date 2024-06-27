@@ -1,11 +1,16 @@
-package com.shu.weather_main
+package com.example.search
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,18 +19,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import com.example.search.ListViewModel
+import androidx.compose.ui.unit.dp
+import com.example.search.Utils.originUsersList
 import com.shu.models.FilmVip
 import com.shu.mylibrary.R
-import com.shu.weather_main.Utils.originUsersList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MaterialSearch(
     viewModel: ListViewModel,
-    onRefreshClick: () -> Unit
+    onRefreshClick: () -> Unit,
+    onPersonClick: () -> Unit,
 ) {
     val isActive = remember {
         mutableStateOf(false)
@@ -43,7 +50,7 @@ fun MaterialSearch(
             onRefreshClick()
             // mainList.value = Utils.search(text, originUsersList)
         },
-        onSearch = {text ->
+        onSearch = { text ->
             viewModel.setTitle(FilmVip(keyword = text))
             onRefreshClick()
             isActive.value = false
@@ -54,7 +61,30 @@ fun MaterialSearch(
         active = isActive.value,
         onActiveChange = {
             isActive.value = it
-        }) {
+        },
+        leadingIcon = {
+            Icon(
+                Icons.Default.AccountBox,
+                tint = Color.Black,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(56.dp)
+                    .clickable { onPersonClick() },
+                contentDescription = stringResource(R.string.personsearch)
+            )
+        },
+        trailingIcon = {
+            Icon(
+                Icons.Default.Build,
+                tint = Color.Black,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(56.dp)
+                    .clickable { },
+                contentDescription = stringResource(R.string.tuning)
+            )
+        }
+    ) {
         LazyColumn {
             items(mainList.value.size) { item ->
                 Box(

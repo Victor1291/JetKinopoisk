@@ -8,8 +8,10 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.search.domain.PagingSearchRepository
 import com.example.search.paging.SearchPagingSource
+import com.example.search.paging.SearchPersonPagingSource
 import com.shu.models.CinemaItem
 import com.shu.models.FilmVip
+import com.shu.models.detail_person.SearchPerson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,6 +41,16 @@ class ListViewModel @Inject constructor(
             SearchPagingSource(
                 repository,
                 titleIn
+            )
+        }
+    ).flow.cachedIn(viewModelScope)
+
+    val pagedPerson: Flow<PagingData<SearchPerson>> = Pager(
+        config = PagingConfig(pageSize = 10),
+        pagingSourceFactory = {
+            SearchPersonPagingSource(
+                repository,
+                titleIn.keyword
             )
         }
     ).flow.cachedIn(viewModelScope)

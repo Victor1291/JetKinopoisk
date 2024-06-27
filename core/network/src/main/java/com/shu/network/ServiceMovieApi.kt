@@ -9,6 +9,7 @@ import com.shu.network.models.filters.ListFiltersDto
 import com.shu.network.models.gallery_models.ListGalleryItemsDto
 import com.shu.network.models.media_posts.ListPostsDto
 import com.shu.network.models.similar_models.ListSimilarDto
+import com.shu.network.models_person.ListSearchPersonDto
 import com.shu.network.models_person.MovieOfActorDto
 import com.shu.network.models_person.PersonDto
 import retrofit2.http.GET
@@ -80,6 +81,12 @@ interface ServiceMovieApi {
 
     @GET("/api/v1/staff/{id}")
     suspend fun person(@Path("id") id: Int): PersonDto
+
+    @GET("/api/v1/persons")
+    suspend fun searchPerson(
+        @Query("name") name: String,
+        @Query("page") page: Int,
+        ): ListSearchPersonDto
 
     @GET("/api/v2.2/films/{id}")
     suspend fun detailFilmography(@Path("id") id: Int?): MovieOfActorDto

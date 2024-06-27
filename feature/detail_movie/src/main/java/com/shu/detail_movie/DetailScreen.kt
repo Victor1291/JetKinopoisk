@@ -72,7 +72,7 @@ fun DetailScreen(
         mutableStateOf(movie.watched)
     }
     LazyColumn(
-        contentPadding = PaddingValues(4.dp), modifier = modifier.padding(bottom = 120.dp),
+        contentPadding = PaddingValues(4.dp), modifier = modifier,
     ) {
         item {
             Box(modifier = Modifier.clickable {

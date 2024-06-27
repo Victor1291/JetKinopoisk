@@ -82,7 +82,13 @@ fun MainNavHost(
                     navController.navigate(
                         route = "${NavigationScreens.DetailScreen.route}/${filmId}"
                     )
-                })
+                },
+                onActorClick = {personId ->
+                    navController.navigate(
+                        route = "${NavigationScreens.PersonScreen.route}/${personId}"
+                    )
+                }
+            )
             BackHandler {
                 navController.popBackStack()
             }
