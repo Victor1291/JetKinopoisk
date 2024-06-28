@@ -24,11 +24,11 @@ fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) 
         windowInsets = BottomAppBarDefaults.windowInsets
     ) {
         // Leading icons should typically have a high content alpha
-        CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
-            IconButton(onClick = { /* doSomething() */ }) {
+       /* CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
+            IconButton(onClick = { *//* doSomething() *//* }) {
                 Icon(Icons.Filled.Menu, contentDescription = "Localized description")
             }
-        }
+        }*/
         Spacer(Modifier.weight(1f, true))
         IconButton(onClick = {
             navController.navigate(NavigationScreens.MainScreen.route) {
@@ -41,6 +41,7 @@ fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) 
         }) {
             Icon(NavigationScreens.MainScreen.icon, contentDescription = "Localized description")
         }
+        Spacer(Modifier.weight(1f, true))
         IconButton(onClick = {
             navController.navigate(NavigationScreens.SearchScreen.route) {
                 popUpTo(navController.graph.findStartDestination().id) {
@@ -52,6 +53,7 @@ fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) 
         }) {
             Icon(NavigationScreens.SearchScreen.icon, contentDescription = "Localized description")
         }
+        Spacer(Modifier.weight(1f, true))
         IconButton(onClick = {
             navController.navigate(NavigationScreens.ProfileScreen.route) {
                 popUpTo(navController.graph.findStartDestination().id) {
@@ -63,6 +65,7 @@ fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) 
         }) {
             Icon(NavigationScreens.ProfileScreen.icon, contentDescription = "Localized description")
         }
+        Spacer(Modifier.weight(1f, true))
     }
 }
 

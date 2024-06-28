@@ -26,7 +26,7 @@ fun GridActors(
 
         LazyHorizontalGrid(
             rows = GridCells.Fixed(2),
-            modifier = Modifier.height(300.dp),
+            modifier = Modifier.height(240.dp),
             contentPadding = PaddingValues(4.dp),
             state = LazyGridState()
         ) {

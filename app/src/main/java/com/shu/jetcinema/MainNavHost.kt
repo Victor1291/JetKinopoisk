@@ -54,7 +54,7 @@ fun MainNavHost(
     val context = LocalContext.current.applicationContext
 
     NavHost(
-        navController = navController, startDestination = NavigationScreens.SearchScreen.route
+        navController = navController, startDestination = NavigationScreens.MainScreen.route
     ) {
         composable(NavigationScreens.MainScreen.route) {
             viewModel.changeStateTOpBar(true)
