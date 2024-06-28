@@ -1,9 +1,5 @@
 package com.shu.detail_person
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
@@ -15,36 +11,31 @@ import com.shu.detail_person.state.LoadingScreen
 
 @Composable
 fun PersonCheckState(
+    modifier: Modifier,
     personId: Int,
     viewModel: PersonViewModel = hiltViewModel(),
     navController: NavHostController,
     onMovieClick: (Int?) -> Unit
 ) {
     val viewState: State<UiState> = getState(viewModel, personId)
-    Scaffold(
-        topBar = {
-            TopBar(
-                header = "",
-                leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                onLeftIconClick = { navController.navigateUp() },
+
+    when (val viewStateResult = viewState.value) {
+        is UiState.Loading -> LoadingScreen()
+        is UiState.Success -> {
+            PersonScreen(
+                modifier = modifier,
+                person = viewStateResult.person,
+                onMovieClick = onMovieClick,
+                onLeftClick = { navController.popBackStack() },
             )
-        },
-        content = { innerPadding ->
-            val modifier = Modifier.padding(innerPadding)
-            when (val viewStateResult = viewState.value) {
-                is UiState.Loading -> LoadingScreen()
-                is UiState.Success -> {
-                    PersonScreen(
-                       person = viewStateResult.person,
-                        onMovieClick = onMovieClick,
-                    )
-                }
-                is UiState.Error -> ErrorScreen(
-                    retryAction = { },
-                )
-            }
-        })
+        }
+
+        is UiState.Error -> ErrorScreen(
+            retryAction = { },
+        )
+    }
 }
+
 
 @Composable
 private fun getState(personViewModel: PersonViewModel, personId: Int): State<UiState> {

@@ -3,8 +3,15 @@ package com.shu.home
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -20,7 +27,7 @@ import com.shu.models.media_posts.ListPosts
 fun HomeScreen(
     manyScreens: ManyScreens,
     posts: ListPosts,
-    modifier: Modifier = Modifier,
+    modifier: Modifier ,
     state: LazyListState = rememberLazyListState(),
     onMovieClick: (Int?) -> Unit,
     onPostClick: (Int?) -> Unit,
@@ -28,13 +35,11 @@ fun HomeScreen(
 ) {
 
     Column(
-        modifier = Modifier
+       modifier = modifier,
     ) {
-        Spacer(modifier = Modifier.height(15.dp))
 
         LazyColumn(
             contentPadding = PaddingValues(4.dp),
-            modifier = modifier.padding(top = 10.dp, bottom = 120.dp),
             state = state
         ) {
 
@@ -53,7 +58,6 @@ fun HomeScreen(
 
             }
         }
-        Spacer(modifier = Modifier.height(60.dp))
     }
 }
 

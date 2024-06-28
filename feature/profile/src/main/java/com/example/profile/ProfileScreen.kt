@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,6 +32,7 @@ import com.shu.profile.R
 
 @Composable
 fun ProfileScreen(
+    modifier: Modifier,
     viewModel: ProfileViewModel = hiltViewModel(),
     onCreateClick: () -> Unit,
     onMovieClick: (Int?) -> Unit,
@@ -41,11 +41,8 @@ fun ProfileScreen(
     val collection by viewModel.uiProfile.collectAsState()
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 18.dp, bottom = 120 .dp, end = 18.dp,top = 18.dp)
-        ,
-        verticalArrangement = Arrangement.SpaceBetween
+        modifier = modifier
+            .fillMaxWidth(),
     ) {
 
         item {
@@ -60,9 +57,7 @@ fun ProfileScreen(
                 modifier = Modifier
                     .height(36.dp)
                     .fillMaxWidth(),
-                enabled = true,
                 onClick = { onCreateClick() },
-                contentPadding = PaddingValues(0.dp)
             ) {
                 Text(
                     stringResource(id = R.string.addCoollection),
@@ -74,14 +69,12 @@ fun ProfileScreen(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 items(collection.collections.size) { num ->
-                    collection.collections[num]?.let { collection ->
-                        Item(
-                            collection = collection,
-                            onClick = {
+                    Item(
+                        collection = collection.collections[num],
+                        onClick = {
 //TODO open screen
-                            }
-                        )
-                    }
+                        }
+                    )
                 }
             }
         }

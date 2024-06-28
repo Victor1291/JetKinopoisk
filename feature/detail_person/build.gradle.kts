@@ -43,6 +43,7 @@ android {
 dependencies {
 
     implementation(project(":core:models"))
+    implementation(project(":shared:cinema_elements"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)

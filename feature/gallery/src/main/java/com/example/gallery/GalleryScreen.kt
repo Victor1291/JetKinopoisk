@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -20,7 +18,6 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.InputChip
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,10 +34,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.cinema_elements.TopBar
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GalleryScreen(
+    modifier: Modifier,
     filmId: Int?,
     viewModel: GalleryViewModel = hiltViewModel(),
     list: List<String> = listOf(
@@ -75,96 +74,89 @@ fun GalleryScreen(
             viewModel.setId(filmId)
         }
     }
-    Scaffold(
-        topBar = {
-            TopBar(
-                header = "",
-                leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                onLeftIconClick = { navController.navigateUp() },
-            )
-        },
-        content = { innerPadding ->
-            val modifier = Modifier.padding(innerPadding)
+    Column(
+        modifier = modifier
+    ) {
+        TopBar(
+            header = "Галерея",
+            leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+            onLeftIconClick = { navController.navigateUp() },
+        )
 
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
+
+        LazyRow(
+            contentPadding = PaddingValues(4.dp),
+            modifier = Modifier,
+        ) {
+
+            items(list.size) { category ->
+
+                InputChip(
+                    onClick = {
+                        select.intValue = category
+                        if (viewModel.title != list[category]) {
+                            viewModel.title = list[category]
+                            lazyPagingItems.refresh()
+                        }
+                    },
+                    label = { Text(list[category]) },
+                    selected = category == select.intValue,
+                )
+            }
+        }
+
+        Box(
+            Modifier
+                .fillMaxSize()
+                .pullRefresh(swipeRefreshState)
+        ) {
+            LazyVerticalStaggeredGrid(
+                columns = cellConfiguration,
             ) {
 
-                LazyRow(
-                    contentPadding = PaddingValues(4.dp),
-                    modifier = Modifier,
-                ) {
-
-                    items(list.size) { category ->
-
-                        InputChip(
-                            onClick = {
-                                select.intValue = category
-                                if (viewModel.title != list[category]) {
-                                    viewModel.title = list[category]
-                                    lazyPagingItems.refresh()
-                                }
-                            },
-                            label = { Text(list[category]) },
-                            selected = category == select.intValue,
-                        )
+                if (lazyPagingItems.itemCount != 0) {
+                    expanded = false
+                    items(count = lazyPagingItems.itemCount) { index ->
+                        val item = lazyPagingItems[index]
+                        if (item != null) {
+                            GalleryItemCard(item, onMovieClick = {})
+                        }
                     }
+                } else {
+                    expanded = true
                 }
-
-                Box(
-                    Modifier
-                        .fillMaxSize()
-                        .pullRefresh(swipeRefreshState)
-                        .padding(bottom = 90.dp)
-                ) {
-                    LazyVerticalStaggeredGrid(
-                        columns = cellConfiguration,
-                    ) {
-
-                        if (lazyPagingItems.itemCount != 0) {
-                            expanded = false
-                            items(count = lazyPagingItems.itemCount) { index ->
-                                val item = lazyPagingItems[index]
-                                if (item != null) {
-                                    GalleryItemCard(item, onMovieClick = {})
-                                }
-                            }
-                        } else {
-                            expanded = true
-                        }
-                    }
-                    if (expanded) {
-                        Column(modifier = Modifier.align(Alignment.Center)) {
-                            Text(
-                                text = "No picture. Sorry...",
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentWidth(Alignment.CenterHorizontally),
-                            )
-                        }
-                    }
-                    if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
-                        Column(modifier = Modifier.align(Alignment.Center)) {
-                            Text(
-                                text = "Loading...",
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentWidth(Alignment.CenterHorizontally)
-                            )
-                            CircularProgressIndicator(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentWidth(Alignment.CenterHorizontally)
-                            )
-                        }
-                    }
-                    PullRefreshIndicator(
-                        lazyPagingItems.loadState.append == LoadState.Loading,
-                        swipeRefreshState,
-                        Modifier.align(Alignment.TopCenter)
+            }
+            if (expanded) {
+                Column(modifier = Modifier.align(Alignment.Center)) {
+                    Text(
+                        text = "No picture. Sorry...",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally),
                     )
                 }
             }
-        })
+            if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
+                Column(modifier = Modifier.align(Alignment.Center)) {
+                    Text(
+                        text = "Loading...",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
+                }
+            }
+            PullRefreshIndicator(
+                lazyPagingItems.loadState.append == LoadState.Loading,
+                swipeRefreshState,
+                Modifier.align(Alignment.TopCenter)
+            )
+        }
+    }
 }
+

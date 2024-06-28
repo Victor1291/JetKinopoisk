@@ -1,10 +1,10 @@
 package com.example.search
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -14,7 +14,6 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,6 +38,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SearchScreen(
+    modifier: Modifier,
     listViewModel: ListViewModel = hiltViewModel(),
     onMovieClick: (Int?) -> Unit,
     onActorClick: (Int?) -> Unit,
@@ -49,11 +49,11 @@ fun SearchScreen(
         mutableStateOf(listViewModel.title.value.isSearchPerson)
     }
 
-        val searchTextState = listViewModel.title.collectAsState()
+    val searchTextState = listViewModel.title.collectAsState()
     LaunchedEffect(key1 = 3) {
         listViewModel.setTitle(
             FilmVip(
-                keyword = ""
+                keyword = "doom"
             )
         )
     }
@@ -62,35 +62,31 @@ fun SearchScreen(
         if (isSearchPersonActive.value) listViewModel.pagedMovies.collectAsLazyPagingItems()
         else listViewModel.pagedPerson.collectAsLazyPagingItems()
 
+    val swipeRefreshState =
+        rememberPullRefreshState(false, onRefresh = { lazyPagingItems.refresh() })
 
-    Scaffold(topBar = {
+    val state = rememberLazyGridState()
+    Column(
+        modifier = modifier
+    ) {
         MaterialSearch(
             listViewModel,
             searchTextState = searchTextState,
             onRefreshClick = {
-            lazyPagingItems.refresh()
-        },
+                lazyPagingItems.refresh()
+            },
             onPersonClick = {
                 isSearchPersonActive.value = !isSearchPersonActive.value
                 listViewModel.title.value.isSearchPerson = !listViewModel.title.value.isSearchPerson
             },
             isSearchPersonActive = isSearchPersonActive,
-            onTuneClick = { onTuneClick( searchTextState.value ) }
+            onTuneClick = { onTuneClick(searchTextState.value) }
         )
-    }, content = { innerPadding ->
-        val modifier = Modifier.padding(innerPadding)
-        val swipeRefreshState =
-            rememberPullRefreshState(false, onRefresh = { lazyPagingItems.refresh() })
-
-        val state = rememberLazyGridState()
-
-
         Box(
             Modifier
-                .padding(innerPadding)
                 .fillMaxSize()
                 .pullRefresh(swipeRefreshState)
-                .padding(bottom = 90.dp)
+            //.padding(bottom = 90.dp)
         ) {
             LazyVerticalGrid(
                 modifier = Modifier,
@@ -128,6 +124,7 @@ fun SearchScreen(
                             PersonItemCard(item as SearchPerson, onActorClick = onActorClick)
                     }
                 }
+
             }
             PullRefreshIndicator(
                 lazyPagingItems.loadState.append == LoadState.Loading,
@@ -135,5 +132,5 @@ fun SearchScreen(
                 Modifier.align(Alignment.TopCenter)
             )
         }
-    })
+    }
 }

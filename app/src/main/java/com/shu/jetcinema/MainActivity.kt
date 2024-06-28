@@ -4,13 +4,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.design_system.theme.JetCinemaTheme
+import com.shu.detail_movie.TopBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,11 +41,20 @@ class MainActivity : ComponentActivity() {
                     NavigationScreens.SearchScreen,
                     NavigationScreens.ProfileScreen,
                 )
+
                 Scaffold(
                     content = { padding ->
                         MainNavHost(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(padding)
+                                .consumeWindowInsets(padding)
+                                .windowInsetsPadding(
+                                    WindowInsets.safeDrawing.only(
+                                        WindowInsetsSides.Horizontal,
+                                    ),
+                                ),
                             navController = navController,
-                            paddingValues = padding,
                             viewModel = viewModel,
                             sheetState = sheetState,
                         )

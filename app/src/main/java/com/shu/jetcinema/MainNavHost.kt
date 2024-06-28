@@ -2,7 +2,6 @@ package com.shu.jetcinema
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -11,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -43,7 +43,7 @@ data class Sheet(
 @Composable
 fun MainNavHost(
     navController: NavHostController,
-    paddingValues: PaddingValues,
+    modifier: Modifier,
     viewModel: MainViewModel,
     sheetState: SheetState,
 ) {
@@ -59,6 +59,7 @@ fun MainNavHost(
         composable(NavigationScreens.MainScreen.route) {
             viewModel.changeStateTOpBar(true)
             CheckState(
+                modifier = modifier,
                 onMovieClick = { filmId ->
                     navController.navigate(
                         route = "${NavigationScreens.DetailScreen.route}/${filmId}"
@@ -78,6 +79,7 @@ fun MainNavHost(
         //SearchScreen
         composable(NavigationScreens.SearchScreen.route) {
             SearchScreen(
+                modifier = modifier,
                 onMovieClick = { filmId ->
                     viewModel.changeStateTOpBar(false)
                     navController.navigate(
@@ -107,6 +109,7 @@ fun MainNavHost(
         composable(NavigationScreens.ProfileScreen.route) {
             viewModel.changeStateTOpBar(true)
             ProfileScreen(
+                modifier = modifier,
                 onMovieClick = { filmId ->
                     navController.navigate(
                         route = "${NavigationScreens.DetailScreen.route}/${filmId}"
@@ -130,6 +133,7 @@ fun MainNavHost(
         ) { backStackEntry ->
             backStackEntry.arguments?.getInt(personKey)?.let { personId ->
                 PersonCheckState(
+                    modifier = modifier,
                     personId = personId,
                     navController = navController,
                     onMovieClick = { filmId ->
@@ -155,6 +159,7 @@ fun MainNavHost(
                 //TODO changeStateTOpBar
                 viewModel.changeStateTOpBar(false)
                 DetailCheckState(
+                    modifier = modifier,
                     onMovieClick = { filmId ->
                         navController.navigate(
                             route = "${NavigationScreens.DetailScreen.route}/${filmId}"
@@ -199,6 +204,7 @@ fun MainNavHost(
                 //TODO changeStateTOpBar
                 viewModel.changeStateTOpBar(false)
                 GalleryScreen(
+                    modifier = modifier,
                     navController = navController,
                     filmId = kinopoiskId,
                 )
@@ -224,6 +230,7 @@ fun MainNavHost(
             }
             if (paramsData != null) {
                 FilterSearch(
+                    modifier = modifier,
                     filmVip = paramsData,
                     onBackClick = { navController.popBackStack() },
                 )
@@ -248,6 +255,7 @@ fun MainNavHost(
                 FilmsParametersType.parseValue(it)
             }
             ListScreen(
+                modifier = modifier,
                 filmVip = paramsData,
                 navController = navController,
                 onMovieClick = { filmId ->
