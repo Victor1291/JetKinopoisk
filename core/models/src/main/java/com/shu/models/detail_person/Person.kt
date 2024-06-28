@@ -31,12 +31,12 @@ data class Person(
                 "HESELF" -> addFilmToListMap("Участвует в шоу", film)
                 "HIMSELF" -> addFilmToListMap("Играет себя", film)
                 "HERSELF" -> addFilmToListMap("Участвует в шоу", film)
-                "HRONO_TITR_MALE" -> addFilmToListMap("озвучил", film)
-                "HRONO_TITR_FEMALE" -> addFilmToListMap("озвучила", film)
+                "HRONO_TITR_MALE" -> addFilmToListMap("дублировал", film)
+                "HRONO_TITR_FEMALE" -> addFilmToListMap("дублировала", film)
                 "DIRECTOR" -> addFilmToListMap("Режиссёр", film)
                 "WRITER" -> addFilmToListMap("Автор", film)
-                "VOICE_MALE" -> addFilmToListMap("голос", film)
-                "VOICE_FEMALE" -> addFilmToListMap("голос", film)
+                "VOICE_MALE" -> addFilmToListMap("Дубляж", film)
+                "VOICE_FEMALE" -> addFilmToListMap("Дубляж", film)
                 else -> profession.orEmpty()
             }
         }

@@ -1,8 +1,11 @@
 package com.shu.detail_person
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,6 +17,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.InputChip
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,10 +26,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.cinema_elements.TopBar
@@ -147,6 +153,7 @@ fun PersonScreen(
             items(mainList.value.size) {
                 if (mainList.value[it].nameRu != null) {
                     ItemMovie(mainList.value[it], onMovieClick = onMovieClick)
+                    HorizontalDivider(thickness = 2.dp)
                 }
             }
         }
@@ -158,21 +165,45 @@ private fun ItemMovie(
     movie: MovieOfActor,
     onMovieClick: (Int?) -> Unit,
 ) {
-    Column(
-        modifier = Modifier.clickable { onMovieClick(movie.filmId) },
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        HorizontalDivider()
-        if (movie.rating.isNullOrEmpty()) {
-            Text(text = movie.nameRu.toString())
-        } else {
-            Text(text = " ${movie.rating.toString()}  ${movie.nameRu.toString()}")
-        }
-        if (movie.description?.isNotEmpty() == true) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp)
+            .clickable { onMovieClick(movie.filmId) }
+            .background(Color.Blue.copy(alpha = 0.2f)),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start,
+
+        ) {
+
+        Text(
+            text = if (movie.rating.isNullOrEmpty()) {
+                ""
+            } else {
+                " ${movie.rating.toString()}"
+            },
+            fontSize = 24.sp,
+            modifier = Modifier.padding(8.dp),
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        Column {
+
             Text(
-                text =
-                if (movie.general == true) "главная роль ${movie.description.toString()}" else "роль ${movie.description.toString()}"
+                text = movie.nameRu.toString(),
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(start =  8.dp),
             )
+            if (movie.description?.isNotEmpty() == true) {
+                Text(
+                    text =
+                    if (movie.general == true) "главная роль ${movie.description.toString()}" else "роль ${movie.description.toString()}",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.padding(start = 8.dp),
+                    fontSize = 16.sp,
+                )
+            }
         }
 
     }

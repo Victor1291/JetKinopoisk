@@ -28,41 +28,29 @@ fun PersonItemCard(
     actor: SearchPerson,
     onActorClick: (Int?) -> Unit,
 ) {
-
-    ElevatedCard(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ),
+    Box(
         modifier = Modifier
             .width(150.dp)
-            .height(250.dp)
+            .height(230.dp)
             .clickable { onActorClick(actor.personId) },
-
-        ) {
-
-        Box {
-            AsyncImage(
-                modifier = Modifier.fillMaxSize(),
-                model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(actor.posterUrl)
-                    .build(),
-                contentDescription = "icon",
-                contentScale = ContentScale.FillBounds,
+    ) {
+        AsyncImage(
+            modifier = Modifier.fillMaxSize(),
+            model = ImageRequest.Builder(context = LocalContext.current)
+                .data(actor.posterUrl)
+                .build(),
+            contentDescription = "icon",
+            contentScale = ContentScale.FillBounds,
+        )
+        actor.nameRu?.let {
+            Text(
+                text = it,
+                fontSize = 16.sp,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .background(Color.Transparent.copy(alpha = 0.3f)),
+                color = MaterialTheme.colorScheme.onPrimary
             )
-
-
-            actor.nameRu?.let {
-                Text(
-                    text = it,
-                    maxLines = 2,
-                    fontSize = 24.sp,
-                    modifier = Modifier
-                        .padding(top = 4.dp)
-                        .align(Alignment.BottomStart)
-                        .background(Color.White),
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
         }
     }
 }
