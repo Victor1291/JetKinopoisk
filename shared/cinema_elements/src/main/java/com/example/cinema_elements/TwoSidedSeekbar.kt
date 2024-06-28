@@ -4,7 +4,9 @@ import android.view.MotionEvent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -20,7 +22,10 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.*
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.example.design_system.theme.JetCinemaTheme
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -126,6 +131,7 @@ fun RangeSlider(
                                 rightCircleDragging = true
                             }
                         }
+
                         MotionEvent.ACTION_MOVE -> {
                             val x = motionEvent.x
 
@@ -149,6 +155,7 @@ fun RangeSlider(
                                 rightCircleOffset = rightCircleOffset.copy(x = width * progress2)
                             }
                         }
+
                         MotionEvent.ACTION_UP -> {
                             leftCircleDragging = false
                             rightCircleDragging = false
@@ -269,7 +276,8 @@ fun RangeSlider(
             color = Color.Red
         )
 
-        val textLeft = (progress1 * 10).toString().take(3) //(progress1 * 100).roundToInt().div(10).toString()
+        val textLeft =
+            (progress1 * 10).toString().take(3) //(progress1 * 100).roundToInt().div(10).toString()
         var textLayoutResult = textMeasurer.measure(
             text = AnnotatedString(textLeft),
             style = TextStyle(color = Color.White)
@@ -286,7 +294,8 @@ fun RangeSlider(
             )
         }
 
-        val textRight = (progress2 * 10).toString().take(3) // (progress2 * 100).roundToInt().div(10).toString()
+        val textRight =
+            (progress2 * 10).toString().take(3) // (progress2 * 100).roundToInt().div(10).toString()
         textLayoutResult = textMeasurer.measure(
             text = AnnotatedString(textRight),
             style = TextStyle(color = Color.White)
@@ -300,5 +309,33 @@ fun RangeSlider(
                 y = topR + tooltipHeight.toPx() / 2 - textSize.height / 2
             ),
         )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun RangeSliderPreview() {
+    JetCinemaTheme {
+        RangeSlider(
+            modifier = Modifier
+                .padding(horizontal = 48.dp, vertical = 48.dp)
+                .fillMaxWidth(),
+            rangeColor = Color(73, 147, 236),
+            backColor = Color(203, 225, 246),
+            barHeight = 8.dp,
+            circleRadius = 15.dp,
+            radiusRotate = 30.dp,
+            radius = 15.dp,
+            progress1InitialValue = 0.3f,
+            progress2InitialValue = 0.8f,
+            tooltipSpacing = 10.dp,
+            tooltipWidth = 40.dp,
+            tooltipHeight = 30.dp,
+            cornerRadius = CornerRadius(32f, 32f),
+            tooltipTriangleSize = 8.dp,
+        ) { progress1, progress2 ->
+
+        }
     }
 }

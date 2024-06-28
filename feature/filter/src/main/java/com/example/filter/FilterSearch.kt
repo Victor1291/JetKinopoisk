@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cinema_elements.RowTwoText
 import com.example.cinema_elements.TopBar
 import com.example.cinema_elements.RangeSlider
-import com.example.filter.components.MaterialButtonToggleGroup
+import com.example.cinema_elements.MaterialButtonToggleGroup
 
 import com.shu.models.FilmVip
 

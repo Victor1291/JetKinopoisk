@@ -11,16 +11,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.design_system.theme.JetCinemaTheme
 
 @Composable
 fun RowTwoText(
-    first: String,
-    two: String,
+    first: String = "",
+    two: String = "",
     size: TextUnit = 20.sp,
-    onClick: () -> Unit
+    onClick: () -> Unit = {},
 ) {
 
     Row(
@@ -43,5 +45,13 @@ fun RowTwoText(
                 .clickable { onClick() },
         )
 
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RowTwoTextPreview() {
+    JetCinemaTheme {
+        RowTwoText ("First","Two")
     }
 }

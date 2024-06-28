@@ -12,17 +12,21 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/database" />
+            <option value="$PROJECT_DIR$/core/design_system" />
             <option value="$PROJECT_DIR$/core/models" />
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/bottom_sheet" />
             <option value="$PROJECT_DIR$/feature/detail_movie" />
             <option value="$PROJECT_DIR$/feature/detail_person" />
+            <option value="$PROJECT_DIR$/feature/filter" />
             <option value="$PROJECT_DIR$/feature/gallery" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/list_movies" />
             <option value="$PROJECT_DIR$/feature/profile" />
             <option value="$PROJECT_DIR$/feature/search" />
+            <option value="$PROJECT_DIR$/shared" />
+            <option value="$PROJECT_DIR$/shared/cinema_elements" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

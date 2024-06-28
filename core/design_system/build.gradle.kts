@@ -1,12 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.example.filter"
+    namespace = "com.example.design_system"
     compileSdk = 34
 
     defaultConfig {
@@ -43,19 +41,12 @@ android {
 dependencies {
 
     implementation(project(":core:models"))
-    implementation(project(":shared:cinema_elements"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-
-    //Hilt
-    implementation(libs.bundles.hilt)
-    implementation(libs.androidx.compose.foundation)
-    implementation(project(":core:design_system"))
-    ksp(libs.bundles.hilt.ksp)
 
     //Coil
     implementation(libs.coil.compose)

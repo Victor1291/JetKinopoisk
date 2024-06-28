@@ -34,7 +34,7 @@ fun TopBar(
     leftIconImageVector: ImageVector? = null,
     onLeftIconClick: (() -> Unit)? = null,
     onRightIconClick: (() -> Unit)? = null,
-    isLoading: Boolean = false
+    isLoading: Boolean = false,
 ) {
     Column {
         Row(
@@ -100,7 +100,7 @@ fun TopBar(
 @Composable
 fun PreviewTopBar() {
     TopBar(
-        header = "Moscow",
+        header = "Title",
         leftIconImageVector = Icons.Rounded.Search,
         rightIconImageVector = Icons.Rounded.Settings,
         onLeftIconClick = {},

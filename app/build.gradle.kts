@@ -53,8 +53,8 @@ android {
 
 dependencies {
 
+    //feature
     implementation(project(":feature:home"))
-    implementation(project(":core:models"))
     implementation(project(":feature:detail_movie"))
     implementation(project(":feature:list_movies"))
     implementation(project(":feature:detail_person"))
@@ -63,9 +63,12 @@ dependencies {
     implementation(project(":feature:profile"))
     implementation(project(":feature:gallery"))
     implementation(project(":feature:filter"))
-
+    //core
+    implementation(project(":core:models"))
+    implementation(project(":core:design_system"))
     implementation(project(":core:network"))
     implementation(project(":core:database"))
+
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -76,6 +79,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation)
+    implementation(libs.bundles.compose)
+    implementation(libs.androidx.material)
 
     //Room
     implementation(libs.bundles.room)
