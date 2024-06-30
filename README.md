@@ -47,10 +47,10 @@
 - 1 UI-тест 
 
 ## Многомодульность (14 модулей)
-<img width="1441" alt="Снимок экрана 2023-04-20 в 16 20 50" src="https://user-images.githubusercontent.com/6205122/233400448-744191d2-c99c-41f8-862b-023df89041ea.png">
+
 
 ## Схема БД
-<img width="1266" alt="Снимок экрана 2023-04-20 в 17 20 28" src="https://user-images.githubusercontent.com/6205122/233400767-45e271e9-ceca-414e-bc3d-bcd3a7942a7e.png">
+
 
 ## Дальнейшее развитие
 1) Реализация фичей
