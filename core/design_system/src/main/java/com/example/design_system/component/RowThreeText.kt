@@ -47,6 +47,7 @@ fun RowThreeText(
             Text(
                 text = first,
                 fontSize = 18.sp,
+
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(start = 8.dp),
             )

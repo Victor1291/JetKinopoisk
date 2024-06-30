@@ -3,6 +3,7 @@ package com.shu.detail_movie
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -41,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.design_system.component.RowThreeText
+import com.example.design_system.component.RowTwoColumn
 import com.shu.detail_movie.components.GridActors
 import com.shu.detail_movie.components.LazyRowGallery
 import com.shu.detail_movie.components.LazyRowSimilar
@@ -152,17 +153,18 @@ fun DetailScreen(
                         imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                         tint = MaterialTheme.colorScheme.onPrimary,
                         contentDescription = "back",
-
-                        )
+                        modifier = Modifier.padding(1.dp)
+                    )
                 }
 
                 //Buttons Menu - favorite, seeLater,watched,  Share, Browsing
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color.Transparent.copy(alpha = 0.4f))
+                        .padding(bottom = 4.dp)
                         .align(Alignment.BottomCenter),
                     verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     InputSelectorButton(
                         onClick = {
@@ -199,7 +201,7 @@ fun DetailScreen(
                     )
                     InputSelectorButton(
                         onClick = { movie.webUrl?.let { onBrowsingClick(it) } },
-                        icon = painterResource(id = android.R.drawable.ic_dialog_info),
+                        icon = painterResource(id = R.drawable.icon_browser),
                         selected = false,
                         description = stringResource(id = R.string.brouser)
                     )
@@ -208,7 +210,10 @@ fun DetailScreen(
 
                     // Collections Menu button
                     IconButton(
-                        modifier = Modifier.height(36.dp),
+                        modifier = Modifier
+                            .height(36.dp)
+                            .clip(CircleShape)
+                            .background(Color.Transparent.copy(alpha = 0.3f)),
                         enabled = true,
                         onClick = onCollectionClick,
                     ) {
@@ -216,7 +221,7 @@ fun DetailScreen(
                             painterResource(id = R.drawable.icon_menu),
                             tint = Color.White,
                             modifier = Modifier
-                                .padding(8.dp)
+                                .padding(1.dp)
                                 .size(56.dp),
                             contentDescription = "collection"
                         )
@@ -229,11 +234,10 @@ fun DetailScreen(
         // Rating, genre , country, FilmLength, ratingAgeLimits
         item {
 
-            RowThreeText(rowId = movie.kinopoiskId,
-                rating = if (movie.ratingKinopoisk == null) "    " else " ${movie.ratingKinopoisk}",
-                first = movie.year?.let { year ->
-                    "$year ${movie.genresList}"
-                } ?: movie.genresList,
+            RowTwoColumn(rowId = movie.kinopoiskId,
+                rating = if (movie.ratingKinopoisk == null) "" else "${movie.ratingKinopoisk}",
+                year = if (movie.year == null) "" else "${movie.year}",
+                first = movie.genresList,
                 second = movie.cityRateFilmLength,
                 onClick = {})
         }
@@ -329,7 +333,9 @@ private fun InputSelectorButton(
     modifier: Modifier = Modifier
 ) {
     IconButton(
-        onClick = onClick, modifier = modifier //.then(backgroundModifier)
+        onClick = onClick, modifier = modifier
+            .clip(CircleShape)
+            .background(Color.Transparent.copy(alpha = 0.3f))
     ) {
         val tint = if (selected) {
             Color.Red// contentColorFor(backgroundColor = LocalContentColor.current)
@@ -340,7 +346,7 @@ private fun InputSelectorButton(
             icon,
             tint = tint,
             modifier = Modifier
-                .padding(8.dp)
+                .padding(1.dp)
                 .size(56.dp),
             contentDescription = description
         )

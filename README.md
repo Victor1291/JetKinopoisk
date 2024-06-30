@@ -36,8 +36,8 @@
 - Kotlin Coroutines для асинхронных операций + Flow
 - Retrofit + Kotlin Serialization для сетевого взаимодействия
 - Room для БД
-- 5 unit-тестов для фичи списка счетов
-- 1 UI-тест сценария открытия нового счета
+- 5 unit-тестов для фич
+- 1 UI-тест 
 
 ## Многомодульность (14 модулей)
 <img width="1441" alt="Снимок экрана 2023-04-20 в 16 20 50" src="https://user-images.githubusercontent.com/6205122/233400448-744191d2-c99c-41f8-862b-023df89041ea.png">

@@ -58,16 +58,19 @@ data class DetailMovie(
     val genresList: String
         get() = genres.joinToString(",") { it.genre }
     private val rate: String
-        get() = ratingAgeLimits?.replace("age", "+") ?: ""
-    private val hours = filmLength?.div(60)
+        get() = ratingAgeLimits?.replace("age", "") ?: "0"
 
-    //  private val minute = hours?.let { filmLength?.minus(it.times(60)) }
-    private val lenght: String
-        get() = "${filmLength?.div(60) ?: ""}:${hours?.let { filmLength?.minus(it.times(60)) } ?: ""}"
+    private val hours = filmLength?.div(60) ?: 0
 
+    private val length: String
+        get() = "${if (hours == 0) "" else "${hours}h"}${
+            if (filmLength != null && filmLength > 60) filmLength.minus(
+                hours.times(60)
+            ) else ""
+        }"
 
     val cityRateFilmLength: String
-        get() = "$countriesList $lenght $rate"
+        get() = "$countriesList $length $rate+"
 
 
 }
