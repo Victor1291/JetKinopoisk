@@ -72,7 +72,7 @@ fun PersonScreen(
                 AsyncImage(
                     modifier = Modifier
                         .height(320.dp)
-                        .width(210.dp),
+                        .width(230.dp),
                     model = ImageRequest.Builder(context = LocalContext.current)
                         .data(person.posterUrl).crossfade(true).build(),
                     contentDescription = "poster",

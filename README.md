@@ -5,24 +5,29 @@
 #### _Для сетевого взаимодействия используется открытое API  - <code>[kinopoisk](https://kinopoiskapiunofficial.tech/)</code>_
 
 ## Реализованные фичи:
-### 1. Просмотр списка счетов и общей суммы по ним
+### 1. Главный экран - подборка списков фильмов по категориям Премьеры, Популярные, Топ - 250 , Сериалы. 
 
-<img src="https://user-images.githubusercontent.com/6205122/233399923-abfb103d-3ccb-43fb-8865-e27c72481a5c.png" alt="drawing" width="300"/>
-
-
-### 2. Создание нового счета
-
-<img src="https://user-images.githubusercontent.com/6205122/233399974-50c5e620-057e-4d83-aba9-9adcfa2c1afa.png" alt="drawing" width="300"/>
+![Макет фронта](imgs/mainScreen.jpg)
 
 
-### 3. Выбор валюты счета
+### 2. Просмотр информация по фильму. Списки актёров, галерея фотоснимков и похожие фильмы.
 
-<img src="https://user-images.githubusercontent.com/6205122/233400046-512c241d-831b-42f3-bc34-90f2ca1761ff.png" alt="drawing" width="300"/>
+![Макет фронта](imgs/detail1.jpg)  ![Макет фронта](imgs/detail2.jpg)
 
 
-### 4. Редактирование счета
+### 3. Возможность локально создавать свои коллекции фильмов. 
 
-<img src="https://user-images.githubusercontent.com/6205122/233400098-c0ae31f8-6ea4-4942-989c-fba55c0d8478.png" alt="drawing" width="300"/>
+![Макет фронта](imgs/collections.jpg)
+
+### 4. Поиск фильмов и актёров 
+
+![Макет фронта](imgs/searchActor.jpg)  
+
+### 5. Галлерея снимков по разным категориям  - За кадром, Постеры, Скриншоты, Фан Арт.
+
+![Макет фронта](imgs/galery.jpg)
+
+### 6. Информация об Актёрах и актрисах и фильмах в которых снимался
 
 
 ## Стек технологий:
@@ -31,6 +36,8 @@
 - Single Activity Application паттерн
 - MVVM в презентационном слое на AAC (ViewModel + StateFlow)
 - навигация Jetpack Navigation
+- Paging 3 , пагинация.
+- SwipeRefresh, Acomponist.
 - Многомодульность
 - Dagger Hilt в качестве DI для организации архитектуры приложения
 - Kotlin Coroutines для асинхронных операций + Flow
