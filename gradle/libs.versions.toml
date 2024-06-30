@@ -93,6 +93,7 @@ compose = [
     "androidx-ui-tooling-preview",
     "androidx-material3",
     "androidx-navigation",
+    "androidx-compose-foundation",
 ]
 
 hilt = [

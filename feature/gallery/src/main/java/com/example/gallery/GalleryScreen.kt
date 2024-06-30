@@ -34,7 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.cinema_elements.TopBar
+import com.example.design_system.component.TopBar
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

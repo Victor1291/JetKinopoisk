@@ -1,5 +1,6 @@
 package com.example.search
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,28 +40,27 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchScreen(
     modifier: Modifier,
-    listViewModel: ListViewModel = hiltViewModel(),
+    filter: FilmVip?,
+    searchViewModel: SearchViewModel = hiltViewModel(),
     onMovieClick: (Int?) -> Unit,
     onActorClick: (Int?) -> Unit,
     onTuneClick: (FilmVip) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val isSearchPersonActive = remember {
-        mutableStateOf(listViewModel.title.value.isSearchPerson)
+        mutableStateOf(searchViewModel.title.value.isSearchPerson)
     }
-
-    val searchTextState = listViewModel.title.collectAsState()
+    val searchTextState = searchViewModel.title.collectAsState()
     LaunchedEffect(key1 = 3) {
-        listViewModel.setTitle(
-            FilmVip(
-                keyword = "doom"
-            )
-        )
+        if (filter != null) {
+            Log.d("searchScreen", "  not null $filter ")
+            searchViewModel.setFilter(filter)
+        }
     }
 
     val lazyPagingItems =
-        if (isSearchPersonActive.value) listViewModel.pagedMovies.collectAsLazyPagingItems()
-        else listViewModel.pagedPerson.collectAsLazyPagingItems()
+        if (isSearchPersonActive.value) searchViewModel.pagedMovies.collectAsLazyPagingItems()
+        else searchViewModel.pagedPerson.collectAsLazyPagingItems()
 
     val swipeRefreshState =
         rememberPullRefreshState(false, onRefresh = { lazyPagingItems.refresh() })
@@ -70,14 +70,15 @@ fun SearchScreen(
         modifier = modifier
     ) {
         MaterialSearch(
-            listViewModel,
+            searchViewModel,
             searchTextState = searchTextState,
             onRefreshClick = {
                 lazyPagingItems.refresh()
             },
             onPersonClick = {
                 isSearchPersonActive.value = !isSearchPersonActive.value
-                listViewModel.title.value.isSearchPerson = !listViewModel.title.value.isSearchPerson
+                searchViewModel.title.value.isSearchPerson =
+                    !searchViewModel.title.value.isSearchPerson
             },
             isSearchPersonActive = isSearchPersonActive,
             onTuneClick = { onTuneClick(searchTextState.value) }

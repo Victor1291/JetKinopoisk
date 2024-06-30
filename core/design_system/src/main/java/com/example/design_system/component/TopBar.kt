@@ -1,4 +1,4 @@
-package com.example.cinema_elements
+package com.example.design_system.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row

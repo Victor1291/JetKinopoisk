@@ -1,5 +1,6 @@
-package com.example.cinema_elements
+package com.example.design_system.component
 
+import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -113,7 +114,7 @@ fun RangeSlider(
             .height(barHeight)
             .pointerInteropFilter(
                 onTouchEvent = { motionEvent ->
-
+Log.d("Init progress", " $progress1 -_ $progress2")
                     when (motionEvent.action) {
                         MotionEvent.ACTION_DOWN -> {
                             val x = motionEvent.x

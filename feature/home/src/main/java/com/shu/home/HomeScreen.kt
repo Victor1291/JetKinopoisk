@@ -2,16 +2,6 @@ package com.shu.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -22,12 +12,11 @@ import com.shu.models.FilmVip
 import com.shu.models.ManyScreens
 import com.shu.models.media_posts.ListPosts
 
-
 @Composable
 fun HomeScreen(
     manyScreens: ManyScreens,
     posts: ListPosts,
-    modifier: Modifier ,
+    modifier: Modifier,
     state: LazyListState = rememberLazyListState(),
     onMovieClick: (Int?) -> Unit,
     onPostClick: (Int?) -> Unit,
@@ -35,7 +24,7 @@ fun HomeScreen(
 ) {
 
     Column(
-       modifier = modifier,
+        modifier = modifier,
     ) {
 
         LazyColumn(
@@ -51,7 +40,7 @@ fun HomeScreen(
 
                 LazyRowMovie(
                     list = manyScreens.homeListScreen[num],
-                    num,
+                    num = num,
                     onMovieClick = onMovieClick,
                     onListClick = onListClick
                 )

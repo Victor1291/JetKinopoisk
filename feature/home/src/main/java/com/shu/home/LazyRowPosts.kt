@@ -31,9 +31,9 @@ fun LazyRowPosts(
     LaunchedEffect(key1 = 1) {
         val max = posts.items.size
         coroutineScope.launch {
-            while(true) {
+            while (true) {
                 repeat(max) {
-                    delay(3000)
+                    delay(5000)
                     state.animateScrollToItem(state.firstVisibleItemIndex + 1)
                 }
                 state.scrollToItem(0)
@@ -47,8 +47,12 @@ fun LazyRowPosts(
 
         posts.items.size.let { size ->
             items(size) { index ->
-                //TODO по клику окрывать url или искать сериал или фильм по id
-                PostItemCard(posts.items[index], onPostClick = onPostClick, onExpandedClick = { expanded = it } ,  modifier = modifier, expanded = expanded)
+                PostItemCard(
+                    posts.items[index],
+                    onPostClick = onPostClick,
+                    onExpandedClick = { expanded = it },
+                    modifier = modifier,
+                    expanded = expanded)
             }
         }
     }

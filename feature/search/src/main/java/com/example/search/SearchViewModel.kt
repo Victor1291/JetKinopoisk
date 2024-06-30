@@ -1,5 +1,6 @@
 package com.example.search
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -21,16 +22,17 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class ListViewModel @Inject constructor(
-    private val repository: PagingSearchRepository
+class SearchViewModel @Inject constructor(
+    private val repository: PagingSearchRepository,
 ) : ViewModel() {
 
-    private var _title = MutableStateFlow(FilmVip())
+    private var _title = MutableStateFlow(FilmVip().copy(keyword = "frog"))
     val title = _title.asStateFlow()
-    private var titleIn = FilmVip()
+    private var titleIn = title.value
 
     init {
         title.onEach {
+            Log.d("searchViewModel onEach", "$it")
             titleIn = it
         }.launchIn(viewModelScope)
     }
@@ -55,7 +57,7 @@ class ListViewModel @Inject constructor(
         }
     ).flow.cachedIn(viewModelScope)
 
-    fun setTitle(titleNew: FilmVip) {
+    fun setFilter(titleNew: FilmVip) {
         _title.value = titleNew
     }
 }

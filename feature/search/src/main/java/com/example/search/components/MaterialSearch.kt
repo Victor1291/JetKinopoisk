@@ -3,25 +3,19 @@ package com.example.search.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imeNestedScroll
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -35,10 +29,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.search.ListViewModel
+import com.example.search.SearchViewModel
 import com.example.search.components.Utils.originUsersList
 import com.shu.models.FilmVip
 import com.shu.mylibrary.R
@@ -46,7 +39,7 @@ import com.shu.mylibrary.R
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun MaterialSearch(
-    viewModel: ListViewModel,
+    viewModel: SearchViewModel,
     searchTextState: State<FilmVip>,
     onRefreshClick: () -> Unit,
     onPersonClick: () -> Unit,
@@ -63,12 +56,12 @@ fun MaterialSearch(
         .fillMaxWidth(),
         query = searchTextState.value.keyword,
         onQueryChange = { text ->
-            viewModel.setTitle(FilmVip(keyword = text))
+            viewModel.setFilter(FilmVip(keyword = text))
             onRefreshClick()
             // mainList.value = Utils.search(text, originUsersList)
         },
         onSearch = { text ->
-            viewModel.setTitle(FilmVip(keyword = text))
+            viewModel.setFilter(FilmVip(keyword = text))
             onRefreshClick()
             isActive.value = false
         },
@@ -93,7 +86,7 @@ fun MaterialSearch(
         },
         trailingIcon = {
             Icon(
-                Icons.Default.Build,
+                Icons.Rounded.Settings,
                 tint = Color.Black,
                 modifier = Modifier
                     .padding(8.dp)
@@ -114,7 +107,7 @@ fun MaterialSearch(
 
                         Text(text = mainList.value[item],
                             modifier = Modifier.clickable {
-                                viewModel.setTitle(FilmVip(keyword = mainList.value[item]))
+                                viewModel.setFilter(FilmVip(keyword = mainList.value[item]))
                                 onRefreshClick()
                                 isActive.value = false
                             })

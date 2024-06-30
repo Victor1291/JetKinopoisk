@@ -127,8 +127,8 @@ class HomeRepositoryImpl @Inject constructor(
             type = "FILM",
             yearFrom = 2000,
             yearTo = 2024,
-            ratingFrom = 7,
-            ratingTo = 10,
+            ratingFrom = 7.0f,
+            ratingTo = 10.0f,
         )
 
         return api.filmVip(

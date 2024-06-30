@@ -1,4 +1,4 @@
-package com.shu.detail_movie
+package com.shu.detail_movie.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,7 +10,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.cinema_elements.RowTwoText
+import com.example.design_system.component.RowTwoText
+import com.example.design_system.component.GalleryItemCard
 import com.shu.models.gallery_models.ListGalleryItems
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,7 +43,7 @@ fun LazyRowGallery(
         modifier = Modifier
     ) {
 
-        RowTwoText(first = "Галерея", two = "All", onClick = { onAllClick() })
+        RowTwoText(first = "Галерея", second = "All", onClick = { onAllClick() })
 
         LazyRow(
             contentPadding = PaddingValues(4.dp),

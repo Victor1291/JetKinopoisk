@@ -43,7 +43,7 @@ android {
 dependencies {
 
     implementation(project(":core:models"))
-    implementation(project(":shared:cinema_elements"))
+    implementation(project(":core:design_system"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
@@ -65,7 +65,7 @@ dependencies {
     //Swipe to refresh
     implementation("com.google.accompanist:accompanist-swiperefresh:0.34.0")
 
-    implementation("androidx.compose.material:material:1.6.7")
+    implementation("androidx.compose.material:material:1.6.8")
     // Needed to get a view model reference in Jetpack Compose
     //implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
 }

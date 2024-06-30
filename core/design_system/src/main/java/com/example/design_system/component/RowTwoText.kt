@@ -1,11 +1,10 @@
-package com.example.cinema_elements
+package com.example.design_system.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,8 +19,8 @@ import com.example.design_system.theme.JetCinemaTheme
 @Composable
 fun RowTwoText(
     first: String = "",
-    two: String = "",
-    size: TextUnit = 20.sp,
+    second: String = "",
+    size: TextUnit = 16.sp,
     onClick: () -> Unit = {},
 ) {
 
@@ -38,7 +37,7 @@ fun RowTwoText(
             color = MaterialTheme.colorScheme.primary,
         )
         Text(
-            text = two,
+            text = second,
             color = MaterialTheme.colorScheme.primary,
             fontSize = size,
             modifier = Modifier

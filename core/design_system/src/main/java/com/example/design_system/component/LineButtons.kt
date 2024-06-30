@@ -1,4 +1,4 @@
-package com.example.cinema_elements.components
+package com.example.design_system.component
 
 import androidx.compose.runtime.Composable
 

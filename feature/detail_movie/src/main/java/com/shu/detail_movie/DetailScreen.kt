@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,6 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.design_system.component.RowThreeText
+import com.shu.detail_movie.components.GridActors
+import com.shu.detail_movie.components.LazyRowGallery
+import com.shu.detail_movie.components.LazyRowSimilar
 import com.shu.models.details.Actor
 import com.shu.models.details.DetailMovie
 import com.shu.models.gallery_models.ListGalleryItems
@@ -78,9 +81,11 @@ fun DetailScreen(
 
 
     LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(4.dp)
+        modifier = modifier, contentPadding = PaddingValues(4.dp)
     ) {
+
+
+        // coverUrl, Logo, nameRu
         item {
             Box(modifier = Modifier.clickable {
 
@@ -110,7 +115,7 @@ fun DetailScreen(
                             )
                     } else {
                         Text(
-                            text = movie.nameRu ?: "",
+                            text = if (movie.nameRu.isNullOrEmpty()) "${movie.nameEn}" else "${movie.nameRu}",
                             lineHeight = 35.sp,
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Medium,
@@ -135,6 +140,7 @@ fun DetailScreen(
                         contentScale = ContentScale.FillBounds,
                     )
                 }
+                // Back Button
                 IconButton(
                     onClick = { onBackClick() },
                     modifier = Modifier
@@ -150,8 +156,10 @@ fun DetailScreen(
                         )
                 }
 
+                //Buttons Menu - favorite, seeLater,watched,  Share, Browsing
                 Row(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .background(Color.Transparent.copy(alpha = 0.4f))
                         .align(Alignment.BottomCenter),
                     verticalAlignment = Alignment.CenterVertically,
@@ -196,9 +204,9 @@ fun DetailScreen(
                         description = stringResource(id = R.string.brouser)
                     )
 
-                    Spacer(modifier = Modifier.weight(1f))
+                    // Spacer(modifier = Modifier.weight(1f))
 
-                    // Send button
+                    // Collections Menu button
                     IconButton(
                         modifier = Modifier.height(36.dp),
                         enabled = true,
@@ -218,100 +226,35 @@ fun DetailScreen(
             }
         }
 
-        item {
-            ElevatedCard(
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ), modifier = Modifier
-                    .padding(4.dp)
-            ) {
-                Text(
-                    text = movie.year?.let { year ->
-                        "$year ${movie.genresList}"
-                    } ?: movie.genresList,
-                    lineHeight = 16.sp,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                )
-                Text(
-                    text = movie.cityRateFilmLength,
-                    lineHeight = 16.sp,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
+        // Rating, genre , country, FilmLength, ratingAgeLimits
         item {
 
+            RowThreeText(rowId = movie.kinopoiskId,
+                rating = if (movie.ratingKinopoisk == null) "    " else " ${movie.ratingKinopoisk}",
+                first = movie.year?.let { year ->
+                    "$year ${movie.genresList}"
+                } ?: movie.genresList,
+                second = movie.cityRateFilmLength,
+                onClick = {})
+        }
+
+        //Description Movie with animation
+        item {
             if (movie.shortDescription != null) {
-                ElevatedCard(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { expanded = !expanded },
-                ) {
-                    AnimatedVisibility(!expanded) {
-                        Text(
-                            text = "${movie.shortDescription}...",
-                            lineHeight = 20.sp,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Medium,
-                            //  maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                    AnimatedVisibility(expanded) {
-                        Text(
-                            text = movie.description ?: "",
-                            lineHeight = 20.sp,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Medium,
-                            // maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                }
+                AnimatedCard(first = "${movie.shortDescription}...",
+                    second = movie.description ?: "",
+                    expanded = expanded,
+                    onClick = { expanded = !expanded })
             } else if (movie.description != null) {
-                ElevatedCard(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { expanded = !expanded },
-                ) {
-                    AnimatedVisibility(!expanded) {
-                        Text(
-                            text = movie.description.toString(),
-                            lineHeight = 20.sp,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Medium,
-                            maxLines = 3,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                    AnimatedVisibility(expanded) {
-                        Text(
-                            text = movie.description.toString(),
-                            lineHeight = 20.sp,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Medium,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                }
+
+                AnimatedCard(first = movie.description ?: "",
+                    second = movie.description ?: "",
+                    expanded = expanded,
+                    onClick = { expanded = !expanded })
             }
         }
 
-
+        // Grids Person - Actor, Creator and itc.
         item {
             GridActors(
                 actors = actors,
@@ -320,6 +263,7 @@ fun DetailScreen(
             )
         }
 
+        // Gallery STILL
         item {
 
             if (gallery.items.isNotEmpty()) {
@@ -331,6 +275,7 @@ fun DetailScreen(
             }
         }
 
+        // Grid Similar Movie
         item {
             if (similar.items.isNotEmpty()) {
                 LazyRowSimilar(similar = similar, onMovieClick = onMovieClick)
@@ -338,6 +283,41 @@ fun DetailScreen(
         }
     }
 
+}
+
+@Composable
+private fun AnimatedCard(
+    first: String,
+    second: String,
+    expanded: Boolean,
+    onClick: () -> Unit,
+) {
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
+        modifier = Modifier
+            .padding(4.dp)
+            .clickable { onClick() },
+    ) {
+        AnimatedVisibility(!expanded) {
+            Text(
+                text = first, lineHeight = 20.sp, fontSize = 15.sp, fontWeight = FontWeight.Medium,
+                //  maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        AnimatedVisibility(expanded) {
+            Text(
+                text = second,
+                lineHeight = 20.sp,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Medium,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+    }
 }
 
 @Composable

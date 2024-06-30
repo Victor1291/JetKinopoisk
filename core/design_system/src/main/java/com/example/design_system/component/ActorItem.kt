@@ -1,4 +1,4 @@
-package com.shu.detail_movie
+package com.example.design_system.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

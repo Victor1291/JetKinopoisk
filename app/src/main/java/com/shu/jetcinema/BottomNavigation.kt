@@ -28,6 +28,7 @@ fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) 
         items.forEach { screen ->
             Spacer(Modifier.weight(1f, true))
             IconButton(onClick = {
+
                 navController.navigate(screen.route) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
@@ -35,6 +36,8 @@ fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) 
                     launchSingleTop = true
                     restoreState = true
                 }
+
+
             }) {
                 Icon(screen.icon, contentDescription = "Localized description")
             }

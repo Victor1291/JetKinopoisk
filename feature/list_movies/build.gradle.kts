@@ -43,6 +43,7 @@ android {
 dependencies {
 
     implementation(project(":core:models"))
+    implementation(project(":core:design_system"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
@@ -53,7 +54,6 @@ dependencies {
     //Hilt
     implementation(libs.bundles.hilt)
     implementation(libs.androidx.compose.foundation)
-    implementation(project(":shared:cinema_elements"))
     ksp(libs.bundles.hilt.ksp)
 
     //Coil

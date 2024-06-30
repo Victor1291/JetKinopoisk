@@ -1,6 +1,5 @@
 package com.shu.models.details
 
-import com.shu.models.CinemaItem
 import com.shu.models.Countries
 import com.shu.models.Genres
 
@@ -54,19 +53,20 @@ data class DetailMovie(
     var watched: Boolean = false,
     var seeLater: Boolean = false,
 ) {
-    val countriesList: String
-        get() = countries.joinToString(","){it.country}
+    private val countriesList: String
+        get() = countries.joinToString(",") { it.country }
     val genresList: String
-        get() = genres.joinToString(","){it.genre}
-    private val rate : String
+        get() = genres.joinToString(",") { it.genre }
+    private val rate: String
         get() = ratingAgeLimits?.replace("age", "+") ?: ""
     private val hours = filmLength?.div(60)
-    private val minute = hours?.let { filmLength?.minus(it.times(60)) }
-    val lenght : String
-        get() = "$hours:$minute"
+
+    //  private val minute = hours?.let { filmLength?.minus(it.times(60)) }
+    private val lenght: String
+        get() = "${filmLength?.div(60) ?: ""}:${hours?.let { filmLength?.minus(it.times(60)) } ?: ""}"
 
 
-    val cityRateFilmLength : String
+    val cityRateFilmLength: String
         get() = "$countriesList $lenght $rate"
 
 

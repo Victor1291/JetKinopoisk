@@ -1,4 +1,4 @@
-package com.shu.detail_movie
+package com.shu.detail_movie.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,7 +9,8 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.cinema_elements.RowTwoText
+import com.example.design_system.component.RowTwoText
+import com.example.design_system.component.ActorItem
 import com.shu.models.details.Actor
 
 @Composable
@@ -22,7 +23,7 @@ fun GridActors(
         modifier = Modifier
     ) {
 
-        RowTwoText(first = "В фильме участвовали", two = "All", onClick = { onAllClick() })
+        RowTwoText(first = "В фильме участвовали", second = "All", onClick = { onAllClick() })
 
         LazyHorizontalGrid(
             rows = GridCells.Fixed(2),

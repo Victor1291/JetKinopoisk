@@ -43,7 +43,6 @@ android {
 dependencies {
 
     implementation(project(":core:models"))
-    implementation(project(":shared:cinema_elements"))
     implementation(project(":core:design_system"))
 
     implementation(platform(libs.androidx.compose.bom))
@@ -60,4 +59,5 @@ dependencies {
 
     //Coil
     implementation(libs.coil.compose)
+
 }

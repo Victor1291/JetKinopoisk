@@ -1,39 +1,52 @@
 package com.example.filter
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.cinema_elements.MaterialButtonToggleGroup
-import com.example.cinema_elements.RangeSlider
-import com.example.cinema_elements.RowTwoText
-import com.example.cinema_elements.TopBar
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.design_system.component.MaterialButtonToggleGroup
+import com.example.design_system.component.NiaFilterChip
+import com.example.design_system.component.RangeSlider
+import com.example.design_system.component.RowTwoText
+import com.example.design_system.component.TopBar
 import com.shu.models.FilmVip
+import kotlin.math.roundToInt
 
 @Composable
 fun FilterSearch(
     modifier: Modifier,
     filmVip: FilmVip,
-    onBackClick: () -> Unit
+    viewModel: FilterViewModel = hiltViewModel(),
+    onBackClick: (FilmVip) -> Unit,
+    onCountryClick: (FilmVip) -> Unit,
+    onGenresClick: (FilmVip) -> Unit,
 ) {
 
-    var begin by remember {
-        mutableStateOf("0")
-    }
-    var end by remember {
-        mutableStateOf("10")
+    LaunchedEffect(key1 = true) {
+        Log.i("searchFilter", "start $filmVip ")
+        viewModel.setFilter(filmVip)
     }
 
+    val filter = viewModel.filter.collectAsState()
+
+
+    var select = remember {
+        mutableStateOf(true)
+    }
     Column(
         modifier = modifier
     ) {
@@ -41,24 +54,30 @@ fun FilterSearch(
         TopBar(
             header = "Настройки поиска",
             leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-            onLeftIconClick = { onBackClick() },
+            onLeftIconClick = { onBackClick(filter.value) },
         )
         MaterialButtonToggleGroup(
             items = listOf("Все", "Фильмы", "Сериалы"),
             selected = selectFilm(filmVip.type),
             onClick = {
-                println(" onClick Filter $it ")
+                onCountryClick(filter.value)
             }
         )
 
-        RowTwoText(first = "Страна", two = filmVip.countryName, onClick = { })
-        RowTwoText(first = "Жанр", two = filmVip.genresName, onClick = { })
-        RowTwoText(first = "Год", two = "${filmVip.yearFrom} - ${filmVip.yearTo}", onClick = { })
+        RowTwoText(first = "Страна", second = filter.value.countryName, onClick = { })
+        RowTwoText(first = "Жанр", second = filter.value.genresName, onClick = { })
+        RowTwoText(
+            first = "Год",
+            second = "${filter.value.yearFrom} - ${filter.value.yearTo}",
+            onClick = { })
         RowTwoText(
             first = "Рейтинг",
-            two = "$begin-$end",
+            second = "${filter.value.ratingFrom} - ${filter.value.ratingTo}",
             onClick = { })
-
+        RowTwoText(
+            first = "Рейтинг2",
+            second = "${filter.value.ratingFrom.div(10)} - ${filter.value.ratingTo.div(10)}",
+            onClick = { })
         RangeSlider(
             modifier = Modifier
                 .padding(horizontal = 48.dp, vertical = 48.dp)
@@ -69,26 +88,33 @@ fun FilterSearch(
             circleRadius = 15.dp,
             radiusRotate = 30.dp,
             radius = 15.dp,
-            progress1InitialValue = 0.3f,
-            progress2InitialValue = 0.8f,
+            progress1InitialValue = filter.value.ratingFrom.div(10),
+            progress2InitialValue = filter.value.ratingTo.div(10),
             tooltipSpacing = 10.dp,
             tooltipWidth = 40.dp,
             tooltipHeight = 30.dp,
             cornerRadius = CornerRadius(32f, 32f),
             tooltipTriangleSize = 8.dp,
         ) { progress1, progress2 ->
-            begin = (progress1 * 10).toString().take(3)
-            end = (progress2 * 10).toString().take(3)
+            val begin = (progress1 * 100).roundToInt().toFloat().div(10)
+            val end = (progress2 * 100).roundToInt().toFloat().div(10)
+            viewModel.setFilter(filter.value.copy(ratingFrom = begin, ratingTo = end))
         }
 
         MaterialButtonToggleGroup(
             items = listOf("Дата", "Популярность", "Рейтинг"),
             selected = selectOrder(filmVip.order),
             onClick = {
-                println(" onClick Filter $it ")
+                onGenresClick(filter.value)
             }
         )
 
+        NiaFilterChip(
+            selected = select.value,
+            iconFirst = Icons.Rounded.Check,
+            onSelectedChange = { select.value = !select.value }) {
+            Text(text = if (select.value) "просмотреные" else "не просмотренные")
+        }
 
     }
 }

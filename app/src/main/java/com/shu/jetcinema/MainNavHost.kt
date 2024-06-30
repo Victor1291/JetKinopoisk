@@ -1,7 +1,10 @@
 package com.shu.jetcinema
 
+import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -32,13 +35,16 @@ import com.shu.models.details.DetailMovie
 
 
 private const val argumentKey = "arg"
+private const val filterKey = "filter"
 private const val personKey = "person"
+private const val key = "data"
 
 data class Sheet(
     var isShow: Boolean = false,
     var film: DetailMovie? = null
 )
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainNavHost(
@@ -51,10 +57,13 @@ fun MainNavHost(
     var showBottomSheet by remember {
         mutableStateOf(Sheet())
     }
+
+
     val context = LocalContext.current.applicationContext
 
     NavHost(
-        navController = navController, startDestination = NavigationScreens.MainScreen.route
+        navController = navController,
+        startDestination = NavigationScreens.MainScreen.route
     ) {
         composable(NavigationScreens.MainScreen.route) {
             viewModel.changeStateTOpBar(true)
@@ -76,35 +85,7 @@ fun MainNavHost(
                 }
             )
         }
-        //SearchScreen
-        composable(NavigationScreens.SearchScreen.route) {
-            SearchScreen(
-                modifier = modifier,
-                onMovieClick = { filmId ->
-                    viewModel.changeStateTOpBar(false)
-                    navController.navigate(
-                        route = "${NavigationScreens.DetailScreen.route}/${filmId}"
-                    )
-                },
-                onActorClick = { personId ->
-                    navController.navigate(
-                        route = "${NavigationScreens.PersonScreen.route}/${personId}"
-                    )
-                },
-                onTuneClick = { vip ->
-                    val filmsLink = "${NavigationScreens.FilterScreen.route}/${
-                        FilmsParametersType.serializeAsValue(vip)
-                    }"
-                    navController.navigate(
-                        route = filmsLink
-                    )
-                }
 
-            )
-            BackHandler {
-                navController.popBackStack()
-            }
-        }
         //ProfileScreen
         composable(NavigationScreens.ProfileScreen.route) {
             viewModel.changeStateTOpBar(true)
@@ -214,25 +195,72 @@ fun MainNavHost(
             }
         }
 
+        //SearchScreen
+        composable(
+            route = NavigationScreens.SearchScreen.route
+        ) { navBackStackEntry ->
+            val text = navBackStackEntry.savedStateHandle.get<String>(key)
+            val paramsData = text?.let {
+                FilmsParametersType.parseValue(it)
+            }
+            Log.i("seaBundle", " $paramsData")
+            SearchScreen(
+                modifier = modifier,
+                filter = paramsData,
+                onMovieClick = { filmId ->
+                    viewModel.changeStateTOpBar(false)
+                    navController.navigate(
+                        route = "${NavigationScreens.DetailScreen.route}/${filmId}"
+                    )
+                },
+                onActorClick = { personId ->
+                    navController.navigate(
+                        route = "${NavigationScreens.PersonScreen.route}/${personId}"
+                    )
+                },
+                onTuneClick = { vip ->
+                    val filmsLink = "${NavigationScreens.FilterScreen.route}/${
+                        FilmsParametersType.serializeAsValue(vip)
+                    }"
+                    navController.navigate(
+                        route = filmsLink
+                    )
+                }
+            )
+
+
+            BackHandler {
+                navController.popBackStack()
+            }
+        }
         //FilterScreen
         composable(
-            route = "${NavigationScreens.FilterScreen.route}/{$argumentKey}",
-            arguments = listOf(navArgument(argumentKey) {
+            route = "${NavigationScreens.FilterScreen.route}/{$filterKey}",
+            arguments = listOf(navArgument(filterKey) {
                 type = FilmsParametersType
             })
         ) { navBackStackEntry ->
 
             val arguments = navBackStackEntry.arguments
-            val params = arguments?.getString(argumentKey)
+            val params = arguments?.getString(filterKey)
 
             val paramsData = params?.let {
                 FilmsParametersType.parseValue(it)
             }
+            Log.e("seaFilter", "  $paramsData")
             if (paramsData != null) {
                 FilterSearch(
                     modifier = modifier,
                     filmVip = paramsData,
-                    onBackClick = { navController.popBackStack() },
+                    onBackClick = { vip ->
+                        Log.e("seaFilter", " save $vip")
+                        navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.set(key, FilmsParametersType.serializeAsValue(vip))
+                        navController.popBackStack()
+                    },
+                    onCountryClick = {},
+                    onGenresClick = {},
                 )
             }
 
@@ -277,7 +305,7 @@ fun MainNavHost(
                 type = NavType.IntType
             })
         ) { backStackEntry ->
-            backStackEntry.arguments?.getInt(argumentKey)?.let { kinopoiskId ->
+            backStackEntry.arguments?.getInt(argumentKey)?.let {
                 InputDialogView(
                     onDismiss = {
                         navController.popBackStack()
@@ -312,6 +340,7 @@ fun MainNavHost(
 
         }
     }
+    //TODO добавить флаг сокрытия панели нижней навигации и топ бара.
 }
 
 
