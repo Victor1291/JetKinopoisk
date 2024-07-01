@@ -1,9 +1,9 @@
 package com.shu.home
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.shu.home.state.ErrorScreen
 import com.shu.home.state.LoadingScreen
@@ -11,7 +11,7 @@ import com.shu.models.FilmVip
 
 @Composable
 fun CheckState(
-    modifier: Modifier,
+    innerPadding: PaddingValues,
     viewModel: HomeViewModel = hiltViewModel(),
     onMovieClick: (Int?) -> Unit,
     onPostClick: (Int?) -> Unit,
@@ -24,7 +24,7 @@ fun CheckState(
         is UiState.Success -> {
             with(viewState as UiState.Success) {
                 HomeScreen(
-                    modifier = modifier,
+                    innerPadding = innerPadding,
                     manyScreens = manyScreens,
                     posts = posts,
                     onPostClick = onPostClick,

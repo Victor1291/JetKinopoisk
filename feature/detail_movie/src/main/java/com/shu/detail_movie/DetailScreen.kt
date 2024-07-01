@@ -54,6 +54,7 @@ import com.shu.models.similar_models.ListSimilar
 @Composable
 fun DetailScreen(
     modifier: Modifier,
+    innerPadding: PaddingValues,
     viewModel: DetailViewModel,
     movie: DetailMovie,
     actors: List<Actor>,
@@ -82,7 +83,8 @@ fun DetailScreen(
 
 
     LazyColumn(
-        modifier = modifier, contentPadding = PaddingValues(4.dp)
+        //modifier = modifier,
+        contentPadding = innerPadding
     ) {
 
 

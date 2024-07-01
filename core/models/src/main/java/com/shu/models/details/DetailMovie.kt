@@ -70,7 +70,9 @@ data class DetailMovie(
         }"
 
     val cityRateFilmLength: String
-        get() = "$countriesList $length $rate+"
+        get() = if (countriesList.length > 20)  "${countriesList.take(20)}. $length $rate+"
+    else "$countriesList $length $rate+"
+
 
 
 }

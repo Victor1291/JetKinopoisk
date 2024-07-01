@@ -40,6 +40,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchScreen(
     modifier: Modifier,
+    innerPadding: PaddingValues,
     filter: FilmVip?,
     searchViewModel: SearchViewModel = hiltViewModel(),
     onMovieClick: (Int?) -> Unit,
@@ -92,7 +93,7 @@ fun SearchScreen(
             LazyVerticalGrid(
                 modifier = Modifier,
                 columns = GridCells.Adaptive(150.dp),
-                contentPadding = PaddingValues(4.dp),
+                contentPadding = innerPadding,
                 state = state,
             ) {
 

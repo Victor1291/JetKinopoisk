@@ -14,8 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.design_system.theme.JetCinemaTheme
 
 @Composable
 fun RowTwoColumn(
@@ -60,10 +62,10 @@ fun RowTwoColumn(
             }
         }
 
-        Column (
+        Column(
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.Start
-        ){
+        ) {
 
             if (first.isNotEmpty()) {
                 Text(
@@ -77,7 +79,7 @@ fun RowTwoColumn(
                 )
             }
 
-            if(second.isNotEmpty()) {
+            if (second.isNotEmpty()) {
                 Text(
                     text = second,
                     modifier = Modifier.padding(start = 8.dp),
@@ -91,5 +93,26 @@ fun RowTwoColumn(
 
         }
 
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun RowTwoColumnPreview() {
+    JetCinemaTheme {
+        val countriesList = "Russia, Belarus, China, India "
+        val length = "2h30"
+        val rate = "18"
+        val second = if (countriesList.length > 30)  "${countriesList.take(20)}. $length $rate+"
+        else "$countriesList $length $rate+"
+        RowTwoColumn(
+            rowId = 1,
+            rating = "7.7",
+            year = "2024",
+            first = "Comedy,action,detective",
+            second = second,
+            onClick = {}
+        )
     }
 }

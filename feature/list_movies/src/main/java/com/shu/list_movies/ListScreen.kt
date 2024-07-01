@@ -33,6 +33,7 @@ import com.shu.models.FilmVip
 @Composable
 fun ListScreen(
     modifier: Modifier,
+    innerPadding: PaddingValues,
     filmVip: FilmVip?,
     listViewModel: ListViewModel = hiltViewModel(),
     navController: NavHostController,
@@ -51,7 +52,7 @@ fun ListScreen(
     }
 
     Column(
-        modifier = modifier
+      //  modifier = modifier
     ) {
 
         TopBar(
@@ -68,7 +69,7 @@ fun ListScreen(
             LazyVerticalGrid(
                 // modifier = Modifier.padding(bottom = 80.dp),
                 columns = GridCells.Adaptive(150.dp),
-                contentPadding = PaddingValues(4.dp),
+                contentPadding = innerPadding,
             ) {
                 if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
                     item {

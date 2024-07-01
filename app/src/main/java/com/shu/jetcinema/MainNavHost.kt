@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -52,6 +53,8 @@ fun MainNavHost(
     modifier: Modifier,
     viewModel: MainViewModel,
     sheetState: SheetState,
+    innerPadding : PaddingValues,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
 
     var showBottomSheet by remember {
@@ -68,7 +71,7 @@ fun MainNavHost(
         composable(NavigationScreens.MainScreen.route) {
             viewModel.changeStateTOpBar(true)
             CheckState(
-                modifier = modifier,
+                innerPadding = innerPadding,
                 onMovieClick = { filmId ->
                     navController.navigate(
                         route = "${NavigationScreens.DetailScreen.route}/${filmId}"
@@ -91,6 +94,7 @@ fun MainNavHost(
             viewModel.changeStateTOpBar(true)
             ProfileScreen(
                 modifier = modifier,
+                innerPadding = innerPadding,
                 onMovieClick = { filmId ->
                     navController.navigate(
                         route = "${NavigationScreens.DetailScreen.route}/${filmId}"
@@ -141,6 +145,7 @@ fun MainNavHost(
                 viewModel.changeStateTOpBar(false)
                 DetailCheckState(
                     modifier = modifier,
+                    innerPadding = innerPadding,
                     onMovieClick = { filmId ->
                         navController.navigate(
                             route = "${NavigationScreens.DetailScreen.route}/${filmId}"
@@ -206,6 +211,7 @@ fun MainNavHost(
             Log.i("seaBundle", " $paramsData")
             SearchScreen(
                 modifier = modifier,
+                innerPadding = innerPadding,
                 filter = paramsData,
                 onMovieClick = { filmId ->
                     viewModel.changeStateTOpBar(false)
@@ -284,6 +290,7 @@ fun MainNavHost(
             }
             ListScreen(
                 modifier = modifier,
+                innerPadding = innerPadding,
                 filmVip = paramsData,
                 navController = navController,
                 onMovieClick = { filmId ->

@@ -2,6 +2,7 @@ package com.shu.detail_movie
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -19,6 +20,7 @@ import com.shu.models.details.DetailMovie
 @Composable
 fun DetailCheckState(
     modifier: Modifier,
+    innerPadding: PaddingValues,
     filmId: Int,
     viewModel: DetailViewModel = hiltViewModel(),
     navController: NavHostController,
@@ -41,6 +43,7 @@ fun DetailCheckState(
             with(viewState as UiState.Success) {
                 DetailScreen(
                     modifier = modifier,
+                    innerPadding = innerPadding,
                     viewModel = viewModel,
                     movie = result.film,
                     actors = if (result.actorFilm.size < 20) result.actorFilm else result.actorFilm.take(
