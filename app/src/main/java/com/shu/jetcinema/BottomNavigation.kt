@@ -1,6 +1,5 @@
 package com.shu.jetcinema
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.BottomAppBar
