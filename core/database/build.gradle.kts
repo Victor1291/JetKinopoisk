@@ -38,6 +38,7 @@ dependencies {
 
     //Room
     implementation(libs.bundles.room)
+    testImplementation("org.testng:testng:6.9.6")
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.hilt.android)

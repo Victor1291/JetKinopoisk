@@ -37,6 +37,12 @@
       <entry key="app_launches()">
         <State />
       </entry>
+      <entry key="check_HomeScreen()">
+        <State />
+      </entry>
+      <entry key="check_HomeScreen() (1)">
+        <State />
+      </entry>
       <entry key="makeSearch_LoadMovies()">
         <State>
           <runningDeviceTargetSelectedWithDropDown>
@@ -52,12 +58,6 @@
           </runningDeviceTargetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-07-01T22:22:05.768403300Z" />
         </State>
-      </entry>
-      <entry key="show_screen()">
-        <State />
-      </entry>
-      <entry key="useAppContext()">
-        <State />
       </entry>
     </value>
   </component>

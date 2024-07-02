@@ -1,5 +1,6 @@
 package com.shu.jetcinema
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.BottomAppBar
@@ -8,6 +9,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -39,7 +41,7 @@ fun BottomNav(navController: NavHostController, items: List<NavigationScreens>) 
 
 
             }) {
-                Icon(screen.icon, contentDescription = "Localized description")
+                Icon(screen.icon, contentDescription =stringResource(screen.label))
             }
 
         }
