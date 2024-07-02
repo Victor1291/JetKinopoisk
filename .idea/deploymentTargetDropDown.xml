@@ -3,12 +3,41 @@
   <component name="deploymentTargetDropDown">
     <value>
       <entry key="AppTest">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="SERIAL_NUMBER" />
+                  <value value="adb-RZCW80N442X-BTD5pf._adb-tls-connect._tcp" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-07-01T22:11:02.081725300Z" />
+        </State>
+      </entry>
+      <entry key="app">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="SERIAL_NUMBER" />
+                  <value value="adb-RZCW80N442X-BTD5pf._adb-tls-connect._tcp" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-07-02T01:48:38.461734300Z" />
+        </State>
+      </entry>
+      <entry key="app_launches()">
         <State />
       </entry>
-      <entry key="MovieDaoTest">
-        <State />
-      </entry>
-      <entry key="PreviewTopBar">
+      <entry key="makeSearch_LoadMovies()">
         <State>
           <runningDeviceTargetSelectedWithDropDown>
             <Target>
@@ -16,29 +45,19 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\vshut\.android\avd\Pixel_8_API_29.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-06-28T00:45:37.204492900Z" />
-        </State>
-      </entry>
-      <entry key="app">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
                   <value value="C:\Users\vshut\.android\avd\Pixel_5_API_26.avd" />
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-06-30T11:44:03.926857900Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-07-01T22:22:05.768403300Z" />
         </State>
+      </entry>
+      <entry key="show_screen()">
+        <State />
+      </entry>
+      <entry key="useAppContext()">
+        <State />
       </entry>
     </value>
   </component>

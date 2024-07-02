@@ -15,8 +15,9 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.shu.jetcinema.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -94,18 +95,21 @@ dependencies {
     //Gson
     implementation(libs.gson)
 
+
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.androidx.test.rules)
-    kspAndroidTest(libs.hilt.android.compiler)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(libs.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    kspAndroidTest(libs.hilt.android.compiler)
+
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-
+    debugImplementation(libs.androidx.tracing)
 
 }

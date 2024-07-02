@@ -1,6 +1,9 @@
 package com.example.bottom_sheet
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shu.models.domain.CollectionsRepository
@@ -22,6 +25,8 @@ class BottomSheetViewModel @Inject constructor(
 ) : ViewModel() {
 
     var movieId = 0
+
+    var shouldDisplayCreateCollection by mutableStateOf(false)
 
     private val collectionsAll = collectionsRepository.getCollection(movieId)
 
@@ -78,6 +83,7 @@ class BottomSheetViewModel @Inject constructor(
         //TODO
         viewModelScope.launch(Dispatchers.IO) {
             collectionsRepository.onAdd(nameCollection, icon)
+            shouldDisplayCreateCollection = true
         }
 
     }
@@ -92,6 +98,10 @@ class BottomSheetViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             collectionsRepository.removeMovieInDb(collection, movieId)
         }
+    }
+
+    fun clearUndoState() {
+        shouldDisplayCreateCollection = false
     }
 
     fun setNewCollection() {

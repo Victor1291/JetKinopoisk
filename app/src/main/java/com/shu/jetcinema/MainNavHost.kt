@@ -30,7 +30,7 @@ import com.example.profile.ProfileScreen
 import com.example.search.SearchScreen
 import com.shu.detail_movie.DetailCheckState
 import com.shu.detail_person.PersonCheckState
-import com.shu.home.CheckState
+import com.shu.home.MainCheckState
 import com.shu.list_movies.ListScreen
 import com.shu.models.details.DetailMovie
 
@@ -70,7 +70,7 @@ fun MainNavHost(
     ) {
         composable(NavigationScreens.MainScreen.route) {
             viewModel.changeStateTOpBar(true)
-            CheckState(
+            MainCheckState(
                 innerPadding = innerPadding,
                 onMovieClick = { filmId ->
                     navController.navigate(
@@ -314,6 +314,7 @@ fun MainNavHost(
         ) { backStackEntry ->
             backStackEntry.arguments?.getInt(argumentKey)?.let {
                 InputDialogView(
+                    onShowSnackbar = onShowSnackbar,
                     onDismiss = {
                         navController.popBackStack()
                     }

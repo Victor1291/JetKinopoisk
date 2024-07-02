@@ -10,7 +10,7 @@ import com.shu.home.state.LoadingScreen
 import com.shu.models.FilmVip
 
 @Composable
-fun CheckState(
+fun MainCheckState(
     innerPadding: PaddingValues,
     viewModel: HomeViewModel = hiltViewModel(),
     onMovieClick: (Int?) -> Unit,
