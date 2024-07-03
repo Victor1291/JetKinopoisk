@@ -1,4 +1,4 @@
-package com.shu.models
+package com.example.domain
 
 import org.junit.Test
 

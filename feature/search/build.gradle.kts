@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.roborazzi) apply false
 }
 
 android {
@@ -68,4 +69,11 @@ dependencies {
     implementation("androidx.compose.material:material:1.6.8")
     // Needed to get a view model reference in Jetpack Compose
     //implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+  //  testDemoImplementation(libs.roborazzi)
 }

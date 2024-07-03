@@ -91,9 +91,9 @@ fun SearchScreen(
             ): Offset {
 
                 val delta = available.y
-                Log.d("delta", " $delta")
+                //Log.d("delta", " $delta")
                 val newOffset =
-                    topBarOffsetHeightPx.floatValue - delta //меняем снаправление + или -
+                    topBarOffsetHeightPx.floatValue - delta //меняем направление + или -
                 topBarOffsetHeightPx.floatValue = newOffset.coerceIn(0f, topBarHeightPx)
 
                 return Offset.Zero
