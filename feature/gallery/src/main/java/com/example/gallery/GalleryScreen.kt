@@ -1,43 +1,50 @@
 package com.example.gallery
 
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.InputChip
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.design_system.component.TopBar
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -77,36 +84,63 @@ fun GalleryScreen(
             viewModel.setId(filmId)
         }
     }
-    Column(
-        modifier = modifier
-    ) {
-        TopBar(
-            header = "Галерея",
-            leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-            onLeftIconClick = { navController.navigateUp() },
-        )
 
+    //Hide Scroll
+    val topBarHeight = 70.dp
+    val topBarHeightPx = with(LocalDensity.current) { topBarHeight.roundToPx().toFloat() }
+    val topBarOffsetHeightPx = remember { mutableFloatStateOf(0f) }
 
-        LazyRow(
-            contentPadding = PaddingValues(4.dp),
-            modifier = Modifier,
-        ) {
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(
+                available: Offset, source: NestedScrollSource
+            ): Offset {
 
-            items(list.size) { category ->
+                val delta = available.y
+                Log.d("delta", " $delta")
+                val newOffset =
+                    topBarOffsetHeightPx.floatValue - delta //меняем снаправление + или -
+                topBarOffsetHeightPx.floatValue = newOffset.coerceIn(0f, topBarHeightPx)
 
-                InputChip(
-                    onClick = {
-                        select.intValue = category
-                        if (viewModel.title != list[category]) {
-                            viewModel.title = list[category]
-                            lazyPagingItems.refresh()
-                        }
-                    },
-                    label = { Text(list[category]) },
-                    selected = category == select.intValue,
-                )
+                return Offset.Zero
             }
         }
+    }
+
+
+    Scaffold(modifier = Modifier.nestedScroll(nestedScrollConnection),
+
+
+        topBar = @Composable {
+
+            LazyRow(
+                contentPadding = PaddingValues(4.dp),
+                modifier = Modifier.padding(top = 20.dp)
+                    .height(topBarHeight)
+                    .offset {
+                        IntOffset(
+                            x = 0,
+                            y = -topBarOffsetHeightPx.floatValue.roundToInt()
+                        )
+                    },
+            ) {
+
+                items(list.size) { category ->
+
+                    InputChip(
+                        onClick = {
+                            select.intValue = category
+                            if (viewModel.title != list[category]) {
+                                viewModel.title = list[category]
+                                lazyPagingItems.refresh()
+                            }
+                        },
+                        label = { Text(list[category]) },
+                        selected = category == select.intValue,
+                    )
+                }
+            }
+        }) { innerPaing ->
 
         Box(
             Modifier
@@ -115,6 +149,7 @@ fun GalleryScreen(
         ) {
             LazyVerticalStaggeredGrid(
                 columns = cellConfiguration,
+                contentPadding = innerPaing
             ) {
 
                 if (lazyPagingItems.itemCount != 0) {
