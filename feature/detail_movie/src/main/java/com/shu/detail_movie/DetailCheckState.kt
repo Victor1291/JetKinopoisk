@@ -13,8 +13,8 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.shu.detail_movie.state.ErrorScreen
-import com.shu.detail_movie.state.LoadingScreen
+import com.example.design_system.state.ErrorScreen
+import com.example.design_system.state.LoadingScreen
 import com.shu.models.details.DetailMovie
 
 @Composable
@@ -63,9 +63,10 @@ fun DetailCheckState(
                     onShareClick = { imdb ->
 
                         val shareIntent = Intent(Intent.ACTION_SEND)
+                        val urlImdb = "https://www.imdb.com/title/$imdb/"
                         shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         shareIntent.setType("text/plain")
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, imdb)
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, urlImdb)
                         val newIntent = Intent.createChooser(shareIntent, "ShareWith")
                         newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 

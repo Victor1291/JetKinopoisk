@@ -6,8 +6,8 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.shu.detail_person.state.ErrorScreen
-import com.shu.detail_person.state.LoadingScreen
+import com.example.design_system.state.ErrorScreen
+import com.example.design_system.state.LoadingScreen
 
 @Composable
 fun PersonCheckState(
@@ -31,7 +31,8 @@ fun PersonCheckState(
         }
 
         is UiState.Error -> ErrorScreen(
-            retryAction = { },
+            message = viewStateResult.message,
+            retryAction = { navController.navigateUp() },
         )
     }
 }

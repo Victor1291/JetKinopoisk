@@ -1,7 +1,8 @@
-package com.shu.detail_person.state
+package com.example.design_system.state
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material3.Text
@@ -16,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.wear.compose.foundation.lazy.verticalNegativePadding
 
 @Preview
 @Composable
@@ -23,7 +25,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 
 
     Box(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(

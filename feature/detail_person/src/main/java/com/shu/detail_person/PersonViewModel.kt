@@ -1,20 +1,10 @@
 package com.shu.detail_person
 
 import android.util.Log
-import androidx.lifecycle.viewModelScope
-import com.shu.detail_person.domain.PersonRepository
 import androidx.lifecycle.ViewModel
+import com.shu.detail_person.domain.PersonRepository
 import com.shu.models.detail_person.Person
-import com.shu.models.details.Actor
-import com.shu.models.details.DetailMovie
-import com.shu.models.gallery_models.ListGalleryItems
-import com.shu.models.similar_models.ListSimilar
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed interface UiState {
@@ -22,7 +12,7 @@ sealed interface UiState {
         val person: Person,
     ) : UiState
 
-    data object Error : UiState
+    data class Error(val message: String) : UiState
     data object Loading : UiState
 }
 
@@ -38,7 +28,7 @@ class PersonViewModel @Inject constructor(private val personRepository: PersonRe
             )
         } catch (e: Exception) {
             Log.e("viewmodelError", "Error $e")
-            UiState.Error
+            UiState.Error(e.toString())
         }
     }
 }
