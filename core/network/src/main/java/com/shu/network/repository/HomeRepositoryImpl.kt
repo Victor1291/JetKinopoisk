@@ -1,21 +1,20 @@
 package com.shu.network.repository
 
 import android.icu.text.SimpleDateFormat
-import com.shu.models.ListCinema
-import com.shu.models.FilmVip
-import com.shu.network.ServiceMovieApi
 import android.util.Log
 import com.example.database.MovieDao
 import com.example.database.modelDbo.FiltersDbo
-import com.shu.list_movies.domain.PagingRepository
 import com.shu.home.domain.HomeRepository
-import com.shu.models.Choice
+import com.shu.list_movies.domain.PagingRepository
 import com.shu.models.CinemaItem
 import com.shu.models.Countries
+import com.shu.models.FilmVip
 import com.shu.models.Genres
+import com.shu.models.ListCinema
 import com.shu.models.ListFilters
 import com.shu.models.ManyScreens
 import com.shu.models.media_posts.ListPosts
+import com.shu.network.ServiceMovieApi
 import com.shu.network.models.filters.mapFromApi
 import com.shu.network.models.filters.mapFromBd
 import com.shu.network.models.filters.mapToBd
@@ -42,13 +41,13 @@ class HomeRepositoryImpl @Inject constructor(
             var list250: List<CinemaItem> = emptyList()
             var listFrance: List<CinemaItem> = emptyList()
             var listSerials: List<CinemaItem> = emptyList()
-            var genres  : List<Genres> = emptyList()
+            val listTitle = mutableListOf("Премьеры","Популярное","Топ 250","","","Сериалы")
 
             //Получаю списки Стран и жанров из базы данных
-            val genreCountryBd  : FiltersDbo? = movieDao.getFilters()
+            val genreCountryBd: FiltersDbo? = movieDao.getFilters()
 
             //Проверка, и получение списка из Апи.
-            val genreCountry : ListFilters? = if (genreCountryBd?.countries.isNullOrEmpty() ) {
+            val genreCountry: ListFilters? = if (genreCountryBd?.countries.isNullOrEmpty()) {
                 val genreCountryApi = api.genreCountry()
                 val gCBd = genreCountryApi.mapToBd()
                 movieDao.saveToBd(gCBd)
@@ -65,25 +64,41 @@ class HomeRepositoryImpl @Inject constructor(
                 Calendar.MONTH,
                 Calendar.LONG_FORMAT, Locale("en")
             )
+           var filmVipOne = FilmVip()
+           var filmVipTwo = FilmVip()
 
             launch {
+
                 launch {
-                    listPremier = getPremieres(year, month ?: "MAY").items
+                    listPremier = getPremieres(year, month ?: "MAY").items.shuffled()
                 }
                 launch {
                     listPopular = getPopular(1).items
                 }
                 launch {
                     list250 = getTop250(1).items
+
                 }
                 launch {
                     if (genreCountry != null) {
-                        listUSA = choiceCountry(genreCountry.countries, genreCountry.genres)
+                        filmVipOne = choiceCountry(genreCountry.countries, genreCountry.genres)
+                        listUSA = api.filmVip(
+                            page = filmVipOne.page,
+                            country = filmVipOne.country,
+                            genres = filmVipOne.genres,
+                        ).items.map { it.mapFrom() }
+                        listTitle[3] = ("${genreCountry.genres[filmVipOne.country].genre} ${genreCountry.countries[filmVipOne.country].country} ")
                     }
                 }
                 launch {
                     if (genreCountry != null) {
-                        listFrance = choiceCountry(genreCountry.countries, genreCountry.genres)
+                        filmVipTwo = choiceCountry(genreCountry.countries, genreCountry.genres)
+                        listFrance = api.filmVip(
+                            page = filmVipTwo.page,
+                            country = filmVipTwo.country,
+                            genres = filmVipTwo.genres,
+                        ).items.map { it.mapFrom() }
+                        listTitle[4] = ("${genreCountry.genres[filmVipTwo.country].genre} ${genreCountry.countries[filmVipTwo.country].country} ")
                     }
                 }
                 launch {
@@ -92,14 +107,17 @@ class HomeRepositoryImpl @Inject constructor(
             }.join()
 
             return@coroutineScope ManyScreens(
-                listOf(
+                homeListScreen = listOf(
                     listPremier,
                     listPopular,
                     list250,
                     listUSA,
                     listFrance,
                     listSerials
-                )
+                ),
+                listTitle = listTitle.toList(),
+                filmVipOne = filmVipOne,
+                filmVipTwo = filmVipTwo,
             )
         }
     }
@@ -108,41 +126,29 @@ class HomeRepositoryImpl @Inject constructor(
         return api.getPosts(page).toListPosts()
     }
 
-    private suspend fun choiceCountry(countries: List<Countries>,genres: List<Genres>): List<CinemaItem> {
+    private fun choiceCountry(countries: List<Countries>, genres: List<Genres>): FilmVip {
 
         val randomIdCountry = Random.nextInt(20)
         val randomIdGenre = Random.nextInt(13)
 
-        val country = countries[randomIdCountry].country
-        val genre = genres[randomIdGenre].genre
+       // val country = countries[randomIdCountry].country
+//val genre = genres[randomIdGenre].genre
         val idCountry = countries[randomIdCountry].id
         val idGenres = genres[randomIdGenre].id
 
-        val vip = Choice(
+
+        return FilmVip(
             page = 1,
             country = idCountry,
             genres = idGenres,
-            countryName = country,
-            genresName = genre,
+            order = "",
             type = "FILM",
+            ratingFrom = 5.0f,
+            ratingTo = 10.0f,
             yearFrom = 2000,
             yearTo = 2024,
-            ratingFrom = 7.0f,
-            ratingTo = 10.0f,
+            keyword = ""
         )
-
-        return api.filmVip(
-            page = vip.page,
-            country = vip.country,
-            genres = vip.genres,
-            order = vip.order,
-            type = vip.type,
-            ratingFrom = vip.ratingFrom,
-            ratingTo = vip.ratingTo,
-            yearFrom = vip.yearFrom,
-            yearTo = vip.yearTo,
-            keyword = vip.keyword
-        ).items.map { it.mapFrom() }
     }
 
     private fun getTime(): String {

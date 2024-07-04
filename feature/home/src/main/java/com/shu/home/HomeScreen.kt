@@ -27,6 +27,8 @@ fun HomeScreen(
 
             LazyRowMovie(
                 list = manyScreens.homeListScreen[num],
+                title = manyScreens.listTitle[num],
+                vip = if (num == 3) manyScreens.filmVipOne else manyScreens.filmVipTwo,
                 num = num,
                 onMovieClick = onMovieClick,
                 onListClick = onListClick

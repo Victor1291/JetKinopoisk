@@ -19,6 +19,8 @@ import com.shu.models.FilmVip
 fun LazyRowMovie(
     modifier: Modifier = Modifier,
     list: List<CinemaItem>,
+    title: String,
+    vip: FilmVip,
     num: Int,
     onMovieClick: (Int?) -> Unit,
     listName: List<ETitle> = listOf(
@@ -38,9 +40,9 @@ fun LazyRowMovie(
     ) {
 
         RowTwoText(
-            first = listName[num].name,
-            second = "ALL",
-            onClick = { onListClick(FilmVip(title = listName[num])) })
+            first = title,
+            second = "All",
+            onClick = { onListClick(vip.copy(title = listName[num])) })
 
         LazyRow(
             contentPadding = PaddingValues(4.dp), modifier = modifier, state = state

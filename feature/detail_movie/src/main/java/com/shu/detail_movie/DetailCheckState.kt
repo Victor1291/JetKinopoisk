@@ -30,8 +30,10 @@ fun DetailCheckState(
     onAllClick: (Int?) -> Unit,
 ) {
     val viewState by viewModel.uiState.collectAsState()
+
     val context: Context = LocalContext.current.applicationContext
     val uriHandler = LocalUriHandler.current
+
     LaunchedEffect(key1 = true) {
         viewModel.getDetailUi(filmId)
         viewModel.filmId = filmId

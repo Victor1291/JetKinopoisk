@@ -20,7 +20,7 @@ import kotlin.random.Random
 sealed interface UiState {
     data class Success(
         val manyScreens: ManyScreens,
-        val posts: ListPosts
+        val posts: ListPosts,
     ) : UiState
 
     data class Error(val message: String) : UiState
