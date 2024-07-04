@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -29,14 +28,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.shu.models.details.DetailMovie
 import com.shu.models.collections.Collections
+import com.shu.models.details.DetailMovie
 
 @Composable
 fun BottomSheetScreen(
@@ -49,14 +49,14 @@ fun BottomSheetScreen(
     val collection by viewModel.uiCollections.collectAsState()
 
     LaunchedEffect(key1 = true) {
-        viewModel.movieId = film.kinopoiskId ?: 0
+        viewModel.movieId = film.kinopoiskId
         viewModel.refresh()
     }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(18.dp),
+            .padding(dimensionResource(id = R.dimen.padding_16)),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
@@ -88,17 +88,16 @@ fun BottomSheetScreen(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             items(collection.size) { num ->
-                collection[num]?.let { collection ->
+                collection[num].let { collection ->
                     BottomSheetItem(
                         collection = collection,
                         onClick = {
-                            Log.d("isChecked begin","${collection.checked}")
+                            Log.d("isChecked begin", "${collection.checked}")
                             collection.checked = !collection.checked
                             if (collection.checked) {
                                 Log.d("true checked", "true")
                                 viewModel.addMovieInCollection(num + 1)
-                            }
-                            else {
+                            } else {
                                 Log.d("false checked", "false")
                                 viewModel.removeMovieInCollection(num + 1)
                             }
@@ -138,7 +137,11 @@ fun BottomSheetItem(
             .padding(start = 16.dp, end = 16.dp)
     ) {
         IconToggleButton(checked = collection.checked, onCheckedChange = {}) {
-            val tint by animateColorAsState(if (collection.checked) Color(0xFFEC407A) else Color(0xFFB0BEC5))
+            val tint by animateColorAsState(
+                if (collection.checked) Color(0xFFEC407A) else Color(
+                    0xFFB0BEC5
+                ), label = ""
+            )
             Icon(Icons.Filled.Favorite, contentDescription = "Localized description", tint = tint)
         }
         Text(

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -44,7 +45,8 @@ fun MaterialSearch(
     onRefreshClick: () -> Unit,
     onPersonClick: () -> Unit,
     onTuneClick: () -> Unit,
-    isSearchPersonActive : MutableState<Boolean>
+    isSearchPersonActive : MutableState<Boolean>,
+    modifier: Modifier
 ) {
     val isActive = remember {
         mutableStateOf(false)
@@ -52,7 +54,7 @@ fun MaterialSearch(
     val mainList = remember {
         mutableStateOf(originUsersList)
     }
-    SearchBar(modifier = Modifier
+    DockedSearchBar(modifier = modifier.padding(start = 8.dp,end = 8.dp,top = 20.dp)
         .fillMaxWidth(),
         query = searchTextState.value.keyword,
         onQueryChange = { text ->
@@ -79,7 +81,7 @@ fun MaterialSearch(
                     tint = Color.Black,
                     modifier = Modifier
                         .padding(8.dp)
-                        .size(48.dp)
+                        .size(38.dp)
                         .clickable { onPersonClick() },
                     contentDescription = stringResource(R.string.personsearch)
                 )
@@ -90,13 +92,13 @@ fun MaterialSearch(
                 tint = Color.Black,
                 modifier = Modifier
                     .padding(8.dp)
-                    .size(48.dp)
+                    .size(38.dp)
                     .clickable { onTuneClick() },
                 contentDescription = stringResource(R.string.tuning)
             )
         }
     ) {
-        Box {
+       /* Box {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize() // fill the entire window
@@ -123,7 +125,7 @@ fun MaterialSearch(
             ) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
             }
-        }
+        }*/
     }
 }
 

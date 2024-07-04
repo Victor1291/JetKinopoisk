@@ -2,10 +2,11 @@ package com.example.search
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -15,15 +16,23 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -35,6 +44,7 @@ import com.shu.models.CinemaItem
 import com.shu.models.FilmVip
 import com.shu.models.detail_person.SearchPerson
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -67,23 +77,61 @@ fun SearchScreen(
         rememberPullRefreshState(false, onRefresh = { lazyPagingItems.refresh() })
 
     val state = rememberLazyGridState()
-    Column(
-        modifier = modifier
-    ) {
-        MaterialSearch(
-            searchViewModel,
-            searchTextState = searchTextState,
-            onRefreshClick = {
-                lazyPagingItems.refresh()
-            },
-            onPersonClick = {
-                isSearchPersonActive.value = !isSearchPersonActive.value
-                searchViewModel.title.value.isSearchPerson =
-                    !searchViewModel.title.value.isSearchPerson
-            },
-            isSearchPersonActive = isSearchPersonActive,
-            onTuneClick = { onTuneClick(searchTextState.value) }
-        )
+
+    //scroll Material Search
+
+    val topBarHeight = 70.dp
+    val topBarHeightPx = with(LocalDensity.current) { topBarHeight.roundToPx().toFloat() }
+    val topBarOffsetHeightPx = remember { mutableFloatStateOf(0f) }
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(
+                available: Offset, source: NestedScrollSource
+            ): Offset {
+
+                val delta = available.y
+                Log.d("delta", " $delta")
+                val newOffset =
+                    topBarOffsetHeightPx.floatValue - delta //меняем снаправление + или -
+                topBarOffsetHeightPx.floatValue = newOffset.coerceIn(0f, topBarHeightPx)
+
+                return Offset.Zero
+            }
+        }
+    }
+
+
+    Scaffold(modifier = Modifier.nestedScroll(nestedScrollConnection),
+
+
+        topBar = {
+            MaterialSearch(
+                searchViewModel,
+                searchTextState = searchTextState,
+                onRefreshClick = {
+                    lazyPagingItems.refresh()
+                },
+                onPersonClick = {
+                    isSearchPersonActive.value = !isSearchPersonActive.value
+                    searchViewModel.title.value.isSearchPerson =
+                        !searchViewModel.title.value.isSearchPerson
+                },
+                isSearchPersonActive = isSearchPersonActive,
+                onTuneClick = { onTuneClick(searchTextState.value) },
+                modifier = Modifier
+                    .height(topBarHeight)
+                    .offset {
+                        IntOffset(
+                            x = 0,
+                            y = -topBarOffsetHeightPx.floatValue.roundToInt()
+                        )
+                    },
+            )
+        }
+    ) { inner ->
+        val padding =inner
+
         Box(
             Modifier
                 .fillMaxSize()
