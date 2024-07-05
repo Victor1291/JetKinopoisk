@@ -3,7 +3,6 @@ package com.example.profile
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shu.models.Choice
 import com.shu.models.CinemaItem
 import com.shu.models.domain.CollectionsRepository
 import com.shu.models.profile.ProfileUi
@@ -23,16 +22,13 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    val collectionsAll = repository.getCollection()
+    private val collectionsAll = repository.getCollection()
 
     private val _interesting = MutableStateFlow<List<CinemaItem>>(emptyList())
-    val interesting = _interesting.asStateFlow()
+    private val interesting = _interesting.asStateFlow()
 
     private val _watched = MutableStateFlow<List<CinemaItem>>(emptyList())
-    val watched = _watched.asStateFlow()
-
-    // val watched = getAllCollectionsUseCase.getWatched()
-    val ch = Choice()
+    private val watched = _watched.asStateFlow()
 
     val uiProfile =
         combine(watched, collectionsAll, interesting) { watched, collectionsAll, interesting ->
@@ -82,17 +78,6 @@ class ProfileViewModel @Inject constructor(
             )
         }
     }
-
-    var movieId = 0
-
-    //TODO сделать выбор иконки для коллекции при создании
-    fun addCollection(nameCollection: String, icon: Int = 3) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.onAdd(nameCollection, icon)
-        }
-    }
-
-    fun onUpdateBtn() {}
 
     fun onDeleteBtn() {
         viewModelScope.launch(Dispatchers.IO) {

@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -43,6 +44,11 @@ fun ProfileScreen(
 
     val collection by viewModel.uiProfile.collectAsState()
 
+    LaunchedEffect(key1 = true) {
+        viewModel.refresh()
+    }
+
+
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth(),
@@ -51,7 +57,7 @@ fun ProfileScreen(
 
         item {
             LazyRowMovie(
-                list = collection.interesting,
+                list = collection.watched,
                 type = "Просмотренные",
                 onMovieClick = onMovieClick
             )

@@ -50,7 +50,7 @@ class CollectionsRepositoryImpl  @Inject constructor(
     }
 
     override suspend fun getWatched(): List<CinemaItem> {
-        return movieDao.getMovieWatched().map {
+        return movieDao.getWatchedMovies().map {
             it.mapFrom()
         }
     }

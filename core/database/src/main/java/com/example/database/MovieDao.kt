@@ -21,6 +21,7 @@ import com.example.database.modelDbo.MovieGenresDbo
 import com.example.database.modelDbo.SimilarMovieDbo
 import kotlinx.coroutines.flow.Flow
 
+
 @Dao
 interface MovieDao {
 
@@ -55,7 +56,7 @@ interface MovieDao {
     @Query("DELETE FROM movies WHERE kinopoiskId = :id")
     suspend fun delete(id: Int)
 
-    @Query(value = "SELECT * FROM movies WHERE movies.watched = 1")
+    @Query(value = "SELECT * FROM movies WHERE movies.watched")
     suspend fun getWatchedMovies(): List<MovieDbo>
 
     @Transaction
@@ -96,8 +97,8 @@ interface MovieDao {
     )
     suspend fun getMovieFromInteresting(): List<MovieDbo>
 
-    @Query("SELECT * FROM movies WHERE watched = 1")
-    suspend fun getMovieWatched(): List<MovieDbo>
+    @Query("SELECT * FROM movies WHERE watched = :one")
+    suspend fun getMovieWatched(one:Boolean = true): List<MovieDbo>
 
     //TODO сделать снятие флага watched при очистке списка "Просмотрено" getMovieWatched
 
