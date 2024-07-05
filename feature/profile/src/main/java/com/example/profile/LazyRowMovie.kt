@@ -19,6 +19,7 @@ fun LazyRowMovie(
     type: String,
     onMovieClick: (Int?) -> Unit,
     onAllClick: (List<CinemaItem>) -> Unit,
+    onClearClick: () -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
 ) {
@@ -40,7 +41,7 @@ fun LazyRowMovie(
 
             item {
                 ClearItemCard (type){
-                    /*Todo clear*/
+                    onClearClick()
                 }
             }
         }

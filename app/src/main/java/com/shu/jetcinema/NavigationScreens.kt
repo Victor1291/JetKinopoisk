@@ -50,6 +50,11 @@ sealed class NavigationScreens(val route: String, @StringRes val label: Int, val
         label = R.string.profile,
         icon = Icons.Default.Person
     )
+data object MyListScreen : NavigationScreens(
+        route = "my_list_screen",
+        label = R.string.profile,
+        icon = Icons.Default.Person
+    )
 
     data object GalleryScreen : NavigationScreens(
         route = "gallery_screen",

@@ -85,4 +85,23 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+
+    fun clearCollection(name: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            when (name) {
+
+                "Просмотренные" -> {
+                    repository.clearWatched()
+                }
+                "Вам было интересно" -> {
+                    repository.clearInteresting()
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+
 }

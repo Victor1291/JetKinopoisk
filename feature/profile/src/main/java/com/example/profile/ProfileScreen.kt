@@ -40,6 +40,7 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     onCreateClick: () -> Unit,
     onMovieClick: (Int?) -> Unit,
+    onAllClick: (String?) -> Unit,
 ) {
 
     val collection by viewModel.uiProfile.collectAsState()
@@ -56,11 +57,15 @@ fun ProfileScreen(
     ) {
 
         item {
+            val name = stringResource(id = R.string.watched)
             LazyRowMovie(
                 list = collection.watched,
-                type = "Просмотренные",
+                type = name,
                 onMovieClick = onMovieClick,
-                onAllClick = {},
+                onAllClick = { onAllClick(name) },
+                onClearClick = {
+                    viewModel.clearCollection(name)
+                }
             )
         }
         item {
@@ -83,7 +88,7 @@ fun ProfileScreen(
                     Item(
                         collection = collection.collections[num],
                         onClick = {
-//TODO open screen
+                            onAllClick(it.toString())
                         }
                     )
                 }
@@ -91,11 +96,15 @@ fun ProfileScreen(
         }
 
         item {
+            val name = stringResource(id = R.string.you_interest)
             LazyRowMovie(
                 list = collection.interesting,
-                type = "Вам было интересно",
+                type = name ,
                 onMovieClick = onMovieClick,
-                onAllClick = {}
+                onAllClick = { onAllClick(name) },
+                onClearClick = {
+                    viewModel.clearCollection(name)
+                }
             )
         }
     }

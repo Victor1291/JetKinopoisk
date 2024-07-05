@@ -64,6 +64,7 @@ dependencies {
     implementation(project(":feature:profile"))
     implementation(project(":feature:gallery"))
     implementation(project(":feature:filter"))
+    implementation(project(":feature:my_list"))
     //core
     implementation(project(":core:models"))
     implementation(project(":core:design_system"))

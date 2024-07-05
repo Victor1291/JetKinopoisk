@@ -30,5 +30,7 @@ interface CollectionsRepository {
     suspend fun removeMovieInDb(collectionId: Int, movieId: Int)
    /* suspend fun clearCollection(collectionId: Int)
     suspend fun clearWatched()*/
-
+   suspend fun clearInteresting()
+    suspend fun clearCollection(collectionId: Int)
+    suspend fun clearWatched()
 }

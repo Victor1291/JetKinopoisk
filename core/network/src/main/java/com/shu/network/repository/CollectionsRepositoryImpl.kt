@@ -121,6 +121,21 @@ class CollectionsRepositoryImpl  @Inject constructor(
         }*/
     }
 
+    override suspend fun clearInteresting() {
+        movieDao.deleteInteresting()
+    }
+
+    override suspend fun clearCollection(collectionId: Int) {
+        movieDao.clearCollection(collectionId)
+        movieDao.resetCollection(collectionId)
+        if (collectionId == FAVORITE) movieDao.clearFavorite()
+        if (collectionId == SEE_LATER) movieDao.clearSeeLater()
+    }
+
+    override suspend fun clearWatched() {
+        movieDao.clearWatched()
+    }
+
 
     //TODO сделать открытие всех фильмов похожих и лучших
     override suspend fun addSimilarInDb(similarId: Int, movieId: Int) {
@@ -142,21 +157,6 @@ class CollectionsRepositoryImpl  @Inject constructor(
             )
         )
     }
-
-  /*  override suspend fun clearCollection(collectionId: Int) {
-        movieDao.clearCollection(collectionId)
-        movieDao.resetCollection(collectionId)
-        if (collectionId == FAVORITE) movieDao.clearFavorite()
-        if (collectionId == SEE_LATER) movieDao.clearSeeLater()
-    }*/
-
-  /*  override suspend fun clearInteresting() {
-        movieDao.deleteInteresting()
-    }
-
-    override suspend fun clearWatched() {
-        movieDao.clearWatched()
-    }*/
 
     companion object {
         const val FAVORITE = 0

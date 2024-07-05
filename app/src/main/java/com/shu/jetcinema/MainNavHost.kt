@@ -26,6 +26,7 @@ import com.example.bottom_sheet.BottomSheetScreen
 import com.example.bottom_sheet.InputDialogView
 import com.example.filter.FilterSearch
 import com.example.gallery.GalleryScreen
+import com.example.my_list.ListMovieInCollection
 import com.example.profile.ProfileScreen
 import com.example.search.SearchScreen
 import com.shu.detail_movie.DetailCheckState
@@ -36,6 +37,7 @@ import com.shu.models.details.DetailMovie
 
 
 private const val argumentKey = "arg"
+private const val myKey = "my"
 private const val filterKey = "filter"
 private const val personKey = "person"
 private const val key = "data"
@@ -53,7 +55,7 @@ fun MainNavHost(
     modifier: Modifier,
     viewModel: MainViewModel,
     sheetState: SheetState,
-    innerPadding : PaddingValues,
+    innerPadding: PaddingValues,
     onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
 
@@ -69,7 +71,6 @@ fun MainNavHost(
         startDestination = NavigationScreens.MainScreen.route
     ) {
         composable(NavigationScreens.MainScreen.route) {
-            viewModel.changeStateTOpBar(true)
             MainCheckState(
                 innerPadding = innerPadding,
                 onMovieClick = { filmId ->
@@ -91,7 +92,6 @@ fun MainNavHost(
 
         //ProfileScreen
         composable(NavigationScreens.ProfileScreen.route) {
-            viewModel.changeStateTOpBar(true)
             ProfileScreen(
                 modifier = modifier,
                 innerPadding = innerPadding,
@@ -106,8 +106,38 @@ fun MainNavHost(
                         route = "${NavigationScreens.BottomDialog.route}/${filmId}"
                     )
                 },
+                onAllClick = { name ->
+                    navController.navigate(
+                        route = "${NavigationScreens.MyListScreen.route}/${name}"
+                    )
+                },
             )
         }
+
+        //My_List
+        composable(
+            route = "${NavigationScreens.MyListScreen.route}/{$myKey}",
+            arguments = listOf(navArgument(myKey) {
+                type = NavType.StringType
+            })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getString(myKey)?.let { name ->
+
+                ListMovieInCollection(
+                    modifier = modifier,
+                    innerPadding = innerPadding,
+                    name = name,
+                    onMovieClick = { filmId ->
+                        navController.navigate(
+                            route = "${NavigationScreens.DetailScreen.route}/${filmId}"
+                        )
+                    },
+                    navController = navController
+                )
+            }
+        }
+
+
         //PersonScreen
         composable(
             route = "${NavigationScreens.PersonScreen.route}/{$personKey}",
@@ -140,8 +170,7 @@ fun MainNavHost(
             })
         ) { backStackEntry ->
             backStackEntry.arguments?.getInt(argumentKey)?.let { kinopoiskId ->
-                //TODO changeStateTOpBar
-                viewModel.changeStateTOpBar(false)
+
                 DetailCheckState(
                     modifier = modifier,
                     innerPadding = innerPadding,
