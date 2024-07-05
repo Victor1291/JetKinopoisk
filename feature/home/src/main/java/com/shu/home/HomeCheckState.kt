@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.shu.home.state.ErrorScreen
-import com.shu.home.state.LoadingScreen
+import com.example.design_system.state.ErrorScreen
+import com.example.design_system.state.LoadingScreen
 import com.shu.models.FilmVip
 
 @Composable

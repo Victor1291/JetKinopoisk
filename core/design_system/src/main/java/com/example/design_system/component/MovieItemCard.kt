@@ -64,7 +64,7 @@ fun MovieItemCard(
                     .background(Color.Transparent.copy(alpha = 0.3f))
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 4.dp),
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = Color.White,
                 textAlign = TextAlign.Center
             )
         }
