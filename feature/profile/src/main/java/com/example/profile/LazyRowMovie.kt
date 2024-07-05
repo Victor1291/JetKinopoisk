@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.design_system.component.ClearItemCard
 import com.example.design_system.component.MovieItemCard
 import com.example.design_system.component.RowTwoText
 import com.shu.models.CinemaItem
@@ -17,6 +18,7 @@ fun LazyRowMovie(
     list: List<CinemaItem>,
     type: String,
     onMovieClick: (Int?) -> Unit,
+    onAllClick: (List<CinemaItem>) -> Unit,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
 ) {
@@ -24,7 +26,7 @@ fun LazyRowMovie(
         modifier = Modifier
     ) {
 
-        RowTwoText(first = type, second = list.size.toString())
+        RowTwoText(first = type, second = list.size.toString(), onClick = { onAllClick(list) })
 
         LazyRow(
             contentPadding = PaddingValues(4.dp),
@@ -34,6 +36,12 @@ fun LazyRowMovie(
 
             items(list.size) { id ->
                 MovieItemCard(list[id], onMovieClick = onMovieClick)
+            }
+
+            item {
+                ClearItemCard (type){
+                    /*Todo clear*/
+                }
             }
         }
     }

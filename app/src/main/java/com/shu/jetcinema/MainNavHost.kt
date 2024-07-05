@@ -106,7 +106,6 @@ fun MainNavHost(
                         route = "${NavigationScreens.BottomDialog.route}/${filmId}"
                     )
                 },
-                //TODO open ListScreen when click on collection
             )
         }
         //PersonScreen

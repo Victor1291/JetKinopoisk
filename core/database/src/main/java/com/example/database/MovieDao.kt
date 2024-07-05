@@ -56,9 +56,6 @@ interface MovieDao {
     @Query("DELETE FROM movies WHERE kinopoiskId = :id")
     suspend fun delete(id: Int)
 
-    @Query(value = "SELECT * FROM movies WHERE movies.watched")
-    suspend fun getWatchedMovies(): List<MovieDbo>
-
     @Transaction
     @Query(value = "SELECT * FROM collections")
     fun getCollections(): Flow<List<CollectionsDbo>>
@@ -90,6 +87,11 @@ interface MovieDao {
     )
     suspend fun getFromCollection(collectionId: Int): List<MovieDbo>
 
+
+    @Query(value = "SELECT * FROM movies WHERE movies.watched")
+    suspend fun getWatchedMovies(): List<MovieDbo>
+
+
     //TODO сделать вывод списка interesting в обратном порядке не ASC , а DESC?
     @Query(
         "SELECT * FROM movies " +
@@ -97,8 +99,8 @@ interface MovieDao {
     )
     suspend fun getMovieFromInteresting(): List<MovieDbo>
 
-    @Query("SELECT * FROM movies WHERE watched = :one")
-    suspend fun getMovieWatched(one:Boolean = true): List<MovieDbo>
+/*    @Query("SELECT * FROM movies WHERE watched = :one")
+    suspend fun getMovieWatched(one:Boolean = true): List<MovieDbo>*/
 
     //TODO сделать снятие флага watched при очистке списка "Просмотрено" getMovieWatched
 

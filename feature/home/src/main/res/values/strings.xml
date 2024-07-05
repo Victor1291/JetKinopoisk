@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="title_main">
+        <item>Премьеры</item>
+        <item>Популярное</item>
+        <item>Лучшее</item>
+        <item>Топ-250</item>
+        <item>Похожии</item>
+        <item>Сериалы</item>
+        <item>Просмотрено</item>
+        <item>Вам было интересно</item>
+    </string-array>
+
+    <string-array name="category_type">
+        <item>STILL</item>
+        <item>SHOOTING</item>
+        <item>POSTER</item>
+        <item>FAN_ART</item>
+        <item>PROMO</item>
+        <item>CONCEPT</item>
+        <item>WALLPAPER</item>
+        <item>COVER</item>
+        <item>SCREENSHOT</item>
+    </string-array>
+
+    <string-array name="category_picture_text">
+        <item>кадры</item>
+        <item>со съёмок</item>
+        <item>постеры</item>
+        <item>фан-арты</item>
+        <item>промо</item>
+        <item>концепт-арты</item>
+        <item>обои</item>
+        <item>обложки</item>
+        <item>скриншоты</item>
+    </string-array>
+
+    <string-array name="plurals_genres">
+        <item>Нули</item>
+        <item>Триллеры</item>
+        <item>Драмы</item>
+        <item>Криминал</item>
+        <item>Мелодрамы</item>
+        <item>Детективы</item>
+        <item>Фантастика</item>
+        <item>Приключения</item>
+        <item>Биографии</item>
+        <item>Фильмы-Нуар</item>
+        <item>Вестерны</item>
+        <item>Боевики</item>
+        <item>Фэнтези</item>
+        <item>Комедии</item>
+        <item>Военные</item>
+        <item>Истории</item>
+        <item>Музыка</item>
+        <item>Ужасы</item>
+        <item>Мультфильмы</item>
+        <item>Семейные</item>
+        <item>Мюзиклы</item>
+        <item>Спорт</item>
+        <item>Документальные</item>
+        <item>Короткометражки</item>
+        <item>Аниме</item>
+        <item>Неизвестные</item>
+        <item>Новости</item>
+        <item>Концерты</item>
+        <item>Для Взрослых</item>
+        <item>Церемонии</item>
+        <item>Реальное ТВ</item>
+        <item>Игры</item>
+        <item>Ток-Шоу</item>
+        <item>Детские</item>
+    </string-array>
+
+
+</resources>

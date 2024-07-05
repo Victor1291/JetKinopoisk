@@ -59,7 +59,8 @@ fun ProfileScreen(
             LazyRowMovie(
                 list = collection.watched,
                 type = "Просмотренные",
-                onMovieClick = onMovieClick
+                onMovieClick = onMovieClick,
+                onAllClick = {},
             )
         }
         item {
@@ -93,7 +94,8 @@ fun ProfileScreen(
             LazyRowMovie(
                 list = collection.interesting,
                 type = "Вам было интересно",
-                onMovieClick = onMovieClick
+                onMovieClick = onMovieClick,
+                onAllClick = {}
             )
         }
     }
