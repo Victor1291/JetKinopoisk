@@ -2,6 +2,7 @@ package com.example.design_system.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -19,6 +20,7 @@ import com.shu.models.gallery_models.GalleryItem
 
 @Composable
 fun GalleryItemCard(
+    modifier: Modifier = Modifier,
     gallery: GalleryItem,
     onGalleryClick: (String?) -> Unit,
 ) {
@@ -26,10 +28,10 @@ fun GalleryItemCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
-        modifier = Modifier
+        modifier = modifier
             .padding(4.dp)
-            .width(192.dp)
-            .height(128.dp)
+            .width(300.dp)
+            .height(200.dp)
             .clickable { onGalleryClick(gallery.imageUrl) },
 
         ) {

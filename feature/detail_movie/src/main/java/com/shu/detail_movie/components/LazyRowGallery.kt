@@ -52,7 +52,7 @@ fun LazyRowGallery(
         ) {
 
             items(gallery.items.size) { id ->
-                GalleryItemCard(gallery.items[id], onGalleryClick = onGalleryClick)
+                GalleryItemCard(modifier, gallery.items[id], onGalleryClick = onGalleryClick)
             }
         }
     }
