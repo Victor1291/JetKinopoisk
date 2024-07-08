@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.design_system.component.ThemePreviews
+import com.example.design_system.theme.JetCinemaTheme
 import com.shu.models.detail_person.SearchPerson
 
 @Composable
@@ -58,4 +60,22 @@ fun PersonItemCard(
 }
 
 
+@ThemePreviews
+@Composable
+fun PersonItemCardPreview() {
+    JetCinemaTheme {
+
+        PersonItemCard(
+            actor = SearchPerson(
+                personId = 1,
+                webUrl = "webUrl",
+                nameRu = "nameRu",
+                nameEn = "nameEn",
+                sex = "sex ",
+                posterUrl = "posterUrl",
+            ),
+            onActorClick = {}
+        )
+    }
+}
 

@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
+import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -26,7 +27,7 @@ import com.example.bottom_sheet.BottomSheetScreen
 import com.example.bottom_sheet.InputDialogView
 import com.example.filter.CountryDialogView
 import com.example.filter.FilterSearch
-import com.example.gallery.GalleryScreen
+import com.example.gallery.GalleryState
 import com.example.my_list.ListMovieInCollection
 import com.example.profile.ProfileScreen
 import com.example.search.SearchScreen
@@ -48,6 +49,7 @@ data class Sheet(
     var film: DetailMovie? = null
 )
 
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -218,10 +220,11 @@ fun MainNavHost(
             backStackEntry.arguments?.getInt(argumentKey)?.let { kinopoiskId ->
                 //TODO changeStateTOpBar
                 viewModel.changeStateTOpBar(false)
-                GalleryScreen(
+                GalleryState(
+                    innerPadding = innerPadding,
                     modifier = modifier,
-                    navController = navController,
                     filmId = kinopoiskId,
+                    onBackClick = { navController.popBackStack() },
                 )
             }
             BackHandler {

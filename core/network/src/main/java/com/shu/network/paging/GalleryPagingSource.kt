@@ -1,22 +1,23 @@
-package com.example.gallery.paging
+package com.shu.network.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.gallery.domain.GalleryRepository
 import com.shu.models.gallery_models.GalleryItem
+import com.shu.network.ServiceMovieApi
+import com.shu.network.models.gallery_models.toListGalleryItems
 
 class GalleryPagingSource(
-    private val repository: GalleryRepository,
+    private val api: ServiceMovieApi,
     private val filmId: Int,
     private val type: String
 ) : PagingSource<Int, GalleryItem>() {
 
-    override fun getRefreshKey(state: PagingState<Int, GalleryItem>): Int? = FIRST_PAGE
+    override fun getRefreshKey(state: PagingState<Int, GalleryItem>): Int = FIRST_PAGE
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GalleryItem> {
         val page = params.key ?: FIRST_PAGE
         return kotlin.runCatching {
-            repository.getGallery(filmId, page, type).items
+            api.galleryTotal(filmId, page, type).toListGalleryItems().items
         }.fold(
             onSuccess = {
                 LoadResult.Page(

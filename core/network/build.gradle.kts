@@ -63,6 +63,9 @@ dependencies {
     implementation(project(":feature:search"))
     implementation(project(":core:database"))
 
+    //Paging
+    implementation("androidx.paging:paging-compose:3.3.0")
+
     ksp(libs.hilt.android.compiler)
 
 

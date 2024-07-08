@@ -1,7 +1,9 @@
 package com.example.gallery
 
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,7 +25,6 @@ import androidx.compose.material3.InputChip
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -40,18 +41,20 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.shu.models.gallery_models.GalleryItem
+import kotlinx.coroutines.flow.Flow
 import kotlin.math.roundToInt
 
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GalleryScreen(
     modifier: Modifier,
-    filmId: Int?,
-    viewModel: GalleryViewModel = hiltViewModel(),
+    galleryList: Flow<PagingData<GalleryItem>>,
+    viewModel: GalleryViewModel,
     list: List<String> = listOf(
         "STILL",
         "SHOOTING",
@@ -63,10 +66,10 @@ fun GalleryScreen(
         "COVER",
         "SCREENSHOT"
     ),
-    navController: NavHostController,
+    onBackClick: () -> Unit,
 ) {
 
-    val lazyPagingItems = viewModel.pagedMovies.collectAsLazyPagingItems()
+    val lazyPagingItems = galleryList.collectAsLazyPagingItems()
 
     val swipeRefreshState =
         rememberPullRefreshState(false, onRefresh = { lazyPagingItems.refresh() })
@@ -79,11 +82,6 @@ fun GalleryScreen(
     } else StaggeredGridCells.Fixed(2)
 
     var expanded by remember { mutableStateOf(false) }
-    LaunchedEffect(key1 = true) {
-        if (filmId != null) {
-            viewModel.setId(filmId)
-        }
-    }
 
     //Hide Scroll
     val topBarHeight = 70.dp
@@ -115,7 +113,8 @@ fun GalleryScreen(
 
             LazyRow(
                 contentPadding = PaddingValues(4.dp),
-                modifier = Modifier.padding(top = 20.dp)
+                modifier = Modifier
+                    .padding(top = 20.dp)
                     .height(topBarHeight)
                     .offset {
                         IntOffset(
@@ -130,9 +129,9 @@ fun GalleryScreen(
                     InputChip(
                         onClick = {
                             select.intValue = category
-                            if (viewModel.title != list[category]) {
-                                viewModel.title = list[category]
-                                lazyPagingItems.refresh()
+                            if (viewModel.type != list[category]) {
+                                viewModel.type = list[category]
+                                viewModel.getGallery()
                             }
                         },
                         label = { Text(list[category]) },
