@@ -24,6 +24,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import com.example.bottom_sheet.BottomSheetScreen
 import com.example.bottom_sheet.InputDialogView
+import com.example.filter.CountryDialogView
 import com.example.filter.FilterSearch
 import com.example.gallery.GalleryScreen
 import com.example.my_list.ListMovieInCollection
@@ -293,7 +294,13 @@ fun MainNavHost(
                             ?.set(key, FilmsParametersType.serializeAsValue(vip))
                         navController.popBackStack()
                     },
-                    onCountryClick = {},
+                    onCountryClick = {
+
+                        navController.navigate(
+                            route = "${NavigationScreens.CityDialog.route}/${it.country}"
+                        )
+
+                    },
                     onGenresClick = {},
                 )
             }
@@ -352,6 +359,25 @@ fun MainNavHost(
                 navController.popBackStack()
             }
         }
+        dialog(
+            route = "${NavigationScreens.CityDialog.route}/{$argumentKey}",
+            arguments = listOf(navArgument(argumentKey) {
+                type = NavType.IntType
+            })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getInt(argumentKey)?.let {
+                CountryDialogView(
+                    onDismiss = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+            BackHandler {
+                navController.popBackStack()
+            }
+        }
+
+
     }
     if (showBottomSheet.isShow) {
         ModalBottomSheet(

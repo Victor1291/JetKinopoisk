@@ -45,6 +45,12 @@ sealed class NavigationScreens(val route: String, @StringRes val label: Int, val
         icon = Icons.Default.Menu
     )
 
+    data object CityDialog : NavigationScreens(
+        route = "city_screen",
+        label = R.string.collections,
+        icon = Icons.Default.Menu
+    )
+
     data object ProfileScreen : NavigationScreens(
         route = "profile_screen",
         label = R.string.profile,

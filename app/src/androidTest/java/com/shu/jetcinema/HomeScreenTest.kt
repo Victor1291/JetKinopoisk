@@ -15,6 +15,7 @@ import com.example.design_system.theme.JetCinemaTheme
 import com.shu.home.HomeScreen
 import com.shu.models.CinemaItem
 import com.shu.models.Countries
+import com.shu.models.FilmVip
 import com.shu.models.Genres
 import com.shu.models.ManyScreens
 import com.shu.models.media_posts.ListPosts
@@ -101,10 +102,14 @@ val cinema = CinemaItem(
     premiereRu = "2.07.2024",
 )
 
-val oneList = listOf(cinema,cinema,cinema,cinema,cinema,cinema,cinema,cinema,cinema)
+val oneList = listOf(cinema, cinema, cinema, cinema, cinema, cinema, cinema, cinema, cinema)
 
 val manymanyScreens = ManyScreens(
     homeListScreen = listOf(
-        oneList,oneList,oneList,oneList,oneList,oneList,oneList
+        oneList, oneList, oneList, oneList, oneList, oneList, oneList
+    ),
+    listTitle = listOf("Премьеры", "Популярное", "Топ 250", "", "", "Сериалы"),
+    filmVipOne = FilmVip(),
+    filmVipTwo = FilmVip(),
+
     )
-)
