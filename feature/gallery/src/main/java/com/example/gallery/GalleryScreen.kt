@@ -58,14 +58,15 @@ fun GalleryScreen(
     viewModel: GalleryViewModel,
     list: List<String> = listOf(
         "STILL",
+        "SCREENSHOT",
         "SHOOTING",
-        "POSTER",
         "FAN_ART",
-        "PROMO",
-        "CONCEPT",
         "WALLPAPER",
+        "PROMO",
+        "POSTER",
+        "CONCEPT",
         "COVER",
-        "SCREENSHOT"
+
     ),
     onBackClick: () -> Unit,
 ) {

@@ -39,16 +39,16 @@ class GalleryRepositoryImpl @Inject constructor(
     private suspend fun getTotalList(filmId: Int): List<Int> {
 
         return coroutineScope {
-            val list: List<String> = listOf(
-                "STILL",
-                "SHOOTING",
-                "POSTER",
-                "FAN_ART",
-                "PROMO",
-                "CONCEPT",
-                "WALLPAPER",
-                "COVER",
-                "SCREENSHOT"
+           val list: List<String> = listOf(
+            "STILL",
+            "SCREENSHOT",
+            "SHOOTING",
+            "FAN_ART",
+            "WALLPAPER",
+            "PROMO",
+            "POSTER",
+            "CONCEPT",
+            "COVER",
             )
             val totalList: MutableList<Deferred<Int>> = mutableListOf()
 
