@@ -19,7 +19,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 sealed interface UiState {
-    data class Success(val galleryList: Flow<PagingData<GalleryItem>>) : UiState
+    data class Success(val galleryList: Pair<Flow<PagingData<GalleryItem>>,List<Int>>) : UiState
     data class Error(val message: String) : UiState
     data object Loading : UiState
 }
@@ -33,6 +33,8 @@ class GalleryViewModel @Inject constructor(
         private set
 
     var type = "STILL"
+
+    var select = 0
     private var filmId = 1
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)

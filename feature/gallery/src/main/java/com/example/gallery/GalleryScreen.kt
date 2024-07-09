@@ -54,6 +54,7 @@ import kotlin.math.roundToInt
 fun GalleryScreen(
     modifier: Modifier,
     galleryList: Flow<PagingData<GalleryItem>>,
+    count: List<Int>,
     viewModel: GalleryViewModel,
     list: List<String> = listOf(
         "STILL",
@@ -75,11 +76,11 @@ fun GalleryScreen(
         rememberPullRefreshState(false, onRefresh = { lazyPagingItems.refresh() })
 
     val select = remember {
-        mutableIntStateOf(0)
+        mutableIntStateOf(viewModel.select)
     }
     val cellConfiguration = if (LocalConfiguration.current.orientation == ORIENTATION_LANDSCAPE) {
         StaggeredGridCells.Adaptive(minSize = 175.dp)
-    } else StaggeredGridCells.Fixed(2)
+    } else StaggeredGridCells.Fixed(1)
 
     var expanded by remember { mutableStateOf(false) }
 
@@ -95,7 +96,7 @@ fun GalleryScreen(
             ): Offset {
 
                 val delta = available.y
-                Log.d("delta", " $delta")
+               // Log.d("delta", " $delta")
                 val newOffset =
                     topBarOffsetHeightPx.floatValue - delta //меняем снаправление + или -
                 topBarOffsetHeightPx.floatValue = newOffset.coerceIn(0f, topBarHeightPx)
@@ -131,10 +132,11 @@ fun GalleryScreen(
                             select.intValue = category
                             if (viewModel.type != list[category]) {
                                 viewModel.type = list[category]
+                                viewModel.select = category
                                 viewModel.getGallery()
                             }
                         },
-                        label = { Text(list[category]) },
+                        label = { Text("${list[category]} ${count[category]} ") },
                         selected = category == select.intValue,
                     )
                 }

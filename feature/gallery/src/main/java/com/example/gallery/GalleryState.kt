@@ -33,7 +33,8 @@ fun GalleryState(
         is UiState.Success -> {
             GalleryScreen(
                 modifier = modifier,
-                galleryList = (viewModel.uiState as UiState.Success).galleryList,
+                galleryList = (viewModel.uiState as UiState.Success).galleryList.first,
+                count = (viewModel.uiState as UiState.Success).galleryList.second,
                 viewModel = viewModel,
                 onBackClick = { onBackClick() }
             )

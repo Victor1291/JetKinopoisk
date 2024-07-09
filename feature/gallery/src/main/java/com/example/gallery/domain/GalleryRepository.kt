@@ -9,6 +9,6 @@ interface GalleryRepository {
     suspend fun getGallery(
         filmId: Int,
         type: String
-    ): Flow<PagingData<GalleryItem>>
+    ): Pair<Flow<PagingData<GalleryItem>>,List<Int>>
 
 }

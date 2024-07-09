@@ -87,7 +87,7 @@ class HomeRepositoryImpl @Inject constructor(
                             country = filmVipOne.country,
                             genres = filmVipOne.genres,
                         ).items.map { it.mapFrom() }
-                        listTitle[3] = ("${genreCountry.genres[filmVipOne.country].genre} ${genreCountry.countries[filmVipOne.country].country} ")
+                        listTitle[3] = ("${genreCountry.countries[filmVipOne.country - 1].country} ${genreCountry.genres[filmVipOne.genres - 1].genre} ")
                     }
                 }
                 launch {
@@ -98,7 +98,7 @@ class HomeRepositoryImpl @Inject constructor(
                             country = filmVipTwo.country,
                             genres = filmVipTwo.genres,
                         ).items.map { it.mapFrom() }
-                        listTitle[4] = ("${genreCountry.genres[filmVipTwo.country].genre} ${genreCountry.countries[filmVipTwo.country].country} ")
+                        listTitle[4] = ("${genreCountry.countries[filmVipTwo.country - 1].country} ${genreCountry.genres[filmVipTwo.genres - 1].genre} ")
                     }
                 }
                 launch {
@@ -128,19 +128,12 @@ class HomeRepositoryImpl @Inject constructor(
 
     private fun choiceCountry(countries: List<Countries>, genres: List<Genres>): FilmVip {
 
-        val randomIdCountry = Random.nextInt(20)
-        val randomIdGenre = Random.nextInt(13)
-
-       // val country = countries[randomIdCountry].country
-//val genre = genres[randomIdGenre].genre
-        val idCountry = countries[randomIdCountry].id
-        val idGenres = genres[randomIdGenre].id
-
-
+        val randomIdCountry = Random.nextInt(20) + 1
+        val randomIdGenre = Random.nextInt(13) + 1
         return FilmVip(
             page = 1,
-            country = idCountry,
-            genres = idGenres,
+            country = randomIdCountry,
+            genres = randomIdGenre,
             order = "",
             type = "FILM",
             ratingFrom = 5.0f,

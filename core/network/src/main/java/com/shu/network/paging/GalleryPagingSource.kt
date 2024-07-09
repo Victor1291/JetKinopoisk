@@ -12,7 +12,12 @@ class GalleryPagingSource(
     private val type: String
 ) : PagingSource<Int, GalleryItem>() {
 
-    override fun getRefreshKey(state: PagingState<Int, GalleryItem>): Int = FIRST_PAGE
+    override fun getRefreshKey(state: PagingState<Int, GalleryItem>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
+    }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GalleryItem> {
         val page = params.key ?: FIRST_PAGE
@@ -22,12 +27,12 @@ class GalleryPagingSource(
             onSuccess = {
                 LoadResult.Page(
                     data = it,
-                    prevKey = null,
+                    prevKey =  if (page == FIRST_PAGE) null else page - 1,
                     nextKey = if (it.isEmpty()) null else page + 1
                 )
             },
             onFailure = {
-                return@fold LoadResult.Error(it)
+               LoadResult.Error(it)
             }
         )
     }
