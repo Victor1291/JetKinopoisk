@@ -2,29 +2,27 @@ package com.example.gallery
 
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.InputChip
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -44,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.design_system.component.NewRowTabs
 import com.shu.models.gallery_models.GalleryItem
 import kotlinx.coroutines.flow.Flow
 import kotlin.math.roundToInt
@@ -54,7 +53,7 @@ import kotlin.math.roundToInt
 fun GalleryScreen(
     modifier: Modifier,
     galleryList: Flow<PagingData<GalleryItem>>,
-    count: List<Int>,
+    countList: List<Int>,
     viewModel: GalleryViewModel,
     list: List<String> = listOf(
         "STILL",
@@ -67,7 +66,7 @@ fun GalleryScreen(
         "CONCEPT",
         "COVER",
 
-    ),
+        ),
     onBackClick: () -> Unit,
 ) {
 
@@ -84,6 +83,7 @@ fun GalleryScreen(
     } else StaggeredGridCells.Fixed(1)
 
     var expanded by remember { mutableStateOf(false) }
+    var keyScroll by remember { mutableStateOf(true) }
 
     //Hide Scroll
     val topBarHeight = 70.dp
@@ -97,7 +97,7 @@ fun GalleryScreen(
             ): Offset {
 
                 val delta = available.y
-               // Log.d("delta", " $delta")
+                // Log.d("delta", " $delta")
                 val newOffset =
                     topBarOffsetHeightPx.floatValue - delta //меняем снаправление + или -
                 topBarOffsetHeightPx.floatValue = newOffset.coerceIn(0f, topBarHeightPx)
@@ -107,14 +107,13 @@ fun GalleryScreen(
         }
     }
 
-
+    val state = rememberLazyStaggeredGridState()
     Scaffold(modifier = Modifier.nestedScroll(nestedScrollConnection),
 
 
-        topBar = @Composable {
+        topBar = {
 
-            LazyRow(
-                contentPadding = PaddingValues(4.dp),
+            NewRowTabs(
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .height(topBarHeight)
@@ -124,27 +123,31 @@ fun GalleryScreen(
                             y = -topBarOffsetHeightPx.floatValue.roundToInt()
                         )
                     },
-            ) {
-
-                items(count.size) { category ->
-
-                    if (count[category] != 0) {
-                        InputChip(
-                            onClick = {
-                                select.intValue = category
-                                if (viewModel.type != list[category]) {
-                                    viewModel.type = list[category]
-                                    viewModel.select = category
-                                    viewModel.getGallery()
-                                }
-                            },
-                            label = { Text("${list[category]} ${count[category]} ") },
-                            selected = category == select.intValue,
-                        )
+                selected = select.intValue,
+                countList = countList,
+                list = list,
+                onClick = { index ->
+                    select.intValue = index
+                    if (viewModel.type != list[index]) {
+                        //сохраняем позицию предыдущей категории.
+                        viewModel.indexType[viewModel.type] = state.firstVisibleItemIndex
+                        //даём добро на скроллинг
+                        keyScroll = true
+                        viewModel.type = list[index]
+                        viewModel.select = index
+                        viewModel.getGallery()
                     }
-                }
-            }
+                },
+            )
+
         }) { innerPaing ->
+
+        //Scroll to previous position
+
+        LaunchedEffect(key1 = keyScroll) {
+            viewModel.indexType[viewModel.type]?.let { state.scrollToItem(it) }
+            keyScroll = false
+        }
 
         Box(
             Modifier
@@ -153,7 +156,8 @@ fun GalleryScreen(
         ) {
             LazyVerticalStaggeredGrid(
                 columns = cellConfiguration,
-                contentPadding = innerPaing
+                contentPadding = innerPaing,
+                state = state
             ) {
 
                 if (lazyPagingItems.itemCount != 0) {

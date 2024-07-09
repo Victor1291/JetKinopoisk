@@ -39,9 +39,22 @@ class GalleryViewModel @Inject constructor(
     var type = "STILL"
 
     var select = 0
+    var indexType = mutableMapOf<String,Int>("STILL" to 0,
+        "SCREENSHOT" to 0,
+        "SHOOTING" to 0,
+        "FAN_ART" to 0,
+        "WALLPAPER" to 0,
+        "PROMO" to 0,
+        "POSTER" to 0,
+        "CONCEPT" to 0,
+        "COVER" to 0,
+        )
+    var firstVisibleItemIndex = 0
     private var filmId = 1
 
     private var totalList: List<Int> = emptyList()
+
+    /*TODO save scroll position */
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getFirstGallery() {

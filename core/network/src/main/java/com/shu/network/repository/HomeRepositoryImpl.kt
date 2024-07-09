@@ -7,9 +7,7 @@ import com.example.database.modelDbo.FiltersDbo
 import com.shu.home.domain.HomeRepository
 import com.shu.list_movies.domain.PagingRepository
 import com.shu.models.CinemaItem
-import com.shu.models.Countries
 import com.shu.models.FilmVip
-import com.shu.models.Genres
 import com.shu.models.ListCinema
 import com.shu.models.ListFilters
 import com.shu.models.ManyScreens
@@ -20,6 +18,7 @@ import com.shu.network.models.filters.mapFromBd
 import com.shu.network.models.filters.mapToBd
 import com.shu.network.models.mapFrom
 import com.shu.network.models.media_posts.toListPosts
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -32,6 +31,78 @@ class HomeRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
     private val movieDao: MovieDao,
 ) : HomeRepository, PagingRepository {
+
+    override suspend fun getAllNewScreen(): ManyScreens {
+
+        return coroutineScope {
+
+            val listTitle = mutableListOf("Премьеры", "Популярное", "Топ 250", "", "", "Сериалы")
+            val genreCountryBd: FiltersDbo? = movieDao.getFilters()
+            val genreCountry: ListFilters? = if (genreCountryBd?.countries.isNullOrEmpty()) {
+                val genreCountryApi = api.genreCountry()
+                val gCBd = genreCountryApi.mapToBd()
+                movieDao.saveToBd(gCBd)
+                genreCountryApi.mapFromApi()
+            } else {
+                movieDao.getFilters()?.mapFromBd()
+            }
+
+            val date = Date()
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            val year = calendar[Calendar.YEAR]
+            val month = calendar.getDisplayName(
+                Calendar.MONTH,
+                Calendar.LONG_FORMAT, Locale("en")
+            )
+            var filmVipOne = FilmVip()
+            var filmVipTwo = FilmVip()
+
+            val listPremier = async { getPremieres(year, month ?: "MAY").items.shuffled() }
+            val listPopular = async { getPopular(1).items }
+            val list250 = async { getTop250(1).items }
+            val listUSA = async {
+                filmVipOne = choiceCountry()
+                if (genreCountry != null) {
+                    listTitle[3] =
+                        ("${genreCountry.countries[filmVipOne.country - 1].country} ${genreCountry.genres[filmVipOne.genres - 1].genre} ")
+                }
+                api.filmVip(
+                    page = filmVipOne.page,
+                    country = filmVipOne.country,
+                    genres = filmVipOne.genres,
+                ).items.map { it.mapFrom() }
+            }
+            val listFrance = async {
+                filmVipTwo = choiceCountry()
+                if (genreCountry != null) {
+                    listTitle[4] =
+                        ("${genreCountry.countries[filmVipTwo.country - 1].country} ${genreCountry.genres[filmVipTwo.genres - 1].genre} ")
+                }
+                api.filmVip(
+                    page = filmVipTwo.page,
+                    country = filmVipTwo.country,
+                    genres = filmVipTwo.genres,
+                ).items.map { it.mapFrom() }
+            }
+            val listSerials = async { getSerialVip(1).items }
+
+            return@coroutineScope ManyScreens(
+                homeListScreen = listOf(
+                    listPremier.await(),
+                    listPopular.await(),
+                    list250.await(),
+                    listUSA.await(),
+                    listFrance.await(),
+                    listSerials.await()
+                ),
+                listTitle = listTitle.toList(),
+                filmVipOne = filmVipOne,
+                filmVipTwo = filmVipTwo,
+            )
+        }
+    }
+
     override suspend fun getAllScreen(): ManyScreens {
         return coroutineScope {
 
@@ -41,7 +112,7 @@ class HomeRepositoryImpl @Inject constructor(
             var list250: List<CinemaItem> = emptyList()
             var listFrance: List<CinemaItem> = emptyList()
             var listSerials: List<CinemaItem> = emptyList()
-            val listTitle = mutableListOf("Премьеры","Популярное","Топ 250","","","Сериалы")
+            val listTitle = mutableListOf("Премьеры", "Популярное", "Топ 250", "", "", "Сериалы")
 
             //Получаю списки Стран и жанров из базы данных
             val genreCountryBd: FiltersDbo? = movieDao.getFilters()
@@ -64,8 +135,8 @@ class HomeRepositoryImpl @Inject constructor(
                 Calendar.MONTH,
                 Calendar.LONG_FORMAT, Locale("en")
             )
-           var filmVipOne = FilmVip()
-           var filmVipTwo = FilmVip()
+            var filmVipOne = FilmVip()
+            var filmVipTwo = FilmVip()
 
             launch {
 
@@ -81,24 +152,26 @@ class HomeRepositoryImpl @Inject constructor(
                 }
                 launch {
                     if (genreCountry != null) {
-                        filmVipOne = choiceCountry(genreCountry.countries, genreCountry.genres)
+                        filmVipOne = choiceCountry()
                         listUSA = api.filmVip(
                             page = filmVipOne.page,
                             country = filmVipOne.country,
                             genres = filmVipOne.genres,
                         ).items.map { it.mapFrom() }
-                        listTitle[3] = ("${genreCountry.countries[filmVipOne.country - 1].country} ${genreCountry.genres[filmVipOne.genres - 1].genre} ")
+                        listTitle[3] =
+                            ("${genreCountry.countries[filmVipOne.country - 1].country} ${genreCountry.genres[filmVipOne.genres - 1].genre} ")
                     }
                 }
                 launch {
                     if (genreCountry != null) {
-                        filmVipTwo = choiceCountry(genreCountry.countries, genreCountry.genres)
+                        filmVipTwo = choiceCountry()
                         listFrance = api.filmVip(
                             page = filmVipTwo.page,
                             country = filmVipTwo.country,
                             genres = filmVipTwo.genres,
                         ).items.map { it.mapFrom() }
-                        listTitle[4] = ("${genreCountry.countries[filmVipTwo.country - 1].country} ${genreCountry.genres[filmVipTwo.genres - 1].genre} ")
+                        listTitle[4] =
+                            ("${genreCountry.countries[filmVipTwo.country - 1].country} ${genreCountry.genres[filmVipTwo.genres - 1].genre} ")
                     }
                 }
                 launch {
@@ -126,7 +199,7 @@ class HomeRepositoryImpl @Inject constructor(
         return api.getPosts(page).toListPosts()
     }
 
-    private fun choiceCountry(countries: List<Countries>, genres: List<Genres>): FilmVip {
+    private fun choiceCountry(): FilmVip {
 
         val randomIdCountry = Random.nextInt(20) + 1
         val randomIdGenre = Random.nextInt(13) + 1

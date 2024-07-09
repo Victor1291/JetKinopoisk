@@ -2,6 +2,9 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="NewRowTabsPreview">
+        <State />
+      </entry>
       <entry key="PersonItemCardPreview - Dark theme">
         <State />
       </entry>
@@ -9,6 +12,9 @@
         <State />
       </entry>
       <entry key="PreviewSettingsScreen">
+        <State />
+      </entry>
+      <entry key="TabsNewPreview">
         <State />
       </entry>
       <entry key="app">
@@ -26,12 +32,6 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-07-06T00:32:40.228970600Z" />
         </State>
-      </entry>
-      <entry key="check_HomeScreen()">
-        <State />
-      </entry>
-      <entry key="check_HomeScreen() (1)">
-        <State />
       </entry>
     </value>
   </component>
