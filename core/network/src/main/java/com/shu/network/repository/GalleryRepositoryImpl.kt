@@ -17,7 +17,24 @@ import javax.inject.Inject
 class GalleryRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
 ) : GalleryRepository {
+
     override suspend fun getGallery(
+        filmId: Int,
+        type: String
+    ): Flow<PagingData<GalleryItem>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                GalleryPagingSource(
+                    api = api,
+                    filmId = filmId,
+                    type = type
+                )
+            }
+        ).flow
+    }
+
+    override suspend fun getFirstGallery(
         filmId: Int,
         type: String
     ): Pair<Flow<PagingData<GalleryItem>>, List<Int>> {
@@ -35,20 +52,19 @@ class GalleryRepositoryImpl @Inject constructor(
         ).flow to getTotalList(filmId)
     }
 
-
     private suspend fun getTotalList(filmId: Int): List<Int> {
 
         return coroutineScope {
-           val list: List<String> = listOf(
-            "STILL",
-            "SCREENSHOT",
-            "SHOOTING",
-            "FAN_ART",
-            "WALLPAPER",
-            "PROMO",
-            "POSTER",
-            "CONCEPT",
-            "COVER",
+            val list: List<String> = listOf(
+                "STILL",
+                "SCREENSHOT",
+                "SHOOTING",
+                "FAN_ART",
+                "WALLPAPER",
+                "PROMO",
+                "POSTER",
+                "CONCEPT",
+                "COVER",
             )
             val totalList: MutableList<Deferred<Int>> = mutableListOf()
 

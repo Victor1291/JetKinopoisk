@@ -24,7 +24,7 @@ fun GalleryState(
     LaunchedEffect(key1 = true) {
         if (filmId != null) {
             viewModel.setId(filmId)
-            viewModel.getGallery()
+            viewModel.getFirstGallery()
         }
     }
 
@@ -33,8 +33,8 @@ fun GalleryState(
         is UiState.Success -> {
             GalleryScreen(
                 modifier = modifier,
-                galleryList = (viewModel.uiState as UiState.Success).galleryList.first,
-                count = (viewModel.uiState as UiState.Success).galleryList.second,
+                galleryList = (viewModel.uiState as UiState.Success).pager ,
+                count = (viewModel.uiState as UiState.Success).total,
                 viewModel = viewModel,
                 onBackClick = { onBackClick() }
             )

@@ -19,7 +19,11 @@ import java.io.IOException
 import javax.inject.Inject
 
 sealed interface UiState {
-    data class Success(val galleryList: Pair<Flow<PagingData<GalleryItem>>,List<Int>>) : UiState
+    data class Success(
+        val pager: Flow<PagingData<GalleryItem>>,
+        val total: List<Int>
+    ) : UiState
+
     data class Error(val message: String) : UiState
     data object Loading : UiState
 }
@@ -37,13 +41,39 @@ class GalleryViewModel @Inject constructor(
     var select = 0
     private var filmId = 1
 
+    private var totalList: List<Int> = emptyList()
+
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    fun getFirstGallery() {
+        viewModelScope.launch {
+            uiState = UiState.Loading
+            uiState =
+                try {
+                    val answer = galleryRepository.getFirstGallery(filmId = filmId, type = type)
+                    totalList = answer.second
+                    UiState.Success(
+                        pager = answer.first,
+                        total = totalList
+                    )
+                } catch (e: IOException) {
+                    UiState.Error(message = e.toString())
+                } catch (e: HttpException) {
+                    UiState.Error(e.toString())
+                }
+        }
+    }
+
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getGallery() {
         viewModelScope.launch {
             uiState = UiState.Loading
             uiState =
                 try {
-                    UiState.Success(galleryRepository.getGallery(filmId = filmId, type = type))
+                    val continuePager = galleryRepository.getGallery(filmId = filmId, type = type)
+                    UiState.Success(
+                        pager = continuePager,
+                        total = totalList
+                    )
                 } catch (e: IOException) {
                     UiState.Error(message = e.toString())
                 } catch (e: HttpException) {

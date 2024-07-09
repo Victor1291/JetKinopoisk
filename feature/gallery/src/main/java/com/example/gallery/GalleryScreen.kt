@@ -126,20 +126,22 @@ fun GalleryScreen(
                     },
             ) {
 
-                items(list.size) { category ->
+                items(count.size) { category ->
 
-                    InputChip(
-                        onClick = {
-                            select.intValue = category
-                            if (viewModel.type != list[category]) {
-                                viewModel.type = list[category]
-                                viewModel.select = category
-                                viewModel.getGallery()
-                            }
-                        },
-                        label = { Text("${list[category]} ${count[category]} ") },
-                        selected = category == select.intValue,
-                    )
+                    if (count[category] != 0) {
+                        InputChip(
+                            onClick = {
+                                select.intValue = category
+                                if (viewModel.type != list[category]) {
+                                    viewModel.type = list[category]
+                                    viewModel.select = category
+                                    viewModel.getGallery()
+                                }
+                            },
+                            label = { Text("${list[category]} ${count[category]} ") },
+                            selected = category == select.intValue,
+                        )
+                    }
                 }
             }
         }) { innerPaing ->
