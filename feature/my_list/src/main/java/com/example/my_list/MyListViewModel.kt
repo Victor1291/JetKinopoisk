@@ -34,6 +34,7 @@ class MyListViewModel @Inject constructor(
                         repository.getInteresting()
                     }
                     else -> {
+                        id = name.split(",id")[1]
                         repository.getListMovie(id.toInt())
                     }
                 }
@@ -45,8 +46,6 @@ class MyListViewModel @Inject constructor(
     }
 
     fun refresh(name: String) {
-        id = name.split(",id")[1]
-        Log.d("countryViewModel", "[${name}] number collection of  $id")
         loadCollection(name)
     }
 
