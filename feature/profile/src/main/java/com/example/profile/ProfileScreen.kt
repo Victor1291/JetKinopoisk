@@ -88,7 +88,7 @@ fun ProfileScreen(
                     Item(
                         collection = collection.collections[num],
                         onClick = {
-                            onAllClick(it.toString())
+                            onAllClick("${collection.collections[num].name},id${it}")
                         }
                     )
                 }

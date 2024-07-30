@@ -85,13 +85,12 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-
     fun clearCollection(name: String) {
         // диспатчер можно не переключать
         viewModelScope.launch(Dispatchers.IO) {
 
             when (name) {
-                //строки выносим в ресурсы, тем более что они по всему проекту встречаются
+                //TODO - строки выносим в ресурсы, тем более что они по всему проекту встречаются
                 "Просмотренные" -> {
                     repository.clearWatched()
                 }
@@ -104,5 +103,4 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
-
 }

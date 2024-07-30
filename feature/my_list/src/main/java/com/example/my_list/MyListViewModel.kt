@@ -20,6 +20,7 @@ class MyListViewModel @Inject constructor(
     private val _listMovie = MutableStateFlow<List<CinemaItem>>(emptyList())
     val listMovie = _listMovie.asStateFlow()
 
+    private var id = "1"
     private fun loadCollection(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
             kotlin.runCatching {
@@ -33,17 +34,19 @@ class MyListViewModel @Inject constructor(
                         repository.getInteresting()
                     }
                     else -> {
-                        repository.getListMovie(name.toInt())
+                        repository.getListMovie(id.toInt())
                     }
                 }
             }.fold(
                 onSuccess = { _listMovie.value = it },
-                onFailure = { Log.d("CountryViewModel", it.message ?: "") }
+                onFailure = { Log.d("countryViewModel Error", it.message ?: "") }
             )
         }
     }
 
     fun refresh(name: String) {
+        id = name.split(",id")[1]
+        Log.d("countryViewModel", "[${name}] number collection of  $id")
         loadCollection(name)
     }
 
@@ -59,7 +62,7 @@ class MyListViewModel @Inject constructor(
                     repository.clearInteresting()
                 }
                 else -> {
-                    repository.clearCollection(name.toInt())
+                    repository.clearCollection(id.toInt())
                 }
             }
         }

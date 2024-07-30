@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
@@ -37,15 +38,15 @@ fun ListMovieInCollection(
     }
 
     Column(
-        //  modifier = modifier
+        modifier = Modifier.systemBarsPadding()
     ) {
 
         TopBar(
-            header = name,
+            header = name.split(",id")[0],
             leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             onLeftIconClick = { navController.navigateUp() },
             rightIconImageVector = Icons.Default.Delete,
-            onRightIconClick = {  viewModel.clearCollection(name)  },
+            onRightIconClick = { viewModel.clearCollection(name) },
         )
 
         Box(
