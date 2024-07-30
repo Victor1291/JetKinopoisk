@@ -50,7 +50,7 @@ fun ActorItem(
             modifier = Modifier
                 .background(Color.Transparent.copy(alpha = 0.3f))
                 .align(Alignment.BottomStart),
-            color = MaterialTheme.colorScheme.onPrimary
+            color = Color.White
         )
     }
 }

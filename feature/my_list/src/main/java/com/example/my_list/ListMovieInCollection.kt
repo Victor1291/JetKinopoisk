@@ -63,7 +63,6 @@ fun ListMovieInCollection(
                 items(listMovie.size) { index ->
                     val item = listMovie[index]
                     MovieItemCard(item, onMovieClick = onMovieClick)
-                    //  Text("Index=$index: $item", fontSize = 20.sp)
                 }
             }
         }
