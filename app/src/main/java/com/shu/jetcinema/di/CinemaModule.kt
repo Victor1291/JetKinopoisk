@@ -20,6 +20,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * А почему ты решил биндинг здесь делать? Кажется каждый репозиторий принадлежит отдельному
+ * фиче/базовому модулю, я считаю отсюда нужно убирать
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class CinemaModule {

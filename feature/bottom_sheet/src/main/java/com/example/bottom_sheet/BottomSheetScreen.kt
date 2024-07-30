@@ -111,7 +111,11 @@ fun BottomSheetScreen(
                         .height(36.dp)
                         .fillMaxWidth(),
                     enabled = true,
-                    onClick = { onCreateClick() },
+                    onClick = {
+                        onCreateClick()
+                        //TODO обработать успешность создания коллекции
+                        //viewModel.setNewCollection()
+                              },
                     contentPadding = PaddingValues(0.dp)
                 ) {
                     Text(
@@ -157,6 +161,4 @@ fun BottomSheetItem(
             color = MaterialTheme.colorScheme.primary
         )
     }
-
-
 }

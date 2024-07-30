@@ -1,6 +1,5 @@
 package com.example.bottom_sheet
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,26 +30,24 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun InputDialogView(
     onShowSnackbar: suspend (String, String?) -> Boolean,
-    viewModel: BottomSheetViewModel = hiltViewModel(),
-    onDismiss:() -> Unit
+    viewModel: CreateViewModel = hiltViewModel(),
+    onDismiss: () -> Unit
 ) {
     val context = LocalContext.current.applicationContext
     var nameCollection by remember {
         mutableStateOf("")
     }
 
-    val shouldDisplayCreateCollection = viewModel.shouldDisplayCreateCollection
-
-  /*  LaunchedEffect(shouldDisplayCreateCollection) {
-        if (shouldDisplayCreateCollection) {
-            val snackBarResult = onShowSnackbar("Create New Collection", "all right")
-            if (snackBarResult) {
-                Log.d("input dialog", " snackBarResult $snackBarResult")
-            } else run {
-                viewModel.clearUndoState()
-            }
-        }
-    }*/
+    /*  LaunchedEffect(shouldDisplayCreateCollection) {
+          if (shouldDisplayCreateCollection) {
+              val snackBarResult = onShowSnackbar("Create New Collection", "all right")
+              if (snackBarResult) {
+                  Log.d("input dialog", " snackBarResult $snackBarResult")
+              } else run {
+                  viewModel.clearUndoState()
+              }
+          }
+      }*/
 
     Dialog(onDismissRequest = { onDismiss() }) {
         Card(
@@ -92,9 +88,9 @@ fun InputDialogView(
                     Button(
                         onClick = {
                             Toast.makeText(context, nameCollection, Toast.LENGTH_SHORT).show()
-                           viewModel.addCollection(nameCollection)
-                        //    viewModel.shouldDisplayCreateCollection = true
-                            onDismiss()   },
+                            viewModel.addCollection(nameCollection)
+                            onDismiss()
+                        },
                         Modifier
                             .fillMaxWidth()
                             .padding(8.dp)

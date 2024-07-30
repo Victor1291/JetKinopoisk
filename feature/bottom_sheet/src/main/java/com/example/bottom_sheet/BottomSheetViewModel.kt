@@ -1,13 +1,10 @@
 package com.example.bottom_sheet
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shu.models.domain.CollectionsRepository
 import com.shu.models.collections.Collections
+import com.shu.models.domain.CollectionsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +15,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class BottomSheetViewModel @Inject constructor(
     private val collectionsRepository: CollectionsRepository
@@ -26,18 +22,14 @@ class BottomSheetViewModel @Inject constructor(
 
     var movieId = 0
 
-    var shouldDisplayCreateCollection by mutableStateOf(false)
-
     private val collectionsAll = collectionsRepository.getCollection(movieId)
 
     private val _getCheckedCollection = MutableStateFlow<List<Collections>>(emptyList())
     private val getCheckedCollection = _getCheckedCollection.asStateFlow()
 
-    var favorite = false
-    var select = false
+ private var isFirstStart = false
 
-    val isNewCollection = MutableStateFlow(false)
-    var nameCollection = ""
+    private var nameCollection = ""
 
     private fun loadChecked() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -50,6 +42,8 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
+    private var sizeCollection = 0
+
     fun refresh() {
         loadChecked()
     }
@@ -58,18 +52,24 @@ class BottomSheetViewModel @Inject constructor(
         combine(
             collectionsAll,
             getCheckedCollection,
-            isNewCollection
-        ) { collectionsAll, checked, isNewCollection ->
+        ) { collectionsAll, checked ->
             collectionsAll.map { collection ->
                 val check = checked.contains(collection)
-               // Log.d("collections", " ${collection.name} is checked = $check ")
+                // Log.d("collections", " ${collection.name} is checked = $check ")
                 collection.checked = check
             }
-            if (isNewCollection && collectionsAll.last().name == nameCollection) {
-                //Если добавлена новая коллекция. отмечаем и сохраняем в базе
-                Log.d("collection save", "name ${collectionsAll.last().name} ")
-                addMovieInCollection(collectionsAll.last().collectionId)
-                collectionsAll.last().checked = true
+            val newSize = collectionsAll.size
+            if (isFirstStart) {
+                sizeCollection = newSize
+            } else {
+                if (newSize > sizeCollection) {
+                    //Если добавлена новая коллекция. отмечаем и сохраняем в базе
+                    addMovieInCollection(collectionsAll.last().collectionId)
+                    collectionsAll.last().checked = true
+                    sizeCollection = newSize
+                }
+                //TODO При удалении коллекции.
+
             }
             collectionsAll
         }.stateIn(
@@ -78,19 +78,10 @@ class BottomSheetViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-
-    fun addCollection(nameCollection: String, icon: Int = 3) {
-        //TODO
-        viewModelScope.launch(Dispatchers.IO) {
-            collectionsRepository.onAdd(nameCollection, icon)
-            shouldDisplayCreateCollection = true
-        }
-
-    }
-
     fun addMovieInCollection(collectionId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             collectionsRepository.addMovieInDb(collectionId, movieId)
+            Log.d("collection save", "name $collectionId ")
         }
     }
 
@@ -98,14 +89,6 @@ class BottomSheetViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             collectionsRepository.removeMovieInDb(collection, movieId)
         }
-    }
-
-    fun clearUndoState() {
-        shouldDisplayCreateCollection = false
-    }
-
-    fun setNewCollection() {
-        isNewCollection.value = true
     }
 
     fun onUpdateBtn() {}

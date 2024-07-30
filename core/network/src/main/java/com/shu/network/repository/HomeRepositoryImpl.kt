@@ -27,6 +27,10 @@ import java.util.Locale
 import javax.inject.Inject
 import kotlin.random.Random
 
+/**
+ * Уже писал про репозитории в app модуле, повторюсь, кажется их нужно раскидать по фичам, либо сделать
+ * базовые модули
+ */
 class HomeRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
     private val movieDao: MovieDao,
