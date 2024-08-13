@@ -32,13 +32,13 @@ fun FilterSearch(
     filmVip: FilmVip,
     viewModel: FilterViewModel = hiltViewModel(),
     onBackClick: (FilmVip) -> Unit,
-    onCountryClick: (FilmVip) -> Unit,
-    onGenresClick: (FilmVip) -> Unit,
 ) {
-
+    val type = listOf("ALL","FILM","TV_SERIES")
+    val order = listOf("YEAR","NUM_VOTE","RATING")
     LaunchedEffect(key1 = true) {
         Log.i("searchFilter", "start $filmVip ")
         viewModel.setFilter(filmVip)
+
     }
 
     val filter = viewModel.filter.collectAsState()
@@ -58,9 +58,9 @@ fun FilterSearch(
         )
         MaterialButtonToggleGroup(
             items = listOf("Все", "Фильмы", "Сериалы"),
-            selected = selectFilm(filmVip.type),
-            onClick = {
-                onCountryClick(filter.value)
+            selected = type.indexOf(filmVip.type),
+            onClick = {index  ->
+                viewModel.setFilter(filter.value.copy(type = type[index] ))
             }
         )
 
@@ -78,6 +78,7 @@ fun FilterSearch(
             first = "Рейтинг2",
             second = "${filter.value.ratingFrom.div(10)} - ${filter.value.ratingTo.div(10)}",
             onClick = { })
+
         RangeSlider(
             modifier = Modifier
                 .padding(horizontal = 48.dp, vertical = 48.dp)
@@ -103,9 +104,9 @@ fun FilterSearch(
 
         MaterialButtonToggleGroup(
             items = listOf("Дата", "Популярность", "Рейтинг"),
-            selected = selectOrder(filmVip.order),
-            onClick = {
-                onGenresClick(filter.value)
+            selected = order.indexOf(filmVip.order),
+            onClick = {index ->
+                viewModel.setFilter(filter.value.copy(order = order[index] ))
             }
         )
 
@@ -116,22 +117,5 @@ fun FilterSearch(
             Text(text = if (select.value) "просмотреные" else "не просмотренные")
         }
 
-    }
-}
-
-
-fun selectFilm(type: String): Int {
-    return when (type) {
-        "ALL" -> 0
-        "FILM" -> 1
-        else -> 2
-    }
-}
-
-fun selectOrder(order: String): Int {
-    return when (order) {
-        "Date" -> 0
-        "Popular" -> 1
-        else -> 2
     }
 }

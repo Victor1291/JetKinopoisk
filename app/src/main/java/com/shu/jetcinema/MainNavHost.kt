@@ -297,14 +297,6 @@ fun MainNavHost(
                             ?.set(key, FilmsParametersType.serializeAsValue(vip))
                         navController.popBackStack()
                     },
-                    onCountryClick = {
-
-                        navController.navigate(
-                            route = "${NavigationScreens.CityDialog.route}/${it.country}"
-                        )
-
-                    },
-                    onGenresClick = {},
                 )
             }
 
@@ -379,8 +371,6 @@ fun MainNavHost(
                 navController.popBackStack()
             }
         }
-
-
     }
     if (showBottomSheet.isShow) {
         ModalBottomSheet(

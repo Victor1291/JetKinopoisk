@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.shu.cinemaworld.ui.setingssearch.CountryViewModel
 
 @Composable
 fun CountryDialogView(

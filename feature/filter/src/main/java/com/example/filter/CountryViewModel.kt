@@ -1,4 +1,4 @@
-package com.shu.cinemaworld.ui.setingssearch
+package com.example.filter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

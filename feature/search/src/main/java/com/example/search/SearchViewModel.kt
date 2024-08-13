@@ -26,7 +26,7 @@ class SearchViewModel @Inject constructor(
     private val repository: PagingSearchRepository,
 ) : ViewModel() {
 
-    private var _title = MutableStateFlow(FilmVip().copy(keyword = "frog"))
+    private var _title = MutableStateFlow(FilmVip().copy(keyword = ""))
     val title = _title.asStateFlow()
     private var titleIn = title.value
 
