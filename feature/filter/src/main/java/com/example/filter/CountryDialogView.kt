@@ -49,43 +49,6 @@ fun CountryDialogView(
                     .background(Color.White)
             ) {
 
-                Text(
-                    text = "Название новой коллекции",
-                    modifier = Modifier.padding(8.dp),
-                    fontSize = 20.sp
-                )
-
-                OutlinedTextField(
-                    value = nameCollection,
-                    onValueChange = { nameCollection = it }, modifier = Modifier.padding(8.dp),
-                    label = { Text("коллекция") }
-                )
-
-                Row {
-                    OutlinedButton(
-                        onClick = { onDismiss() },
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .weight(1F)
-                    ) {
-                        Text(text = "Cancel")
-                    }
-
-                    Button(
-                        onClick = {
-                            Toast.makeText(context, nameCollection, Toast.LENGTH_SHORT).show()
-                                // viewModel.addCollection(nameCollection)
-                            //    viewModel.shouldDisplayCreateCollection = true
-                            onDismiss()   },
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .weight(1F)
-                    ) {
-                        Text(text = "Create")
-                    }
-                }
 
             }
         }
