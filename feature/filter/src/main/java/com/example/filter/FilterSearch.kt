@@ -1,9 +1,12 @@
 package com.example.filter
 
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Check
@@ -17,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.design_system.component.MaterialButtonToggleGroup
 import com.example.design_system.component.NiaFilterChip
@@ -32,9 +36,10 @@ fun FilterSearch(
     filmVip: FilmVip,
     viewModel: FilterViewModel = hiltViewModel(),
     onBackClick: (FilmVip) -> Unit,
+    onSelectYear: (FilmVip) -> Unit,
 ) {
-    val type = listOf("ALL","FILM","TV_SERIES")
-    val order = listOf("YEAR","NUM_VOTE","RATING")
+    val type = listOf("ALL", "FILM", "TV_SERIES")
+    val order = listOf("YEAR", "NUM_VOTE", "RATING")
     LaunchedEffect(key1 = true) {
         Log.i("searchFilter", "start $filmVip ")
         viewModel.setFilter(filmVip)
@@ -42,6 +47,25 @@ fun FilterSearch(
     }
 
     val filter = viewModel.filter.collectAsState()
+
+    val openDialog = remember { mutableStateOf(false) }
+    val dialogWidth = 200.dp
+    val dialogHeight = 440.dp
+    if (openDialog.value) {
+        Dialog(onDismissRequest = { openDialog.value = false }) {
+            // Draw a rectangle shape with rounded corners inside the dialog
+            Box(
+                Modifier
+                    .background(Color.White)
+            ) {
+                CalendarView(viewModel = viewModel,
+                    onDismiss = {
+                        openDialog.value = false
+                    }
+                )
+            }
+        }
+    }
 
 
     var select = remember {
@@ -58,9 +82,9 @@ fun FilterSearch(
         )
         MaterialButtonToggleGroup(
             items = listOf("Все", "Фильмы", "Сериалы"),
-            selected = type.indexOf(filmVip.type),
-            onClick = {index  ->
-                viewModel.setFilter(filter.value.copy(type = type[index] ))
+            selected = type.indexOf(filter.value.type),
+            onClick = { index ->
+                viewModel.setFilter(filter.value.copy(type = type[index]))
             }
         )
 
@@ -69,15 +93,15 @@ fun FilterSearch(
         RowTwoText(
             first = "Год",
             second = "${filter.value.yearFrom} - ${filter.value.yearTo}",
-            onClick = { })
+            onClick = { openDialog.value = true })
         RowTwoText(
             first = "Рейтинг",
             second = "${filter.value.ratingFrom} - ${filter.value.ratingTo}",
             onClick = { })
-        RowTwoText(
-            first = "Рейтинг2",
-            second = "${filter.value.ratingFrom.div(10)} - ${filter.value.ratingTo.div(10)}",
-            onClick = { })
+        /* RowTwoText(
+             first = "Рейтинг2",
+             second = "${filter.value.ratingFrom.div(10)} - ${filter.value.ratingTo.div(10)}",
+             onClick = { })*/
 
         RangeSlider(
             modifier = Modifier
@@ -104,9 +128,9 @@ fun FilterSearch(
 
         MaterialButtonToggleGroup(
             items = listOf("Дата", "Популярность", "Рейтинг"),
-            selected = order.indexOf(filmVip.order),
-            onClick = {index ->
-                viewModel.setFilter(filter.value.copy(order = order[index] ))
+            selected = order.indexOf(filter.value.order),
+            onClick = { index ->
+                viewModel.setFilter(filter.value.copy(order = order[index]))
             }
         )
 
@@ -119,3 +143,4 @@ fun FilterSearch(
 
     }
 }
+

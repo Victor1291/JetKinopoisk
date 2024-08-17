@@ -50,6 +50,11 @@ sealed class NavigationScreens(val route: String, @StringRes val label: Int, val
         label = R.string.collections,
         icon = Icons.Default.Menu
     )
+    data object YearDialog : NavigationScreens(
+        route = "year_screen",
+        label = R.string.collections,
+        icon = Icons.Default.Menu
+    )
 
     data object ProfileScreen : NavigationScreens(
         route = "profile_screen",

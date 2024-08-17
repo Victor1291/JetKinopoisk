@@ -7,7 +7,7 @@ data class FilmVip(
     val type: String = "FILM",
     val ratingFrom: Float = 2.0f,
     val ratingTo: Float = 8.0f,
-    val yearFrom: Int = 1990,
+    val yearFrom: Int = 2005,
     val yearTo: Int = 2024,
     var page: Int = 1,
     val keyword: String = "",

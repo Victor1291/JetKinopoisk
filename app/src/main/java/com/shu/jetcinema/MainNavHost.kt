@@ -297,6 +297,9 @@ fun MainNavHost(
                             ?.set(key, FilmsParametersType.serializeAsValue(vip))
                         navController.popBackStack()
                     },
+                    onSelectYear = {
+
+                    }
                 )
             }
 
@@ -362,6 +365,24 @@ fun MainNavHost(
         ) { backStackEntry ->
             backStackEntry.arguments?.getInt(argumentKey)?.let {
                 CountryDialogView(
+                    onDismiss = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+            BackHandler {
+                navController.popBackStack()
+            }
+        }
+        dialog(
+            route = "${NavigationScreens.YearDialog.route}/{$argumentKey}",
+            arguments = listOf(navArgument(argumentKey) {
+                type = NavType.IntType
+            })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getInt(argumentKey)?.let {
+                InputDialogView(
+                    onShowSnackbar = onShowSnackbar,
                     onDismiss = {
                         navController.popBackStack()
                     }

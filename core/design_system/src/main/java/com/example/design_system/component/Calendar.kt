@@ -2,6 +2,7 @@ package com.example.design_system.component
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
@@ -13,7 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.constrainHeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastForEachIndexed
 
 /**
  * При смене конфигурации сделать другой лист горизонтальный.
@@ -121,7 +124,8 @@ fun StartCalendar(
                             contentColor = Color.Red,
                             disabledContainerColor = Color.White,
                             disabledContentColor = Color.LightGray
-                        )
+                        ),
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
@@ -134,6 +138,7 @@ fun StartCalendar(
                     Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
@@ -146,6 +151,7 @@ fun StartCalendar(
                     Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onLeft1() },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
@@ -158,6 +164,7 @@ fun StartCalendar(
                     Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onRight1() },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
@@ -171,6 +178,7 @@ fun StartCalendar(
                     Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onSelect1(index) },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
@@ -183,6 +191,7 @@ fun StartCalendar(
                     Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
@@ -195,6 +204,7 @@ fun StartCalendar(
                     Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onLeft2() },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
@@ -207,6 +217,7 @@ fun StartCalendar(
                     Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onRight2() },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
@@ -219,6 +230,7 @@ fun StartCalendar(
                     Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onSelect2(index) },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
@@ -231,6 +243,7 @@ fun StartCalendar(
                     Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onSelect() },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 14.sp,
@@ -258,7 +271,7 @@ fun Excell(
             var x = 20
             var column = 5
             var y = 20
-            placeables.forEachIndexed { index, placeable ->
+            placeables.fastForEachIndexed { index, placeable ->
                 placeable.placeRelative(x = x, y = y)
                 when (index) {
                     0, 24 -> y += placeable.height + 20
@@ -276,7 +289,7 @@ fun Excell(
                     }
 
                     47 -> {
-                        x = 400
+                        x = 325
                         y += placeable.height
                     }
 
