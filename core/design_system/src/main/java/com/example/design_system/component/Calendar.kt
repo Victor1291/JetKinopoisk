@@ -2,7 +2,9 @@ package com.example.design_system.component
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
@@ -116,7 +118,14 @@ fun StartCalendar(
 
                 select1, select2 -> {
 
-                    Button(
+                    Text(modifier = Modifier
+                        .background(color = Color.Black)
+                        .padding(4.dp)
+                        .clickable { },
+                        text = item, color = Color.White, fontSize = 12.sp,
+                    )
+
+                    /*Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = {},
                         colors = ButtonColors(
@@ -130,25 +139,37 @@ fun StartCalendar(
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
                         )
-                    }
+                    }*/
                 }
 
                 1 -> {
 
-                    Button(
+                    Text(modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { onSelect() },
+                        text = item, color = Color.Black, fontSize = 12.sp,
+                    )
+
+                    /*Button(
                         modifier = Modifier.background(color = Color.White),
-                        onClick = { },
+                        onClick = { onSelect() },
                         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
                         )
-                    }
+                    }*/
                 }
 
                 2 -> {
 
-                    Button(
+                    Text(modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { onLeft1() },
+                        text = item, color = Color.Black, fontSize = 12.sp,
+                    )
+
+                    /*Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onLeft1() },
                         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
@@ -156,12 +177,18 @@ fun StartCalendar(
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
                         )
-                    }
+                    }*/
                 }
 
                 3 -> {
 
-                    Button(
+                    Text(modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { onRight1() },
+                        text = item, color = Color.Black, fontSize = 12.sp,
+                    )
+
+                   /* Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onRight1() },
                         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
@@ -169,13 +196,19 @@ fun StartCalendar(
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
                         )
-                    }
+                    }*/
                 }
 
 
                 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 -> {
 
-                    Button(
+                    Text(modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { onSelect1(index) },
+                        text = item, color = Color.Black, fontSize = 12.sp,
+                    )
+
+                   /* Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onSelect1(index) },
                         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
@@ -183,25 +216,37 @@ fun StartCalendar(
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
                         )
-                    }
+                    }*/
                 }
 
                 25 -> {
 
-                    Button(
+                    Text(modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { onSelect() },
+                        text = item, color = Color.Black, fontSize = 12.sp,
+                    )
+
+                   /* Button(
                         modifier = Modifier.background(color = Color.White),
-                        onClick = { },
+                        onClick = { onSelect() },
                         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                     ) {
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
                         )
-                    }
+                    }*/
                 }
 
                 26 -> {
 
-                    Button(
+                    Text(modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { onLeft2() },
+                        text = item, color = Color.Black, fontSize = 12.sp,
+                    )
+
+                    /*Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onLeft2() },
                         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
@@ -209,12 +254,18 @@ fun StartCalendar(
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
                         )
-                    }
+                    }*/
                 }
 
                 27 -> {
 
-                    Button(
+                    Text(modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { onRight2() },
+                        text = item, color = Color.Black, fontSize = 12.sp,
+                    )
+
+                   /* Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onRight2() },
                         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
@@ -222,12 +273,18 @@ fun StartCalendar(
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
                         )
-                    }
+                    }*/
                 }
 
                 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 -> {
 
-                    Button(
+                    Text(modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { onSelect2(index) },
+                        text = item, color = Color.Black, fontSize = 12.sp,
+                    )
+
+                    /*Button(
                         modifier = Modifier.background(color = Color.White),
                         onClick = { onSelect2(index) },
                         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
@@ -235,18 +292,23 @@ fun StartCalendar(
                         Text(
                             text = item, color = Color.Green, fontSize = 12.sp,
                         )
-                    }
+                    }*/
                 }
 
                 48 -> {
 
                     Button(
-                        modifier = Modifier.background(color = Color.White),
                         onClick = { onSelect() },
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
+                        colors = ButtonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.Red,
+                            disabledContainerColor = Color.White,
+                            disabledContentColor = Color.LightGray
+                        ),
                     ) {
                         Text(
-                            text = item, color = Color.Green, fontSize = 14.sp,
+                            text = item, color = Color.White, fontSize = 12.sp,
                         )
                     }
                 }
@@ -275,8 +337,8 @@ fun Excell(
                 placeable.placeRelative(x = x, y = y)
                 when (index) {
                     0, 24 -> y += placeable.height + 20
-                    1, 25 -> x += placeable.width + 230
-                    2, 26 -> x += placeable.width + 40
+                    1, 25 -> x += placeable.width + 150
+                    2, 26 -> x += placeable.width + 30
                     3 -> {
                         x = 20
                         y += placeable.height
@@ -289,6 +351,10 @@ fun Excell(
                     }
 
                     47 -> {
+                        x = 325
+                        y += placeable.height
+                    }
+                    48 -> {
                         x = 325
                         y += placeable.height
                     }

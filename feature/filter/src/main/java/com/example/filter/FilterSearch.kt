@@ -5,11 +5,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +24,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.design_system.component.MaterialButtonToggleGroup
 import com.example.design_system.component.NiaFilterChip
@@ -50,13 +54,15 @@ fun FilterSearch(
 
     val openDialog = remember { mutableStateOf(false) }
     val dialogWidth = 200.dp
-    val dialogHeight = 440.dp
+    val dialogHeight = 500.dp
     if (openDialog.value) {
-        Dialog(onDismissRequest = { openDialog.value = false }) {
-            // Draw a rectangle shape with rounded corners inside the dialog
-            Box(
-                Modifier
-                    .background(Color.White)
+        Dialog(
+            onDismissRequest = { openDialog.value = false },
+            properties = DialogProperties()
+        ) {
+
+            Card(
+                modifier= Modifier.height(450.dp).width(200.dp)
             ) {
                 CalendarView(viewModel = viewModel,
                     onDismiss = {
