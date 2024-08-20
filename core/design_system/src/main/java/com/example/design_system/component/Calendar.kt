@@ -1,6 +1,10 @@
 package com.example.design_system.component
 
 import android.util.Log
+import androidx.compose.animation.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,9 +13,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,7 +62,7 @@ fun NewCalendar() {
     year2.forEach {
         list.add(it.toString())
     }
-    list.add(" ВЫБРАТЬ ")
+    list.add(" OK ")
 
 
     StartCalendar(
@@ -105,6 +114,16 @@ fun StartCalendar(
     onRight2: () -> Unit,
     onSelect: () -> Unit,
 ) {
+    var isAnimated by remember { mutableStateOf(true) }
+    // При старте анимация срабатывает. выбраная дата отмечается плавно
+
+    val color = remember { Animatable(Color.White) }
+
+    LaunchedEffect(isAnimated) {
+        color.snapTo(Color.LightGray)
+        color.animateTo(Color.Black, animationSpec = tween(2000))
+    }
+
     Excell {
         list.forEachIndexed { index, item ->
 
@@ -117,182 +136,107 @@ fun StartCalendar(
                 }
 
                 select1, select2 -> {
-
-                    Text(modifier = Modifier
-                        .background(color = Color.Black)
-                        .padding(4.dp)
-                        .clickable { },
+                    Text(
+                        modifier = Modifier
+                            .background(color = color.value)
+                            .padding(4.dp)
+                            .clickable { },
                         text = item, color = Color.White, fontSize = 12.sp,
                     )
-
-                    /*Button(
-                        modifier = Modifier.background(color = Color.White),
-                        onClick = {},
-                        colors = ButtonColors(
-                            containerColor = Color.Black,
-                            contentColor = Color.Red,
-                            disabledContainerColor = Color.White,
-                            disabledContentColor = Color.LightGray
-                        ),
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
-                    ) {
-                        Text(
-                            text = item, color = Color.Green, fontSize = 12.sp,
-                        )
-                    }*/
                 }
 
                 1 -> {
 
-                    Text(modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { onSelect() },
+                    Text(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable { onSelect() },
                         text = item, color = Color.Black, fontSize = 12.sp,
                     )
 
-                    /*Button(
-                        modifier = Modifier.background(color = Color.White),
-                        onClick = { onSelect() },
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
-                    ) {
-                        Text(
-                            text = item, color = Color.Green, fontSize = 12.sp,
-                        )
-                    }*/
                 }
 
                 2 -> {
 
-                    Text(modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { onLeft1() },
+                    Text(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable { onLeft1() },
                         text = item, color = Color.Black, fontSize = 12.sp,
                     )
 
-                    /*Button(
-                        modifier = Modifier.background(color = Color.White),
-                        onClick = { onLeft1() },
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
-                    ) {
-                        Text(
-                            text = item, color = Color.Green, fontSize = 12.sp,
-                        )
-                    }*/
                 }
 
                 3 -> {
 
-                    Text(modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { onRight1() },
+                    Text(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable { onRight1() },
                         text = item, color = Color.Black, fontSize = 12.sp,
                     )
 
-                   /* Button(
-                        modifier = Modifier.background(color = Color.White),
-                        onClick = { onRight1() },
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
-                    ) {
-                        Text(
-                            text = item, color = Color.Green, fontSize = 12.sp,
-                        )
-                    }*/
                 }
-
 
                 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 -> {
 
-                    Text(modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { onSelect1(index) },
+
+                    Text(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable {
+                                isAnimated = !isAnimated
+                                onSelect1(index)
+                            },
                         text = item, color = Color.Black, fontSize = 12.sp,
                     )
 
-                   /* Button(
-                        modifier = Modifier.background(color = Color.White),
-                        onClick = { onSelect1(index) },
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
-                    ) {
-                        Text(
-                            text = item, color = Color.Green, fontSize = 12.sp,
-                        )
-                    }*/
                 }
 
                 25 -> {
 
-                    Text(modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { onSelect() },
+                    Text(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable { onSelect() },
                         text = item, color = Color.Black, fontSize = 12.sp,
                     )
 
-                   /* Button(
-                        modifier = Modifier.background(color = Color.White),
-                        onClick = { onSelect() },
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
-                    ) {
-                        Text(
-                            text = item, color = Color.Green, fontSize = 12.sp,
-                        )
-                    }*/
                 }
 
                 26 -> {
 
-                    Text(modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { onLeft2() },
+                    Text(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable { onLeft2() },
                         text = item, color = Color.Black, fontSize = 12.sp,
                     )
 
-                    /*Button(
-                        modifier = Modifier.background(color = Color.White),
-                        onClick = { onLeft2() },
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
-                    ) {
-                        Text(
-                            text = item, color = Color.Green, fontSize = 12.sp,
-                        )
-                    }*/
                 }
 
                 27 -> {
 
-                    Text(modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { onRight2() },
+                    Text(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable { onRight2() },
                         text = item, color = Color.Black, fontSize = 12.sp,
                     )
-
-                   /* Button(
-                        modifier = Modifier.background(color = Color.White),
-                        onClick = { onRight2() },
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
-                    ) {
-                        Text(
-                            text = item, color = Color.Green, fontSize = 12.sp,
-                        )
-                    }*/
                 }
 
                 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 -> {
 
-                    Text(modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { onSelect2(index) },
+                    Text(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable {
+                                isAnimated = !isAnimated
+                                onSelect2(index)
+                            },
                         text = item, color = Color.Black, fontSize = 12.sp,
                     )
 
-                    /*Button(
-                        modifier = Modifier.background(color = Color.White),
-                        onClick = { onSelect2(index) },
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
-                    ) {
-                        Text(
-                            text = item, color = Color.Green, fontSize = 12.sp,
-                        )
-                    }*/
                 }
 
                 48 -> {
@@ -354,6 +298,7 @@ fun Excell(
                         x = 325
                         y += placeable.height
                     }
+
                     48 -> {
                         x = 325
                         y += placeable.height
