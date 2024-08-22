@@ -48,6 +48,7 @@ dependencies {
     implementation(project(mapOf("path" to ":feature:list_movies")))
     implementation(project(mapOf("path" to ":feature:bottom_sheet")))
     implementation(project(mapOf("path" to ":feature:gallery")))
+    implementation(project(mapOf("path" to ":feature:filter")))
 
     //OkHttp
     implementation(libs.okhttp)

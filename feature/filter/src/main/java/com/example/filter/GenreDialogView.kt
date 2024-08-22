@@ -21,16 +21,16 @@ import androidx.compose.ui.unit.dp
 import com.example.filter.components.MaterialSearch
 
 @Composable
-fun CountryDialogView(
+fun GenreDialogView(
     viewModel: FilterViewModel,
     onDismiss: () -> Unit
 ) {
 
     val filter = viewModel.filter.collectAsState()
-    val city by viewModel.country.collectAsState()
+    val city by viewModel.genres.collectAsState()
     LaunchedEffect(true) {
         viewModel.updateSearchTextState("")
-        viewModel.refreshCountry()
+        viewModel.refreshGenres()
     }
 
     val context = LocalContext.current.applicationContext
@@ -40,10 +40,10 @@ fun CountryDialogView(
     Column() {
         MaterialSearch(
             viewModel = viewModel,
-            isCountries = true,
-            city = city,
-            genres = emptyList()
-            )
+            isCountries = false,
+            city = emptyList(),
+            genres = city
+        )
 
         LazyColumn {
             items(city.size) { item ->
@@ -52,12 +52,12 @@ fun CountryDialogView(
                         .fillMaxWidth()
                         .padding(16.dp)
                         .clickable {
-                            viewModel.updateSearchTextState(city[item].country)
-                            viewModel.setFilter(filter.value.copy(country = city[item].id,countryName = city[item].country))
+                            viewModel.updateSearchTextState(city[item].genre)
+                            viewModel.setFilter(filter.value.copy(country = city[item].id, genresName = city[item].genre))
                             onDismiss()
                         }, contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "${city[item].id}. ${city[item].country}")
+                    Text(text = "${city[item].id}. ${city[item].genre}")
                 }
             }
         }

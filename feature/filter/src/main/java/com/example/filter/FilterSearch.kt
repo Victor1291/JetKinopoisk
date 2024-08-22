@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,8 +55,8 @@ fun FilterSearch(
     val filter = viewModel.filter.collectAsState()
 
     val openDialog = remember { mutableStateOf(false) }
-    val dialogWidth = 200.dp
-    val dialogHeight = 500.dp
+    val openDialogCity = remember { mutableStateOf(false) }
+    val openDialogGenre = remember { mutableStateOf(false) }
     if (openDialog.value) {
         Dialog(
             onDismissRequest = { openDialog.value = false },
@@ -62,7 +64,9 @@ fun FilterSearch(
         ) {
 
             Card(
-                modifier= Modifier.height(450.dp).width(200.dp)
+                shape = RoundedCornerShape(10.dp),
+                modifier= Modifier.height(450.dp).width(200.dp),
+                elevation = CardDefaults.cardElevation(8.dp)
             ) {
                 CalendarView(viewModel = viewModel,
                     onDismiss = {
@@ -72,7 +76,45 @@ fun FilterSearch(
             }
         }
     }
+    if (openDialogCity.value) {
+        Dialog(
+            onDismissRequest = { openDialogCity.value = false },
+            properties = DialogProperties()
+        ) {
+            Card(
+                shape = RoundedCornerShape(10.dp),
+                modifier= Modifier.height(450.dp).width(200.dp),
+                elevation = CardDefaults.cardElevation(8.dp)
+            ) {
+                CountryDialogView(viewModel = viewModel,
+                    onDismiss = {
+                        openDialogCity.value = false
+                    }
+                )
+            }
+        }
 
+    }
+    if (openDialogGenre.value) {
+        Dialog(
+            onDismissRequest = { openDialogGenre.value = false },
+            properties = DialogProperties()
+        ) {
+
+            Card(
+                shape = RoundedCornerShape(10.dp),
+                modifier= Modifier.height(450.dp).width(200.dp),
+                elevation = CardDefaults.cardElevation(8.dp)
+            ) {
+                GenreDialogView(viewModel = viewModel,
+                    onDismiss = {
+                        openDialogGenre.value = false
+                    }
+                )
+            }
+        }
+
+    }
 
     var select = remember {
         mutableStateOf(true)
@@ -94,8 +136,8 @@ fun FilterSearch(
             }
         )
 
-        RowTwoText(first = "Страна", second = filter.value.countryName, onClick = { })
-        RowTwoText(first = "Жанр", second = filter.value.genresName, onClick = { })
+        RowTwoText(first = "Страна", second = filter.value.countryName, onClick = { openDialogCity.value = true })
+        RowTwoText(first = "Жанр", second = filter.value.genresName, onClick = { openDialogGenre.value = true })
         RowTwoText(
             first = "Год",
             second = "${filter.value.yearFrom} - ${filter.value.yearTo}",

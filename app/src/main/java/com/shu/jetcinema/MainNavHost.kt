@@ -357,23 +357,7 @@ fun MainNavHost(
                 navController.popBackStack()
             }
         }
-        dialog(
-            route = "${NavigationScreens.CityDialog.route}/{$argumentKey}",
-            arguments = listOf(navArgument(argumentKey) {
-                type = NavType.IntType
-            })
-        ) { backStackEntry ->
-            backStackEntry.arguments?.getInt(argumentKey)?.let {
-                CountryDialogView(
-                    onDismiss = {
-                        navController.popBackStack()
-                    }
-                )
-            }
-            BackHandler {
-                navController.popBackStack()
-            }
-        }
+
         dialog(
             route = "${NavigationScreens.YearDialog.route}/{$argumentKey}",
             arguments = listOf(navArgument(argumentKey) {
