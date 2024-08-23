@@ -31,6 +31,7 @@ fun MaterialSearch(
     isCountries: Boolean,
     city: List<Countries>,
     genres: List<Genres>,
+    onDismiss: () -> Unit
 ) {
     val isActive = remember {
         mutableStateOf(false)
@@ -79,6 +80,7 @@ fun MaterialSearch(
                                 viewModel.updateSearchTextState(mainList.value[item].country)
                                 viewModel.setFilter(filter.value.copy(country = mainList.value[item].id))
                                 isActive.value = false
+                                onDismiss()
                             }, contentAlignment = Alignment.Center
                     ) {
                         Text(text = mainList.value[item].country)
@@ -95,8 +97,8 @@ fun MaterialSearch(
                             .clickable {
                                 viewModel.updateSearchTextState(mainListGenres.value[item].genre)
                                 viewModel.setFilter(filter.value.copy(country = mainListGenres.value[item].id))
-
                                 isActive.value = false
+                                onDismiss
                             }, contentAlignment = Alignment.Center
                     ) {
                         Text(text = mainListGenres.value[item].genre)

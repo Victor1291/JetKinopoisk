@@ -55,7 +55,9 @@ fun MovieItemCard(
             )
 
             Text(
-                text = "${if (cinemaItem.nameRu.isNullOrEmpty()) cinemaItem.nameEn else cinemaItem.nameRu}",
+                text = "${if (cinemaItem.nameRu.isNullOrEmpty()) {
+                  if (cinemaItem.nameEn.isNullOrEmpty()) cinemaItem.nameEn else cinemaItem.nameOriginal
+                } else cinemaItem.nameRu}",
                 lineHeight = 15.sp,
                 fontSize = 14.sp,
                 modifier = Modifier

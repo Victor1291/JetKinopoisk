@@ -62,16 +62,15 @@ fun SearchScreen(
         mutableStateOf(searchViewModel.title.value.isSearchPerson)
     }
     val searchTextState = searchViewModel.title.collectAsState()
-    LaunchedEffect(key1 = 3) {
-        if (filter != null) {
-            Log.d("searchScreen", "  not null $filter ")
-            searchViewModel.setFilter(filter)
-        }
-    }
-
+    val isRefresh = remember { mutableStateOf(false) }
     val lazyPagingItems =
-        if (isSearchPersonActive.value) searchViewModel.pagedMovies.collectAsLazyPagingItems()
-        else searchViewModel.pagedPerson.collectAsLazyPagingItems()
+        if (isSearchPersonActive.value) {
+            searchViewModel.pagedMovies.collectAsLazyPagingItems()
+        }  else {
+            searchViewModel.pagedPerson.collectAsLazyPagingItems()
+        }
+
+
 
     val swipeRefreshState =
         rememberPullRefreshState(false, onRefresh = { lazyPagingItems.refresh() })
@@ -100,6 +99,28 @@ fun SearchScreen(
             }
         }
     }
+    val select = remember {
+        mutableStateOf(false)
+    }
+
+    if (filter != null) {
+        if (
+            searchTextState.value.country != filter.country
+            || searchTextState.value.genres != filter.genres
+            || searchTextState.value.ratingFrom != filter.ratingFrom
+            || searchTextState.value.ratingTo != filter.ratingTo
+            || searchTextState.value.yearFrom != filter.yearFrom
+            || searchTextState.value.yearTo != filter.yearTo
+            || searchTextState.value.type != filter.type
+            || searchTextState.value.order != filter.order
+        ) {
+            Log.d("searchScreen", " 1. not null $filter ")
+            //устанавливаем фильтр
+            searchViewModel.setFilter(filter.copy(page = 1, keyword = ""))
+            //обновляем экран
+            select.value = !select.value
+        }
+    }
 
 
     Scaffold(modifier = Modifier.nestedScroll(nestedScrollConnection),
@@ -108,7 +129,6 @@ fun SearchScreen(
         topBar = {
             MaterialSearch(
                 searchViewModel,
-                searchTextState = searchTextState,
                 onRefreshClick = {
                     lazyPagingItems.refresh()
                 },
@@ -130,7 +150,7 @@ fun SearchScreen(
             )
         }
     ) { inner ->
-        val padding =inner
+        val padding = inner
 
         Box(
             Modifier
@@ -138,6 +158,12 @@ fun SearchScreen(
                 .pullRefresh(swipeRefreshState)
             //.padding(bottom = 90.dp)
         ) {
+
+
+            LaunchedEffect(select) {
+                state.scrollToItem(1)
+            }
+
             LazyVerticalGrid(
                 modifier = Modifier,
                 columns = GridCells.Adaptive(150.dp),

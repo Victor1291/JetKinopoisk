@@ -17,8 +17,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,7 +35,7 @@ class SearchViewModel @Inject constructor(
 
     init {
         title.onEach {
-            Log.d("searchViewModel onEach", "$it")
+            Log.d("searchViewModel onEach", "2.  $it")
             titleIn = it
         }.launchIn(viewModelScope)
     }
@@ -60,4 +63,5 @@ class SearchViewModel @Inject constructor(
     fun setFilter(titleNew: FilmVip) {
         _title.value = titleNew
     }
+
 }

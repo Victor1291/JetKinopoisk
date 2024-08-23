@@ -42,7 +42,8 @@ fun CountryDialogView(
             viewModel = viewModel,
             isCountries = true,
             city = city,
-            genres = emptyList()
+            genres = emptyList(),
+            onDismiss = { onDismiss() }
             )
 
         LazyColumn {
@@ -50,14 +51,14 @@ fun CountryDialogView(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(8.dp)
                         .clickable {
                             viewModel.updateSearchTextState(city[item].country)
                             viewModel.setFilter(filter.value.copy(country = city[item].id,countryName = city[item].country))
                             onDismiss()
                         }, contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "${city[item].id}. ${city[item].country}")
+                    Text(text = city[item].country)
                 }
             }
         }

@@ -1,15 +1,21 @@
 package com.example.design_system.component
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,10 +33,11 @@ fun MaterialButtonToggleGroup(
     onClick: (index: Int) -> Unit = {}
 ) {
     val cornerRadius = 8.dp
-
-    val (selectedIndex, onIndexSelected) = remember { mutableStateOf<Int?>(selected) }
+    Log.d("seaMaterial", "selected  $selected -  $items")
     Row(
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
     ) {
         items.forEachIndexed { index, item ->
             OutlinedButton(
@@ -38,15 +45,14 @@ fun MaterialButtonToggleGroup(
                     0 ->
                         Modifier
                             .offset(0.dp, 0.dp)
-                            .zIndex(if (selectedIndex == index) 1f else 0f)
+                            .zIndex(if (selected == 0) 1f else 0f)
 
                     else ->
                         Modifier
                             .offset((-1 * index).dp, 0.dp)
-                            .zIndex(if (selectedIndex == index) 1f else 0f)
+                            .zIndex(if (selected == index) 1f else 0f)
                 },
                 onClick = {
-                    onIndexSelected(index)
                     onClick(index)
                 },
                 shape = when (index) {
@@ -73,13 +79,13 @@ fun MaterialButtonToggleGroup(
                     )
                 },
                 border = BorderStroke(
-                    1.dp, if (selectedIndex == index) {
+                    1.dp, if (selected == index) {
                         MaterialTheme.colorScheme.primary
                     } else {
                         Color.DarkGray.copy(alpha = 0.75f)
                     }
                 ),
-                colors = if (selectedIndex == index) {
+                colors = if (selected == index) {
                     // selected colors
                     ButtonDefaults.outlinedButtonColors(
                         containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 1f),
@@ -96,7 +102,7 @@ fun MaterialButtonToggleGroup(
                 Text(
                     text = item,
                     maxLines = 1,
-                    color = if (selectedIndex == index) {
+                    color = if (selected == index) {
                         MaterialTheme.colorScheme.onPrimary
                     } else {
                         Color.DarkGray.copy(alpha = 0.9f)
@@ -114,7 +120,7 @@ fun MaterialButtonToggleGroupPreview() {
     JetCinemaTheme {
         MaterialButtonToggleGroup(
             items = listOf("Дата", "Популярность", "Рейтинг"),
-            selected = 2,
+            selected = 1,
             onClick = {}
         )
     }

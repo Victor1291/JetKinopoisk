@@ -1,13 +1,10 @@
 package com.example.filter
 
 import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -19,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -47,9 +45,8 @@ fun FilterSearch(
     val type = listOf("ALL", "FILM", "TV_SERIES")
     val order = listOf("YEAR", "NUM_VOTE", "RATING")
     LaunchedEffect(key1 = true) {
-        Log.i("searchFilter", "start $filmVip ")
+        Log.i("searchFilter", "start screen filter $filmVip ")
         viewModel.setFilter(filmVip)
-
     }
 
     val filter = viewModel.filter.collectAsState()
@@ -65,7 +62,9 @@ fun FilterSearch(
 
             Card(
                 shape = RoundedCornerShape(10.dp),
-                modifier= Modifier.height(450.dp).width(200.dp),
+                modifier = Modifier
+                    .height(450.dp)
+                    .width(200.dp),
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
                 CalendarView(viewModel = viewModel,
@@ -83,7 +82,9 @@ fun FilterSearch(
         ) {
             Card(
                 shape = RoundedCornerShape(10.dp),
-                modifier= Modifier.height(450.dp).width(200.dp),
+                modifier = Modifier
+                    .height(450.dp)
+                    .width(200.dp),
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
                 CountryDialogView(viewModel = viewModel,
@@ -103,7 +104,9 @@ fun FilterSearch(
 
             Card(
                 shape = RoundedCornerShape(10.dp),
-                modifier= Modifier.height(450.dp).width(200.dp),
+                modifier = Modifier
+                    .height(450.dp)
+                    .width(200.dp),
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
                 GenreDialogView(viewModel = viewModel,
@@ -116,9 +119,12 @@ fun FilterSearch(
 
     }
 
-    var select = remember {
+    val select = remember {
         mutableStateOf(true)
     }
+    var selectedIndexType = type.indexOf(filter.value.type)
+    var selectedIndexOrder = order.indexOf(filter.value.order)
+
     Column(
         modifier = modifier
     ) {
@@ -130,14 +136,21 @@ fun FilterSearch(
         )
         MaterialButtonToggleGroup(
             items = listOf("Все", "Фильмы", "Сериалы"),
-            selected = type.indexOf(filter.value.type),
+            selected = selectedIndexType,
             onClick = { index ->
+                selectedIndexType = index
                 viewModel.setFilter(filter.value.copy(type = type[index]))
             }
         )
 
-        RowTwoText(first = "Страна", second = filter.value.countryName, onClick = { openDialogCity.value = true })
-        RowTwoText(first = "Жанр", second = filter.value.genresName, onClick = { openDialogGenre.value = true })
+        RowTwoText(
+            first = "Страна",
+            second = filter.value.countryName,
+            onClick = { openDialogCity.value = true })
+        RowTwoText(
+            first = "Жанр",
+            second = filter.value.genresName,
+            onClick = { openDialogGenre.value = true })
         RowTwoText(
             first = "Год",
             second = "${filter.value.yearFrom} - ${filter.value.yearTo}",
@@ -176,8 +189,9 @@ fun FilterSearch(
 
         MaterialButtonToggleGroup(
             items = listOf("Дата", "Популярность", "Рейтинг"),
-            selected = order.indexOf(filter.value.order),
+            selected = selectedIndexOrder,
             onClick = { index ->
+                selectedIndexOrder = index
                 viewModel.setFilter(filter.value.copy(order = order[index]))
             }
         )

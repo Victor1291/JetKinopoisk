@@ -42,7 +42,8 @@ fun GenreDialogView(
             viewModel = viewModel,
             isCountries = false,
             city = emptyList(),
-            genres = city
+            genres = city,
+            onDismiss = { onDismiss() }
         )
 
         LazyColumn {
@@ -50,10 +51,10 @@ fun GenreDialogView(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(8.dp)
                         .clickable {
                             viewModel.updateSearchTextState(city[item].genre)
-                            viewModel.setFilter(filter.value.copy(country = city[item].id, genresName = city[item].genre))
+                            viewModel.setFilter(filter.value.copy(genres = city[item].id, genresName = city[item].genre))
                             onDismiss()
                         }, contentAlignment = Alignment.Center
                 ) {

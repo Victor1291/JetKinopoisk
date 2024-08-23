@@ -28,11 +28,11 @@ class FilterViewModel @Inject constructor(
     private var _filter = MutableStateFlow(FilmVip())
     val filter = _filter.asStateFlow()
 
-     fun setFilter(titleNew: FilmVip) {
-         _filter.value = titleNew
-     }
+    fun setFilter(titleNew: FilmVip) {
+        _filter.value = titleNew
+    }
 
-    private val _searchTextState= MutableStateFlow(value = "")
+    private val _searchTextState = MutableStateFlow(value = "")
     val searchTextState = _searchTextState.asStateFlow()
 
     fun updateSearchTextState(newValue: String) {
@@ -43,7 +43,7 @@ class FilterViewModel @Inject constructor(
     val country = combine(_country, searchTextState) { countries, wordSearch ->
         if (wordSearch.isNotEmpty())
             countries.filter { country ->
-                country.country.contains(wordSearch,true)
+                country.country.contains(wordSearch, true)
             }
         else countries
     }.stateIn(
@@ -56,7 +56,7 @@ class FilterViewModel @Inject constructor(
     val genres = combine(_genres, searchTextState) { genries, wordSearch ->
         if (wordSearch.isNotEmpty())
             genries.filter { country ->
-                country.genre.contains(wordSearch,true)
+                country.genre.contains(wordSearch, true)
             }
         else genries
     }.stateIn(
@@ -66,29 +66,30 @@ class FilterViewModel @Inject constructor(
     )
 
     private fun loadCountry() {
-         viewModelScope.launch(Dispatchers.IO) {
-             kotlin.runCatching {
-                 repository.getFilters()
-             }.fold(
-                 onSuccess = { _country.value = it.countries },
-                 onFailure = { Log.d("CountryViewModel", it.message ?: "") }
-             )
-         }
+        viewModelScope.launch(Dispatchers.IO) {
+            kotlin.runCatching {
+                repository.getFilters()
+            }.fold(
+                onSuccess = { _country.value = it.countries },
+                onFailure = { Log.d("CountryViewModel", it.message ?: "") }
+            )
+        }
     }
+
     fun refreshCountry() {
         loadCountry()
     }
 
-        private fun loadGenres() {
-            viewModelScope.launch(Dispatchers.IO) {
-                kotlin.runCatching {
-                    repository.getFilters()
-                }.fold(
-                    onSuccess = { _genres.value = it.genres },
-                    onFailure = { Log.d("CountryViewModel", it.message ?: "") }
-                )
-            }
+    private fun loadGenres() {
+        viewModelScope.launch(Dispatchers.IO) {
+            kotlin.runCatching {
+                repository.getFilters()
+            }.fold(
+                onSuccess = { _genres.value = it.genres },
+                onFailure = { Log.d("CountryViewModel", it.message ?: "") }
+            )
         }
+    }
 
     fun refreshGenres() {
         loadGenres()

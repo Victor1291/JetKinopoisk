@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,7 +42,7 @@ import com.shu.mylibrary.R
 @Composable
 fun MaterialSearch(
     viewModel: SearchViewModel,
-    searchTextState: State<FilmVip>,
+   // searchTextState: State<FilmVip>,
     onRefreshClick: () -> Unit,
     onPersonClick: () -> Unit,
     onTuneClick: () -> Unit,
@@ -54,16 +55,20 @@ fun MaterialSearch(
     val mainList = remember {
         mutableStateOf(originUsersList)
     }
+
+    //подписываемся на изменения фильтра
+    val searchTextState = viewModel.title.collectAsState()
+
     DockedSearchBar(modifier = modifier.padding(start = 8.dp,end = 8.dp,top = 20.dp)
         .fillMaxWidth(),
         query = searchTextState.value.keyword,
         onQueryChange = { text ->
-            viewModel.setFilter(FilmVip(keyword = text))
+            viewModel.setFilter(searchTextState.value.copy(keyword = text))
             onRefreshClick()
             // mainList.value = Utils.search(text, originUsersList)
         },
         onSearch = { text ->
-            viewModel.setFilter(FilmVip(keyword = text))
+            viewModel.setFilter(searchTextState.value.copy(keyword = text))
             onRefreshClick()
             isActive.value = false
         },
