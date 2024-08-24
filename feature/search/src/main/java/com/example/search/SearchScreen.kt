@@ -118,10 +118,16 @@ fun SearchScreen(
             //устанавливаем фильтр
             searchViewModel.setFilter(filter.copy(page = 1, keyword = ""))
             //обновляем экран
-            select.value = !select.value
+            select.value = true
         }
     }
-
+    LaunchedEffect(select.value) {
+        when (select.value) {
+            true -> { state.scrollToItem(1)}
+                false -> {}
+        }
+        select.value = false
+    }
 
     Scaffold(modifier = Modifier.nestedScroll(nestedScrollConnection),
 
@@ -158,11 +164,6 @@ fun SearchScreen(
                 .pullRefresh(swipeRefreshState)
             //.padding(bottom = 90.dp)
         ) {
-
-
-            LaunchedEffect(select) {
-                state.scrollToItem(1)
-            }
 
             LazyVerticalGrid(
                 modifier = Modifier,

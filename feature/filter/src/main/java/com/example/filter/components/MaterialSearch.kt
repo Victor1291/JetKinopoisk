@@ -31,7 +31,8 @@ fun MaterialSearch(
     isCountries: Boolean,
     city: List<Countries>,
     genres: List<Genres>,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onConfirmation: (Countries, Genres) -> Unit,
 ) {
     val isActive = remember {
         mutableStateOf(false)
@@ -76,8 +77,9 @@ fun MaterialSearch(
                             .fillMaxWidth()
                             .padding(16.dp)
                             .clickable {
-                                viewModel.updateSearchTextState(mainList.value[item].country)
-                                viewModel.setFilter(filter.value.copy(country = mainList.value[item].id))
+                                onConfirmation(mainList.value[item], Genres(id = 0,"триллер"))
+                               /* viewModel.updateSearchTextState(mainList.value[item].country)
+                                viewModel.setFilter(filter.value.copy(country = mainList.value[item].id))*/
                                 isActive.value = false
                                 onDismiss()
                             }, contentAlignment = Alignment.Center
@@ -94,10 +96,11 @@ fun MaterialSearch(
                             .fillMaxWidth()
                             .padding(16.dp)
                             .clickable {
-                                viewModel.updateSearchTextState(mainListGenres.value[item].genre)
-                                viewModel.setFilter(filter.value.copy(country = mainListGenres.value[item].id))
+                                onConfirmation(Countries(0,"США"), mainListGenres.value[item])
+                               /* viewModel.updateSearchTextState(mainListGenres.value[item].genre)
+                                viewModel.setFilter(filter.value.copy(country = mainListGenres.value[item].id))*/
                                 isActive.value = false
-                                onDismiss
+                                onDismiss()
                             }, contentAlignment = Alignment.Center
                     ) {
                         Text(text = mainListGenres.value[item].genre)

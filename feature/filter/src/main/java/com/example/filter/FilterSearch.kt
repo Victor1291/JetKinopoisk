@@ -33,6 +33,7 @@ import com.example.design_system.component.RowTwoText
 import com.example.design_system.component.TopBar
 import com.shu.models.Countries
 import com.shu.models.FilmVip
+import com.shu.models.Genres
 import kotlin.math.roundToInt
 
 @Composable
@@ -58,7 +59,6 @@ fun FilterSearch(
     if (openDialog.value) {
         Dialog(
             onDismissRequest = { openDialog.value = false },
-            properties = DialogProperties()
         ) {
 
             Card(
@@ -97,6 +97,7 @@ fun FilterSearch(
                         openDialogCity.value = false
                     },
                     viewModel = viewModel,
+                    //TODO запоминать выбранный вариант
                     countrySelected = Countries(0,"США"),
                     onDismiss = {
                         openDialogCity.value = false
@@ -108,17 +109,26 @@ fun FilterSearch(
     if (openDialogGenre.value) {
         Dialog(
             onDismissRequest = { openDialogGenre.value = false },
-            properties = DialogProperties()
         ) {
 
             Card(
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
-                    .height(450.dp)
-                    .width(200.dp),
+                    .fillMaxWidth()
+                    .height(500.dp),
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
-                GenreDialogView(viewModel = viewModel,
+                GenreDialogView2(
+                    onDismissRequest = {
+                        openDialogGenre.value = false
+                    },
+                    onConfirmation = {
+                        viewModel.updateSearchTextState(it.genre)
+                        viewModel.setFilter(filter.value.copy(genres =it.id, genresName = it.genre))
+                        openDialogGenre.value = false
+                    },
+                    viewModel = viewModel,
+                    genreSelected = Genres(0,"триллер"),
                     onDismiss = {
                         openDialogGenre.value = false
                     }

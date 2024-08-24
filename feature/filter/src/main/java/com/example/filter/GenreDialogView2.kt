@@ -25,25 +25,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.example.filter.components.MaterialSearch
-import com.shu.models.Countries
 import com.shu.models.Genres
 
 @Composable
-fun CountryDialogView2(
+fun GenreDialogView2(
     onDismissRequest: () -> Unit,
-    onConfirmation: (Countries) -> Unit,
+    onConfirmation: (Genres) -> Unit,
     viewModel: FilterViewModel,
-    countrySelected: Countries,
+    genreSelected: Genres,
     onDismiss: () -> Unit
 ) {
 
-    val city by viewModel.country.collectAsState()
+    val filter = viewModel.filter.collectAsState()
+    val city by viewModel.genres.collectAsState()
     LaunchedEffect(true) {
         viewModel.updateSearchTextState("")
-        viewModel.refreshCountry()
+        viewModel.refreshGenres()
     }
 
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(countrySelected) }
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(genreSelected) }
 
     Column(
         Modifier
@@ -53,14 +53,15 @@ fun CountryDialogView2(
     ) {
         MaterialSearch(
             viewModel = viewModel,
-            isCountries = true,
-            city = city,
-            genres = emptyList(),
+            isCountries = false,
+            city = emptyList(),
+            genres = city,
             onDismiss = { onDismiss() },
-            onConfirmation = { country, _ ->
-                onConfirmation(country)
+            onConfirmation = { _, genre ->
+                onConfirmation(genre)
             },
         )
+
         LazyColumn(
             Modifier
                 .selectableGroup()
@@ -68,12 +69,13 @@ fun CountryDialogView2(
                 .height(350.dp),
         ) {
             items(city.size) { item ->
+
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .height(36.dp)
                         .selectable(
-                            selected = (city[item].country == selectedOption.country),
+                            selected = (city[item].genre == selectedOption.genre),
                             onClick = { onOptionSelected(city[item]) },
                             role = Role.RadioButton
                         )
@@ -81,11 +83,11 @@ fun CountryDialogView2(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
-                        selected = (city[item].country == selectedOption.country),
+                        selected = (city[item].genre == selectedOption.genre),
                         onClick = null // null recommended for accessibility with screenreaders
                     )
                     Text(
-                        text = city[item].country,
+                        text = city[item].genre,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(start = 16.dp)
                     )
@@ -111,7 +113,5 @@ fun CountryDialogView2(
                 Text("Confirm")
             }
         }
-
     }
-
 }
