@@ -47,8 +47,7 @@ fun MaterialSearch(
     }
 
     SearchBar(modifier = Modifier
-        .fillMaxWidth()
-        .padding(dimensionResource(R.dimen.padding_medium)),
+        .fillMaxWidth(),
         query = searchTextState,
         onQueryChange = { text ->
             viewModel.updateSearchTextState(text)

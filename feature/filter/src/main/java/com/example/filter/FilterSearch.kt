@@ -31,6 +31,7 @@ import com.example.design_system.component.NiaFilterChip
 import com.example.design_system.component.RangeSlider
 import com.example.design_system.component.RowTwoText
 import com.example.design_system.component.TopBar
+import com.shu.models.Countries
 import com.shu.models.FilmVip
 import kotlin.math.roundToInt
 
@@ -78,23 +79,31 @@ fun FilterSearch(
     if (openDialogCity.value) {
         Dialog(
             onDismissRequest = { openDialogCity.value = false },
-            properties = DialogProperties()
         ) {
             Card(
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
-                    .height(450.dp)
-                    .width(200.dp),
+                    .fillMaxWidth()
+                    .height(500.dp),
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
-                CountryDialogView(viewModel = viewModel,
+                CountryDialogView2(
+                    onDismissRequest = {
+                        openDialogCity.value = false
+                    },
+                    onConfirmation = {
+                        viewModel.updateSearchTextState(it.country)
+                        viewModel.setFilter(filter.value.copy(country =it.id,countryName = it.country))
+                        openDialogCity.value = false
+                    },
+                    viewModel = viewModel,
+                    countrySelected = Countries(0,"США"),
                     onDismiss = {
                         openDialogCity.value = false
                     }
                 )
             }
         }
-
     }
     if (openDialogGenre.value) {
         Dialog(
