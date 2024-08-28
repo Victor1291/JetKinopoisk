@@ -1,5 +1,7 @@
 package com.example.design_system.component
 
+import android.graphics.drawable.shapes.OvalShape
+import android.graphics.drawable.shapes.Shape
 import android.util.Log
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -7,11 +9,19 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,8 +30,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.constrainHeight
@@ -120,143 +132,151 @@ fun StartCalendar(
     val color = remember { Animatable(Color.White) }
 
     LaunchedEffect(isAnimated) {
-        color.snapTo(Color.LightGray)
+        color.snapTo(Color.Blue.copy(alpha = 0.7f))
         color.animateTo(Color.Black, animationSpec = tween(2000))
     }
+    Column(
+        Modifier
+            .background(Color.Blue.copy(alpha = 0.7f))
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Center
+    ) {
+        Excell {
+            list.forEachIndexed { index, item ->
 
-    Excell {
-        list.forEachIndexed { index, item ->
+                when (index) {
 
-            when (index) {
-
-                0, 24 -> {
-                    Text(
-                        text = item, color = Color.Black, fontSize = 14.sp
-                    )
-                }
-
-                select1, select2 -> {
-                    Text(
-                        modifier = Modifier
-                            .background(color = color.value)
-                            .padding(4.dp)
-                            .clickable { },
-                        text = item, color = Color.White, fontSize = 12.sp,
-                    )
-                }
-
-                1 -> {
-
-                    Text(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clickable { onSelect() },
-                        text = item, color = Color.Black, fontSize = 12.sp,
-                    )
-
-                }
-
-                2 -> {
-
-                    Text(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clickable { onLeft1() },
-                        text = item, color = Color.Black, fontSize = 12.sp,
-                    )
-
-                }
-
-                3 -> {
-
-                    Text(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clickable { onRight1() },
-                        text = item, color = Color.Black, fontSize = 12.sp,
-                    )
-
-                }
-
-                4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 -> {
-
-
-                    Text(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clickable {
-                                isAnimated = !isAnimated
-                                onSelect1(index)
-                            },
-                        text = item, color = Color.Black, fontSize = 12.sp,
-                    )
-
-                }
-
-                25 -> {
-
-                    Text(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clickable { onSelect() },
-                        text = item, color = Color.Black, fontSize = 12.sp,
-                    )
-
-                }
-
-                26 -> {
-
-                    Text(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clickable { onLeft2() },
-                        text = item, color = Color.Black, fontSize = 12.sp,
-                    )
-
-                }
-
-                27 -> {
-
-                    Text(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clickable { onRight2() },
-                        text = item, color = Color.Black, fontSize = 12.sp,
-                    )
-                }
-
-                28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 -> {
-
-                    Text(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .clickable {
-                                isAnimated = !isAnimated
-                                onSelect2(index)
-                            },
-                        text = item, color = Color.Black, fontSize = 12.sp,
-                    )
-
-                }
-
-                48 -> {
-
-                    Button(
-                        onClick = { onSelect() },
-                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
-                        colors = ButtonColors(
-                            containerColor = Color.Black,
-                            contentColor = Color.Red,
-                            disabledContainerColor = Color.White,
-                            disabledContentColor = Color.LightGray
-                        ),
-                    ) {
+                    0, 24 -> {
                         Text(
+                            text = item, color = Color.White.copy(alpha = 0.6F), fontSize = 14.sp
+                        )
+                    }
+
+                    select1, select2 -> {
+                        Text(
+                            modifier = Modifier
+                                .background(color = color.value)
+                                .padding(4.dp),
                             text = item, color = Color.White, fontSize = 12.sp,
                         )
                     }
-                }
 
+                    1 -> {
+
+                        Text(
+                            modifier = Modifier
+                                .background(Color.Blue.copy(alpha = 0.7f))
+                                .padding(4.dp)
+                                .clickable { onSelect() },
+                            text = item, color = Color.White, fontSize = 12.sp,
+                        )
+
+                    }
+
+                    2 -> {
+                        Text(
+                            modifier = Modifier
+                                .background(Color.Blue.copy(alpha = 0.7f))
+                                .padding(4.dp)
+                                .clickable { onLeft1() },
+                            text = item, color = Color.White, fontSize = 12.sp,
+                        )
+                    }
+
+                    3 -> {
+
+                        Text(
+                            modifier = Modifier
+                                .background(Color.Blue.copy(alpha = 0.7f))
+                                .padding(4.dp)
+                                .clickable { onRight1() },
+                            text = item, color = Color.White, fontSize = 12.sp,
+                        )
+                    }
+
+                    4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 -> {
+
+
+                        Text(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .clickable {
+                                    isAnimated = !isAnimated
+                                    onSelect1(index)
+                                },
+                            text = item, color = Color.White.copy(alpha = 0.6F), fontSize = 12.sp,
+                        )
+
+                    }
+
+                    25 -> {
+
+                        Text(
+                            modifier = Modifier
+                                .background(Color.Blue.copy(alpha = 0.7f))
+                                .padding(4.dp)
+                                .clickable { onSelect() },
+                            text = item, color = Color.White, fontSize = 12.sp,
+                        )
+
+                    }
+
+                    26 -> {
+
+                        Text(
+                            modifier = Modifier
+                                .background(Color.Blue.copy(alpha = 0.7f))
+                                .padding(4.dp)
+                                .clickable { onLeft2() },
+                            text = item, color = Color.White, fontSize = 12.sp,
+                        )
+
+                    }
+
+                    27 -> {
+
+                        Text(
+                            modifier = Modifier
+                                .background(Color.Blue.copy(alpha = 0.7f))
+                                .padding(4.dp)
+                                .clickable { onRight2() },
+                            text = item, color = Color.White, fontSize = 12.sp,
+                        )
+                    }
+
+                    28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47 -> {
+
+                        Text(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .clickable {
+                                    isAnimated = !isAnimated
+                                    onSelect2(index)
+                                },
+                            text = item, color = Color.White.copy(alpha = 0.6F), fontSize = 12.sp,
+                        )
+
+                    }
+
+                    48 -> {
+
+                        TextButton(
+                            onClick = { onSelect() },
+                            contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
+                            colors = ButtonColors(
+                                containerColor = Color.Blue.copy(alpha = 0.7f),
+                                contentColor = Color.Red,
+                                disabledContainerColor = Color.White,
+                                disabledContentColor = Color.LightGray
+                            ),
+                        ) {
+                            Text(
+                                text = item, color = Color.White, fontSize = 12.sp,
+                            )
+                        }
+                    }
+
+                }
             }
         }
     }

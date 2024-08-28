@@ -5,11 +5,21 @@
       <entry key="MovieDaoTest">
         <State />
       </entry>
-      <entry key="NewCalendar">
-        <State />
-      </entry>
       <entry key="app">
-        <State />
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\vshut\.android\avd\Pixel_5_API_26.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-08-24T07:17:44.207242700Z" />
+        </State>
       </entry>
     </value>
   </component>

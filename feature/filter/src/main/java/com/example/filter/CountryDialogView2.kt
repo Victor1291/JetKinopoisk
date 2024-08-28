@@ -3,13 +3,14 @@ package com.example.filter
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -26,7 +27,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.example.filter.components.MaterialSearch
 import com.shu.models.Countries
-import com.shu.models.Genres
 
 @Composable
 fun CountryDialogView2(
@@ -47,8 +47,7 @@ fun CountryDialogView2(
 
     Column(
         Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center
     ) {
         MaterialSearch(
@@ -65,7 +64,7 @@ fun CountryDialogView2(
             Modifier
                 .selectableGroup()
                 .fillMaxWidth()
-                .height(350.dp),
+                .height(300.dp), //TODO от ориентации
         ) {
             items(city.size) { item ->
                 Row(

@@ -244,6 +244,18 @@ fun DetailScreen(
                 onClick = {})
         }
 
+        // Gallery STILL
+        item {
+
+            if (gallery.items.isNotEmpty()) {
+                LazyRowGallery(
+                    gallery = gallery,
+                    onAllClick = { onAllClick(movie.kinopoiskId) },
+                    onGalleryClick = onGalleryClick
+                )
+            }
+        }
+
         //Description Movie with animation
         item {
             if (movie.shortDescription != null) {
@@ -269,17 +281,7 @@ fun DetailScreen(
             )
         }
 
-        // Gallery STILL
-        item {
 
-            if (gallery.items.isNotEmpty()) {
-                LazyRowGallery(
-                    gallery = gallery,
-                    onAllClick = { onAllClick(movie.kinopoiskId) },
-                    onGalleryClick = onGalleryClick
-                )
-            }
-        }
 
         // Grid Similar Movie
         item {
