@@ -1,13 +1,23 @@
 package com.shu.detail_person
 
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Button
@@ -21,6 +31,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -39,6 +52,8 @@ fun PersonScreen(
     person: Person,
     onMovieClick: (Int?) -> Unit,
     onLeftClick: () -> Unit,
+    state: LazyListState = rememberLazyListState(),
+    scrollState: ScrollState = rememberScrollState()
 ) {
     val select = remember {
         mutableIntStateOf(0)
@@ -46,6 +61,14 @@ fun PersonScreen(
     val mainList = remember {
         mutableStateOf<List<MovieOfActor>>(emptyList())
     }
+    val gradient = Brush.verticalGradient(     listOf(
+        Color.Red.copy(alpha = 0.4F),
+        Color.Blue.copy(alpha = 0.4F),
+        Color.Green.copy(alpha = 0.4F)),
+        0.0f,
+        10000.0f,
+        TileMode.Repeated )
+
     LaunchedEffect(key1 = 2) {
 
 
@@ -55,6 +78,9 @@ fun PersonScreen(
 
     Column(
         modifier = modifier
+            .verticalScroll(scrollState)
+            .requiredHeight(10000.dp)
+            .background(brush = gradient),
     ) {
 
         TopBar(
@@ -65,7 +91,8 @@ fun PersonScreen(
 
         LazyColumn(
             contentPadding = PaddingValues(4.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            state = state
         ) {
             item {
 

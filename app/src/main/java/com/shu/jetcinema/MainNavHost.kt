@@ -34,6 +34,7 @@ import com.shu.detail_movie.DetailCheckState
 import com.shu.detail_person.PersonCheckState
 import com.shu.home.MainCheckState
 import com.shu.list_movies.ListScreen
+import com.shu.models.FilmVip
 import com.shu.models.details.DetailMovie
 
 
@@ -323,7 +324,7 @@ fun MainNavHost(
             ListScreen(
                 modifier = modifier,
                 innerPadding = innerPadding,
-                filmVip = paramsData,
+                filmVip = paramsData ?: FilmVip(),
                 navController = navController,
                 onMovieClick = { filmId ->
                     viewModel.changeStateTOpBar(false)

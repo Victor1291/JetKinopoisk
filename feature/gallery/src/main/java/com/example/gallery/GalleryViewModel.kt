@@ -12,6 +12,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.example.gallery.domain.GalleryRepository
 import com.shu.models.gallery_models.GalleryItem
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -28,9 +31,11 @@ sealed interface UiState {
     data object Loading : UiState
 }
 
-@HiltViewModel
-class GalleryViewModel @Inject constructor(
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+@HiltViewModel(assistedFactory = GalleryViewModel.Factory::class)
+class GalleryViewModel @AssistedInject constructor(
     private val galleryRepository: GalleryRepository,
+    @Assisted private val filmId: Int,
 ) : ViewModel() {
 
     var uiState: UiState by mutableStateOf(UiState.Loading)
@@ -39,7 +44,8 @@ class GalleryViewModel @Inject constructor(
     var type = "STILL"
 
     var select = 0
-    var indexType = mutableMapOf<String,Int>("STILL" to 0,
+    var indexType = mutableMapOf<String, Int>(
+        "STILL" to 0,
         "SCREENSHOT" to 0,
         "SHOOTING" to 0,
         "FAN_ART" to 0,
@@ -48,9 +54,9 @@ class GalleryViewModel @Inject constructor(
         "POSTER" to 0,
         "CONCEPT" to 0,
         "COVER" to 0,
-        )
+    )
     var firstVisibleItemIndex = 0
-    private var filmId = 1
+    // private var filmId = 1
 
     private var totalList: List<Int> = emptyList()
 
@@ -97,15 +103,17 @@ class GalleryViewModel @Inject constructor(
 
     init {
         Log.d("gallery ViewModel", "init loadFirst Screen")
-    }
-
-    fun setId(id: Int) {
-        this.filmId = id
+        getFirstGallery()
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun retry() {
         getGallery()
+    }
+
+    @AssistedFactory
+    internal interface Factory {
+        fun create(filmId: Int): GalleryViewModel
     }
 
 }

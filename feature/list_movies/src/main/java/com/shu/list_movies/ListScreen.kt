@@ -17,7 +17,6 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -34,25 +33,21 @@ import com.shu.models.FilmVip
 fun ListScreen(
     modifier: Modifier,
     innerPadding: PaddingValues,
-    filmVip: FilmVip?,
-    listViewModel: ListViewModel = hiltViewModel(),
+    filmVip: FilmVip,
     navController: NavHostController,
     onMovieClick: (Int?) -> Unit
 ) {
 
+    val listViewModel = hiltViewModel<ListViewModel, ListViewModel.Factory> { factory ->
+        factory.create(filmVip)
+    }
     val lazyPagingItems = listViewModel.pagedMovies.collectAsLazyPagingItems()
 
     val swipeRefreshState =
         rememberPullRefreshState(false, onRefresh = { lazyPagingItems.refresh() })
 
-    LaunchedEffect(key1 = true) {
-        if (filmVip != null) {
-            listViewModel.setTitle(filmVip)
-        }
-    }
-
     Column(
-      //  modifier = modifier
+        //  modifier = modifier
     ) {
 
         TopBar(

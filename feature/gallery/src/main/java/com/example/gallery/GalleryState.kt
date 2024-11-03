@@ -16,18 +16,21 @@ import com.example.design_system.state.LoadingScreen
 fun GalleryState(
     innerPadding: PaddingValues,
     modifier: Modifier,
-    filmId: Int?,
-    viewModel: GalleryViewModel = hiltViewModel(),
+    filmId: Int,
     onBackClick: () -> Unit
 ) {
 
-    LaunchedEffect(key1 = true) {
+    val viewModel = hiltViewModel<GalleryViewModel, GalleryViewModel.Factory> { factory ->
+        factory.create(filmId)
+    }
+
+   /* LaunchedEffect(key1 = true) {
         if (filmId != null) {
             viewModel.setId(filmId)
             viewModel.getFirstGallery()
         }
     }
-
+*/
     when (viewModel.uiState) {
         is UiState.Loading -> LoadingScreen()
         is UiState.Success -> {

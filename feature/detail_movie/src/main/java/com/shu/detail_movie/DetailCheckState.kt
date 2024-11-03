@@ -22,7 +22,6 @@ fun DetailCheckState(
     modifier: Modifier,
     innerPadding: PaddingValues,
     filmId: Int,
-  //  viewModel: DetailViewModel = hiltViewModel(),
     navController: NavHostController,
     onMovieClick: (Int?) -> Unit,
     onActorClick: (Int?) -> Unit,
@@ -37,11 +36,6 @@ fun DetailCheckState(
 
     val context: Context = LocalContext.current.applicationContext
     val uriHandler = LocalUriHandler.current
-
-//    LaunchedEffect(key1 = true) {
-//        viewModel.getDetailUi(filmId)
-//        viewModel.filmId = filmId
-//    }
 
     when (viewState) {
         is UiState.Loading -> LoadingScreen()

@@ -10,41 +10,32 @@ import com.shu.list_movies.domain.PagingRepository
 import com.shu.list_movies.paging.MoviePagingSource
 import com.shu.models.CinemaItem
 import com.shu.models.FilmVip
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
-@HiltViewModel
-class ListViewModel @Inject constructor(
-    private val repository: PagingRepository
+@HiltViewModel(assistedFactory = ListViewModel.Factory::class)
+class ListViewModel @AssistedInject constructor(
+    private val repository: PagingRepository,
+    @Assisted private val film: FilmVip,
 ) : ViewModel() {
 
-    private var _title = MutableStateFlow(FilmVip())
-    val title = _title.asStateFlow()
-    private var titleIn = FilmVip()
-
-    init {
-        title.onEach {
-            titleIn = it
-        }.launchIn(viewModelScope)
-    }
+    //TODO подключить Mediator
 
     val pagedMovies: Flow<PagingData<CinemaItem>> = Pager(
         config = PagingConfig(pageSize = 10),
         pagingSourceFactory = {
             MoviePagingSource(
                 repository,
-                titleIn
+                film
             )
         }
     ).flow.cachedIn(viewModelScope)
 
-    fun setTitle(titleNew: FilmVip) {
-        _title.value = titleNew
+    @AssistedFactory
+    internal interface Factory {
+        fun create(film: FilmVip): ListViewModel
     }
 }
