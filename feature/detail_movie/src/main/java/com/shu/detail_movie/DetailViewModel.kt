@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shu.detail_movie.domain.DetailRepository
 import com.shu.models.details.DetailUi
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,21 +25,24 @@ sealed interface UiState {
     data object Loading : UiState
 }
 
-@HiltViewModel
-class DetailViewModel @Inject constructor(
-    private val repository: DetailRepository
+@HiltViewModel(assistedFactory = DetailViewModel.Factory::class)
+class DetailViewModel @AssistedInject constructor(
+    private val repository: DetailRepository,
+    @Assisted private val filmId: Int,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    var filmId: Int? = null
-
     init {
         Log.d("Init DetailViewmodel", " *****   ***** ")
+        viewModelScope.launch {
+            getDetailUi()
+        }
+
     }
 
-    suspend fun getDetailUi(filmId: Int) {
+    private suspend fun getDetailUi() {
         try {
             _uiState.value = UiState.Success(
                 result = repository.getDetailUi(filmId, "STILL", 1),
@@ -62,6 +68,11 @@ class DetailViewModel @Inject constructor(
 
     fun toggleWatchedStatus(favorite: Boolean) = viewModelScope.launch {
         repository.watched(filmId, favorite)
+    }
+
+    @AssistedFactory
+    internal interface Factory {
+        fun create(filmId: Int): DetailViewModel
     }
 
 }

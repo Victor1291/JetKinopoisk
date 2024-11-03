@@ -1,15 +1,13 @@
 package com.shu.network.repository
 
-import android.util.Log
-import com.shu.models.domain.CollectionsRepository
 import com.example.database.MovieDao
 import com.example.database.modelDbo.BestMovieDbo
 import com.example.database.modelDbo.CollectionsDbo
 import com.example.database.modelDbo.CollectionsMovieDbo
 import com.example.database.modelDbo.SimilarMovieDbo
-
 import com.shu.models.CinemaItem
 import com.shu.models.collections.Collections
+import com.shu.models.domain.CollectionsRepository
 import com.shu.network.mapFrom
 import com.shu.network.models.mapFromBd
 import com.shu.network.toBd
@@ -17,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class CollectionsRepositoryImpl  @Inject constructor(
+class CollectionsRepositoryImpl @Inject constructor(
     private val movieDao: MovieDao
 ) : CollectionsRepository {
     override fun getCollection(): Flow<List<Collections>> {
@@ -36,7 +34,7 @@ class CollectionsRepositoryImpl  @Inject constructor(
         }
     }
 
-    override suspend fun getCheckedCollections(filmId: Int) : List<Collections> {
+    override suspend fun getCheckedCollections(filmId: Int): List<Collections> {
         //получаем список коллекций с фильмом
         return movieDao.checkMovie(filmId).map { collection ->
             collection.mapFromBd()
@@ -99,26 +97,25 @@ class CollectionsRepositoryImpl  @Inject constructor(
         }
 
         //помечаем фильм если фильм добавляем в коллекцию "Любимые"
-       /* if (collectionId == 1) {
-            movieDao.updateFavorite(movieId, true)
-        }
-        //помечаем фильм если фильм добавляем в коллекцию "Хочу посмотреть"
-        if (collectionId == 2) {
-            movieDao.updateSeeLater(movieId, true)
-        }
-        //Log.d("dao","answer addMovie $answer")
-        */
+        /* if (collectionId == 1) {
+             movieDao.updateFavorite(movieId, true)
+         }
+         //помечаем фильм если фильм добавляем в коллекцию "Хочу посмотреть"
+         if (collectionId == 2) {
+             movieDao.updateSeeLater(movieId, true)
+         }
+         //Log.d("dao","answer addMovie $answer")
+         */
     }
 
     //удаление фильма из коллекции
     override suspend fun removeMovieInDb(collectionId: Int, movieId: Int) {
-         movieDao.deleteMovieFromCollection(collectionId,movieId)
+        val answer: Int = movieDao.deleteMovieFromCollection(collectionId, movieId)
 
         //если успешно удаление уменьшаем, Delete возвращает число удалёных row
-       /* val answer = movieDao.deleteMovieInDB(collectionId, movieId)
         if (answer > 0) {
             movieDao.updateCollectionDel(collectionId)
-        }*/
+        }
     }
 
     override suspend fun clearInteresting() {

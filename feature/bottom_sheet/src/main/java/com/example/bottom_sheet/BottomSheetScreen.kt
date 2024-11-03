@@ -92,15 +92,8 @@ fun BottomSheetScreen(
                     BottomSheetItem(
                         collection = collection,
                         onClick = {
-                            Log.d("isChecked begin", "${collection.checked}")
                             collection.checked = !collection.checked
-                            if (collection.checked) {
-                                Log.d("true checked", "true")
-                                viewModel.addMovieInCollection(num + 1)
-                            } else {
-                                Log.d("false checked", "false")
-                                viewModel.removeMovieInCollection(num + 1)
-                            }
+                            viewModel.addOrRemove(collection)
                         }
                     )
                 }
@@ -132,6 +125,11 @@ fun BottomSheetScreen(
 fun BottomSheetItem(
     collection: Collections, onClick: () -> Unit
 ) {
+    val tint by animateColorAsState(
+        if (collection.checked) Color(0xFFEC407A) else Color(
+            0xFFB0BEC5
+        ), label = ""
+    )
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Absolute.SpaceBetween,
@@ -140,12 +138,10 @@ fun BottomSheetItem(
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp)
     ) {
-        IconToggleButton(checked = collection.checked, onCheckedChange = {}) {
-            val tint by animateColorAsState(
-                if (collection.checked) Color(0xFFEC407A) else Color(
-                    0xFFB0BEC5
-                ), label = ""
-            )
+        IconToggleButton(checked = collection.checked, onCheckedChange = {
+           onClick()
+        }) {
+
             Icon(Icons.Filled.Favorite, contentDescription = "Localized description", tint = tint)
         }
         Text(

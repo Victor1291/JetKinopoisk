@@ -26,10 +26,12 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -53,6 +55,9 @@ android {
 }
 
 dependencies {
+
+   /* compileOnly(libs.lint.api)
+    compileOnly(libs.lint.checks)*/
 
     //feature
     implementation(project(":feature:home"))

@@ -78,14 +78,21 @@ class BottomSheetViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    fun addMovieInCollection(collectionId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            collectionsRepository.addMovieInDb(collectionId, movieId)
-            Log.d("collection save", "name $collectionId ")
+    fun addOrRemove(collection: Collections) {
+        if (collection.checked) {
+            addMovieInCollection(collection.collectionId)
+        } else {
+            removeMovieInCollection(collection.collectionId)
         }
     }
 
-    fun removeMovieInCollection(collection: Int) {
+    private fun addMovieInCollection(collectionId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            collectionsRepository.addMovieInDb(collectionId, movieId)
+        }
+    }
+
+    private fun removeMovieInCollection(collection: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             collectionsRepository.removeMovieInDb(collection, movieId)
         }

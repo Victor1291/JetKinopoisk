@@ -171,9 +171,9 @@ interface MovieDao {
     suspend fun updateCollection(collectionId: Int)
 
     @Transaction
-    suspend fun deleteMovieFromCollection(collectionId: Int, filmId: Int) {
-        deleteMovieInDB(collectionId, filmId)
+    suspend fun deleteMovieFromCollection(collectionId: Int, filmId: Int): Int {
         updateCollectionDel(collectionId)
+       return deleteMovieInDB(collectionId, filmId)
     }
 
     @Query("UPDATE collections SET total = total - 1 WHERE collection_id = :collectionId")

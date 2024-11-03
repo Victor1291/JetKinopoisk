@@ -22,22 +22,26 @@ fun DetailCheckState(
     modifier: Modifier,
     innerPadding: PaddingValues,
     filmId: Int,
-    viewModel: DetailViewModel = hiltViewModel(),
+  //  viewModel: DetailViewModel = hiltViewModel(),
     navController: NavHostController,
     onMovieClick: (Int?) -> Unit,
     onActorClick: (Int?) -> Unit,
     onMessageSent: (DetailMovie?) -> Unit,
     onAllClick: (Int?) -> Unit,
 ) {
+    val viewModel = hiltViewModel<DetailViewModel, DetailViewModel.Factory> { factory ->
+        factory.create(filmId)
+    }
+
     val viewState by viewModel.uiState.collectAsState()
 
     val context: Context = LocalContext.current.applicationContext
     val uriHandler = LocalUriHandler.current
 
-    LaunchedEffect(key1 = true) {
-        viewModel.getDetailUi(filmId)
-        viewModel.filmId = filmId
-    }
+//    LaunchedEffect(key1 = true) {
+//        viewModel.getDetailUi(filmId)
+//        viewModel.filmId = filmId
+//    }
 
     when (viewState) {
         is UiState.Loading -> LoadingScreen()
