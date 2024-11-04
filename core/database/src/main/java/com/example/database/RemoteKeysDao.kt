@@ -20,4 +20,7 @@ interface RemoteKeysDao {
 
     @Query("Select created_at From remote_key Order By created_at DESC LIMIT 1")
     suspend fun getCreationTime(): Long?
+
+    @Query("Select title From remote_key LIMIT 1")
+    suspend fun getTitle(): String
 }

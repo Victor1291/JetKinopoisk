@@ -6,7 +6,6 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.example.database.MovieDatabase
-import com.example.database.RemoteKeysDao
 import com.example.database.modelDbo.MovieMediaDbo
 import com.example.database.modelDbo.RemoteKeys
 import com.shu.models.ETitle
@@ -18,19 +17,24 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
+
+//Можно попробовать сделать несколько медиаторов для сохранения в бд
+// менять их для каждого списка своя таблица. получится ?
+// либо применить общий интерфейс.
 @OptIn(ExperimentalPagingApi::class)
 class MovieRemoteMediator(
     private val api: ServiceMovieApi,
     private val dataBase: MovieDatabase,
     private val vip: FilmVip,
-    private val isSkipRefresh: Boolean = true
+    //private val isSkipRefresh: Boolean = true
 ) : RemoteMediator<Int, MovieMediaDbo>() {
 
     override suspend fun initialize(): InitializeAction {
         val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
 
+        //пропускаем инициализацию если тот же title в ключах и по времени
         return if (System.currentTimeMillis() - (dataBase.getRemoteKeysDao().getCreationTime()
-                ?: 0) < cacheTimeout && isSkipRefresh
+                ?: 0) < cacheTimeout && dataBase.getRemoteKeysDao().getTitle() == vip.title.name
         ) {
             InitializeAction.SKIP_INITIAL_REFRESH
         } else {
@@ -99,7 +103,8 @@ class MovieRemoteMediator(
                         kinopoiskId = movie.kinopoiskId ?: 0,
                         prevKey = prevKey,
                         currentPage = page,
-                        nextKey = nextKey
+                        nextKey = nextKey,
+                        title = vip.title.name
                     )
                 }
 
