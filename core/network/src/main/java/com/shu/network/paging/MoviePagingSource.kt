@@ -1,16 +1,16 @@
-package com.shu.list_movies.paging
+package com.shu.network.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.shu.list_movies.domain.PagingRepository
 import com.shu.models.CinemaItem
 import com.shu.models.ETitle
 import com.shu.models.FilmVip
+import com.shu.network.ServiceMovieApi
+import com.shu.network.models.mapFrom
 
 class MoviePagingSource(
-    private val pagingRepository: PagingRepository,
-    private val title: FilmVip
+    private val api: ServiceMovieApi,
+    private val vip: FilmVip
 ) : PagingSource<Int, CinemaItem>() {
 
     override fun getRefreshKey(state: PagingState<Int, CinemaItem>): Int = FIRST_PAGE
@@ -19,18 +19,24 @@ class MoviePagingSource(
         val page = params.key ?: FIRST_PAGE
         return kotlin.runCatching {
             //Log.d("search source", " idTitle ${title.idTitle} word ${title.keyword}")
-            when (title.title) {
+            when (vip.title) {
                 //TODO задать для Premiers год и месяц
-                ETitle.Premieres -> pagingRepository.getPremieres(2024, "MAY").items
-                ETitle.Popular -> pagingRepository.getPopular(page).items
-                ETitle.Top250 -> pagingRepository.getTop250(page).items//лучшее TODO
-                ETitle.FilmVip -> pagingRepository.getFilmVip(title).items
-                ETitle.SerialVip -> pagingRepository.getSerialVip(page).items
-                else -> {
-                    Log.d("search source", " word ${title.keyword}")
-                    title.page = page
-                    pagingRepository.getFilmVip(title).items
-                }// вариант с выборками
+                ETitle.Premieres -> api.movies(2024, "MAY").mapFrom().items
+                ETitle.Popular -> api.popular(page).mapFrom().items
+                ETitle.Top250 -> api.top250(page = page).mapFrom().items//лучшее TODO
+                ETitle.SerialVip -> api.serialVip(page = page).mapFrom().items
+                else -> api.filmVip(
+                    page = vip.page,
+                    country = vip.country,
+                    genres = vip.genres,
+                    order = vip.order,
+                    type = vip.type,
+                    ratingFrom = vip.ratingFrom,
+                    ratingTo = vip.ratingTo,
+                    yearFrom = vip.yearFrom,
+                    yearTo = vip.yearTo,
+                    keyword = vip.keyword
+                ).mapFrom().items
             }
         }.fold(
             onSuccess = {

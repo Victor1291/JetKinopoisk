@@ -41,7 +41,7 @@ fun ListScreen(
     val listViewModel = hiltViewModel<ListViewModel, ListViewModel.Factory> { factory ->
         factory.create(filmVip)
     }
-    val lazyPagingItems = listViewModel.pagedMovies.collectAsLazyPagingItems()
+    val lazyPagingItems = listViewModel.listCashed.collectAsLazyPagingItems()
 
     val swipeRefreshState =
         rememberPullRefreshState(false, onRefresh = { lazyPagingItems.refresh() })

@@ -2,12 +2,9 @@ package com.shu.list_movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.shu.list_movies.domain.PagingRepository
-import com.shu.list_movies.paging.MoviePagingSource
 import com.shu.models.CinemaItem
 import com.shu.models.FilmVip
 import dagger.assisted.Assisted
@@ -24,7 +21,7 @@ class ListViewModel @AssistedInject constructor(
 
     //TODO подключить Mediator
 
-    val pagedMovies: Flow<PagingData<CinemaItem>> = Pager(
+    /*val pagedMovies: Flow<PagingData<CinemaItem>> = Pager(
         config = PagingConfig(pageSize = 10),
         pagingSourceFactory = {
             MoviePagingSource(
@@ -32,7 +29,18 @@ class ListViewModel @AssistedInject constructor(
                 film
             )
         }
-    ).flow.cachedIn(viewModelScope)
+    ).flow.cachedIn(viewModelScope)*/
+
+    val listCashed: Flow<PagingData<CinemaItem>> = repository.getOrderingCash(
+        vip = film,
+    ).cachedIn(viewModelScope)
+
+
+    //Paging not have Mediator
+ /*   val pagedMovies: Flow<PagingData<CinemaItem>> = repository.getOrdering(
+        vip = film,
+    ).cachedIn(viewModelScope)*/
+
 
     @AssistedFactory
     internal interface Factory {

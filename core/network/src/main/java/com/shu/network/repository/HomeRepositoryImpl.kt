@@ -2,7 +2,13 @@ package com.shu.network.repository
 
 import android.icu.text.SimpleDateFormat
 import android.util.Log
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.example.database.MovieDao
+import com.example.database.MovieDatabase
 import com.example.database.modelDbo.FiltersDbo
 import com.shu.home.domain.HomeRepository
 import com.shu.list_movies.domain.PagingRepository
@@ -17,9 +23,14 @@ import com.shu.network.models.filters.mapFromApi
 import com.shu.network.models.filters.mapFromBd
 import com.shu.network.models.filters.mapToBd
 import com.shu.network.models.mapFrom
+import com.shu.network.models.mapFromBd
 import com.shu.network.models.media_posts.toListPosts
+import com.shu.network.paging.MoviePagingSource
+import com.shu.network.paging.MovieRemoteMediator
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -34,6 +45,7 @@ import kotlin.random.Random
 class HomeRepositoryImpl @Inject constructor(
     private val api: ServiceMovieApi,
     private val movieDao: MovieDao,
+    private val database: MovieDatabase,
 ) : HomeRepository, PagingRepository {
 
     override suspend fun getAllNewScreen(): ManyScreens {
@@ -258,4 +270,23 @@ class HomeRepositoryImpl @Inject constructor(
     override suspend fun getSerialVip(page: Int): ListCinema {
         return api.serialVip(page = page).mapFrom()
     }
+
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getOrderingCash(vip: FilmVip): Flow<PagingData<CinemaItem>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10, initialLoadSize = 15, prefetchDistance = 4),
+            pagingSourceFactory = { database.getMovieMediatorDao().getMovies() },
+            remoteMediator = MovieRemoteMediator(api = api, dataBase = database, vip = vip)
+        ).flow.map { pagingData ->
+            pagingData.map { it.mapFromBd() }
+        }
+    }
+
+
+ /*   override fun getOrdering(vip: FilmVip): Flow<PagingData<CinemaItem>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10, initialLoadSize = 15, prefetchDistance = 4),
+            pagingSourceFactory = { MoviePagingSource(api, vip) },
+        ).flow
+    }*/
 }

@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.bundles.room)
     testImplementation("org.testng:testng:6.9.6")
     ksp(libs.androidx.room.compiler)
+    implementation("androidx.room:room-paging:2.6.1")
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
@@ -50,6 +51,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
+    //Paging
+    implementation("androidx.paging:paging-compose:3.3.2")
 
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.core)

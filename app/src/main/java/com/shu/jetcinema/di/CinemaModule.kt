@@ -1,6 +1,7 @@
 package com.shu.jetcinema.di
 
 import com.example.database.MovieDao
+import com.example.database.MovieDatabase
 import com.example.filter.domain.FilterRepository
 import com.example.gallery.domain.GalleryRepository
 import com.example.search.domain.PagingSearchRepository
@@ -33,9 +34,10 @@ class CinemaModule {
     @Provides
     fun providesRepository(
         api: ServiceMovieApi,
-        dao: MovieDao
+        dao: MovieDao,
+        database: MovieDatabase
     ): HomeRepository {
-        return HomeRepositoryImpl(api,dao)
+        return HomeRepositoryImpl(api,dao, database)
     }
 
     @Provides
@@ -56,9 +58,10 @@ class CinemaModule {
     @Provides
     fun providesPagingRepository(
         api: ServiceMovieApi,
-        dao: MovieDao
+        dao: MovieDao,
+        database: MovieDatabase
     ): PagingRepository {
-        return HomeRepositoryImpl(api,dao)
+        return HomeRepositoryImpl(api,dao, database)
     }
 
     @Provides
