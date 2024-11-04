@@ -17,7 +17,9 @@ import com.example.database.modelDbo.MovieCountryDbo
 import com.example.database.modelDbo.MovieDbo
 import com.example.database.modelDbo.MovieGenresDbo
 import com.example.database.modelDbo.MovieMediaDbo
+import com.example.database.modelDbo.PostDbo
 import com.example.database.modelDbo.RemoteKeys
+import com.example.database.modelDbo.RemoteKeysPost
 import com.example.database.modelDbo.SimilarMovieDbo
 
 @Database(
@@ -36,14 +38,18 @@ import com.example.database.modelDbo.SimilarMovieDbo
         MovieGenresDbo::class,
         FiltersDbo::class,
         RemoteKeys::class,
+        RemoteKeysPost::class,
+        PostDbo::class,
     ], version = 1, exportSchema = false
 )
 @TypeConverters(CountryConverters::class, GenresConverters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun getMovieDao(): MovieDao
+    abstract fun getPostsDao(): PostsDao
     abstract fun getMovieMediatorDao(): MovieMediatorDao
 
     abstract fun getRemoteKeysDao(): RemoteKeysDao
+    abstract fun getRemoteKeysPostDao(): RemoteKeysPostDao
 
 
 }

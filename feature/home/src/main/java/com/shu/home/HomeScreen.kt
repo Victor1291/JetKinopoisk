@@ -14,16 +14,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.shu.models.FilmVip
 import com.shu.models.ManyScreens
-import com.shu.models.media_posts.ListPosts
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     manyScreens: ManyScreens,
     innerPadding: PaddingValues,
-    posts: ListPosts,
     onMovieClick: (Int?) -> Unit,
     onPostClick: (Int?) -> Unit,
     onListClick: (FilmVip?) -> Unit,
@@ -43,7 +42,7 @@ fun HomeScreen(
         LazyColumn(contentPadding = innerPadding) {
 
             item {
-                LazyRowPosts(posts = posts, onPostClick = onPostClick)
+                LazyRowPosts(posts = viewModel.listPostCashed.collectAsLazyPagingItems(), onPostClick = onPostClick)
             }
 
             items(manyScreens.homeListScreen.size) { num ->

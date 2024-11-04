@@ -66,7 +66,7 @@ fun PostItemCard(
             )
 
             Text(
-                text = post.title ?: "",
+                text = " ${post.title} ${post.publishedAt}... ",
                 lineHeight = 20.sp,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
@@ -82,10 +82,10 @@ fun PostItemCard(
 
             IconButton(
                 modifier = Modifier
-                        .padding(end = 16.dp, top = 16.dp)
+                    .padding(end = 16.dp, top = 16.dp)
                     .align(Alignment.TopEnd)
-                .clip(CircleShape)
-                .background(Color.Transparent.copy(alpha = 0.3f)),
+                    .clip(CircleShape)
+                    .background(Color.Transparent.copy(alpha = 0.3f)),
                 enabled = true,
                 onClick = { post.url?.let { uriHandler.openUri(it) } },
             ) {

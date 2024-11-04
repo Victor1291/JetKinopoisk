@@ -18,15 +18,18 @@ import com.shu.models.ListCinema
 import com.shu.models.ListFilters
 import com.shu.models.ManyScreens
 import com.shu.models.media_posts.ListPosts
+import com.shu.models.media_posts.Post
 import com.shu.network.ServiceMovieApi
 import com.shu.network.models.filters.mapFromApi
 import com.shu.network.models.filters.mapFromBd
 import com.shu.network.models.filters.mapToBd
 import com.shu.network.models.mapFrom
 import com.shu.network.models.mapFromBd
+import com.shu.network.models.media_posts.bdUi
 import com.shu.network.models.media_posts.toListPosts
 import com.shu.network.paging.MoviePagingSource
 import com.shu.network.paging.MovieRemoteMediator
+import com.shu.network.paging.PostRemoteMediator
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -211,8 +214,16 @@ class HomeRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPosts(page: Int): ListPosts {
-        return api.getPosts(page).toListPosts()
+    //TODO сделать отдельный медиатор для постов.
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getPosts():  Flow<PagingData<Post>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10, initialLoadSize = 15, prefetchDistance = 4),
+            pagingSourceFactory = { database.getPostsDao().getPosts() },
+            remoteMediator = PostRemoteMediator(api = api, dataBase = database)
+        ).flow.map { pagingData ->
+            pagingData.map { it.bdUi() }
+        }
     }
 
     private fun choiceCountry(): FilmVip {

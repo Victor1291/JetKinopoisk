@@ -70,8 +70,6 @@ fun SearchScreen(
             searchViewModel.pagedPerson.collectAsLazyPagingItems()
         }
 
-
-
     val swipeRefreshState =
         rememberPullRefreshState(false, onRefresh = { lazyPagingItems.refresh() })
 

@@ -6,5 +6,6 @@ data class Post(
     val title       : String?,
     val description : String?,
     val url         : String?,
-    val publishedAt : String?
+    val publishedAt : String?,
+    val page: Int
 )
