@@ -29,7 +29,8 @@ fun MainCheckState(
                     posts = posts,
                     onPostClick = onPostClick,
                     onMovieClick = onMovieClick,
-                    onListClick = onListClick
+                    onListClick = onListClick,
+                    viewModel = viewModel
                 )
             }
         }

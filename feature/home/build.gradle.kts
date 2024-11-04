@@ -51,6 +51,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+    //Swipe to refresh
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.34.0")
+    implementation("androidx.compose.material:material:1.7.5")
     //Hilt
     implementation(libs.bundles.hilt)
     implementation(libs.androidx.compose.foundation)

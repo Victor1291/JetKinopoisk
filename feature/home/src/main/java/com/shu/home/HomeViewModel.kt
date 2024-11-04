@@ -69,4 +69,5 @@ class HomeViewModel @Inject constructor(
     fun retry() {
         getInfo()
     }
+
 }

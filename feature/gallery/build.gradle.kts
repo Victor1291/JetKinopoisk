@@ -60,11 +60,11 @@ dependencies {
     implementation(libs.coil.compose)
 
     //Paging
-    implementation("androidx.paging:paging-compose:3.3.0")
+    implementation("androidx.paging:paging-compose:3.3.2")
 
     //Swipe to refresh
     implementation("com.google.accompanist:accompanist-swiperefresh:0.34.0")
 
-    implementation("androidx.compose.material:material:1.6.8")
+    implementation("androidx.compose.material:material:1.7.5")
 
 }
