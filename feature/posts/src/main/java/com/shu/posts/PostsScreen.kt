@@ -1,9 +1,8 @@
-package com.shu.home
+package com.shu.posts
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -14,51 +13,36 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.shu.models.FilmVip
-import com.shu.models.ManyScreens
-import com.shu.models.media_posts.ListPosts
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomeScreen(
-    manyScreens: ManyScreens,
+fun PostsScreen(
     innerPadding: PaddingValues,
-    posts: ListPosts,
-    onMovieClick: (Int?) -> Unit,
     onPostClick: (Int?) -> Unit,
-    onListClick: (FilmVip?) -> Unit,
-    viewModel: HomeViewModel
+    viewModel: PostsViewModel = hiltViewModel()
 ) {
 
     val refreshing by remember { mutableStateOf(false) }
 
     val swipeRefreshState =
-        rememberPullRefreshState(refreshing, { viewModel.retry() })
+        rememberPullRefreshState(refreshing, { })
 
     Box(
         Modifier
             .fillMaxSize()
             .pullRefresh(swipeRefreshState)
     ) {
-        LazyColumn(contentPadding = innerPadding) {
 
-            item {
-                LazyRowPosts(posts = posts, onPostClick = onPostClick)
-            }
 
-            items(manyScreens.homeListScreen.size) { num ->
+        LazyPosts(
+            viewModel = viewModel,
+            posts = viewModel.listPostCashed.collectAsLazyPagingItems(),
+            onPostClick = onPostClick,
+            onNextPageClick = { }
+        )
 
-                LazyRowMovie(
-                    list = manyScreens.homeListScreen[num],
-                    title = manyScreens.listTitle[num],
-                    vip = if (num == 3) manyScreens.filmVipOne else manyScreens.filmVipTwo,
-                    num = num,
-                    onMovieClick = onMovieClick,
-                    onListClick = onListClick
-                )
-
-            }
-        }
         PullRefreshIndicator(
             refreshing,
             swipeRefreshState,
@@ -66,6 +50,7 @@ fun HomeScreen(
         )
     }
 }
+
 
 
 

@@ -1,4 +1,4 @@
-package com.shu.home
+package com.shu.posts
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,7 +42,8 @@ fun PostItemCard(
     onPostClick: (Int?) -> Unit,
     onExpandedClick: (Boolean) -> Unit,
     modifier: Modifier,
-    expanded: Boolean
+    expanded: Boolean,
+    onNextPageClick: () -> Unit,
 ) {
 
     val uriHandler = LocalUriHandler.current
@@ -66,7 +68,7 @@ fun PostItemCard(
             )
 
             Text(
-                text = post.title ?: "",
+                text = " ${post.title} ${post.publishedAt}...${post.page} ",
                 lineHeight = 20.sp,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
@@ -82,10 +84,10 @@ fun PostItemCard(
 
             IconButton(
                 modifier = Modifier
-                        .padding(end = 16.dp, top = 16.dp)
+                    .padding(end = 16.dp, top = 16.dp)
                     .align(Alignment.TopEnd)
-                .clip(CircleShape)
-                .background(Color.Transparent.copy(alpha = 0.3f)),
+                    .clip(CircleShape)
+                    .background(Color.Transparent.copy(alpha = 0.3f)),
                 enabled = true,
                 onClick = { post.url?.let { uriHandler.openUri(it) } },
             ) {
@@ -112,6 +114,24 @@ fun PostItemCard(
                     .width(350.dp)
                     .padding(4.dp)
             )
+            IconButton(
+                modifier = Modifier
+                    .padding(end = 16.dp, top = 16.dp)
+                    .clip(CircleShape)
+                    .background(Color.Transparent.copy(alpha = 0.3f)),
+                enabled = true,
+                onClick = {  onNextPageClick()  },
+            ) {
+                Icon(
+                    Icons.Default.Add,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(56.dp),
+                    contentDescription = "collection"
+                )
+            }
+
         }
     }
 }

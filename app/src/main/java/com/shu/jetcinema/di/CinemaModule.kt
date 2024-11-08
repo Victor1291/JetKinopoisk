@@ -5,11 +5,11 @@ import com.example.database.MovieDatabase
 import com.example.filter.domain.FilterRepository
 import com.example.gallery.domain.GalleryRepository
 import com.example.search.domain.PagingSearchRepository
-import com.shu.models.domain.CollectionsRepository
 import com.shu.detail_movie.domain.DetailRepository
 import com.shu.detail_person.domain.PersonRepository
 import com.shu.home.domain.HomeRepository
 import com.shu.list_movies.domain.PagingRepository
+import com.shu.models.domain.CollectionsRepository
 import com.shu.network.ServiceMovieApi
 import com.shu.network.repository.CollectionsRepositoryImpl
 import com.shu.network.repository.DetailRepositoryImpl
@@ -18,6 +18,8 @@ import com.shu.network.repository.GalleryRepositoryImpl
 import com.shu.network.repository.HomeRepositoryImpl
 import com.shu.network.repository.PagingSearchRepositoryImpl
 import com.shu.network.repository.PersonRepositoryImpl
+import com.shu.network.repository.PostsRepositoryImpl
+import com.shu.posts.domain.PostsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +31,7 @@ import dagger.hilt.components.SingletonComponent
  */
 @Module
 @InstallIn(SingletonComponent::class)
-class CinemaModule {
+object CinemaModule {
 
     @Provides
     fun providesRepository(
@@ -37,7 +39,16 @@ class CinemaModule {
         dao: MovieDao,
         database: MovieDatabase
     ): HomeRepository {
-        return HomeRepositoryImpl(api,dao, database)
+        return HomeRepositoryImpl(api, dao, database)
+    }
+
+    @Provides
+    fun providesPostsRepository(
+        api: ServiceMovieApi,
+        dao: MovieDao,
+        database: MovieDatabase
+    ): PostsRepository {
+        return PostsRepositoryImpl(api, database)
     }
 
     @Provides
@@ -45,7 +56,7 @@ class CinemaModule {
         api: ServiceMovieApi,
         dao: MovieDao
     ): DetailRepository {
-        return DetailRepositoryImpl(api,dao)
+        return DetailRepositoryImpl(api, dao)
     }
 
     @Provides
@@ -61,7 +72,7 @@ class CinemaModule {
         dao: MovieDao,
         database: MovieDatabase
     ): PagingRepository {
-        return HomeRepositoryImpl(api,dao, database)
+        return HomeRepositoryImpl(api, dao, database)
     }
 
     @Provides
@@ -84,6 +95,7 @@ class CinemaModule {
     ): PagingSearchRepository {
         return PagingSearchRepositoryImpl(api)
     }
+
     @Provides
     fun providesFilterRepository(
         dao: MovieDao

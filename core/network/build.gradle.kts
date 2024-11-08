@@ -43,6 +43,7 @@ dependencies {
     implementation(project(":core:models"))
 
     implementation(project(mapOf("path" to ":feature:home")))
+    implementation(project(mapOf("path" to ":feature:posts")))
     implementation(project(mapOf("path" to ":feature:detail_movie")))
     implementation(project(mapOf("path" to ":feature:detail_person")))
     implementation(project(mapOf("path" to ":feature:list_movies")))

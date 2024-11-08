@@ -15,7 +15,7 @@ private const val BASE_URL = "https://kinopoiskapiunofficial.tech"
 
 @InstallIn(SingletonComponent::class)
 @Module
-class NetworkModule {
+object NetworkModule {
 
 
     @Provides

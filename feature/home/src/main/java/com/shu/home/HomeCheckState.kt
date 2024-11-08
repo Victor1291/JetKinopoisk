@@ -26,6 +26,7 @@ fun MainCheckState(
                 HomeScreen(
                     innerPadding = innerPadding,
                     manyScreens = manyScreens,
+                    posts = posts,
                     onPostClick = onPostClick,
                     onMovieClick = onMovieClick,
                     onListClick = onListClick,

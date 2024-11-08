@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit
 class PostRemoteMediator(
     private val api: ServiceMovieApi,
     private val dataBase: MovieDatabase,
+    private val pageNew: Int,
 ) : RemoteMediator<Int, PostDbo>() {
 
     override suspend fun initialize(): InitializeAction {

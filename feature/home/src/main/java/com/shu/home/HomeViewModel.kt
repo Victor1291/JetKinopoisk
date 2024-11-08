@@ -3,15 +3,10 @@ package com.shu.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.shu.home.domain.HomeRepository
-import com.shu.models.CinemaItem
 import com.shu.models.ManyScreens
 import com.shu.models.media_posts.ListPosts
-import com.shu.models.media_posts.Post
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,6 +20,7 @@ import kotlin.random.Random
 sealed interface UiState {
     data class Success(
         val manyScreens: ManyScreens,
+        val posts: ListPosts,
     ) : UiState
 
     data class Error(val message: String) : UiState
@@ -39,8 +35,6 @@ class HomeViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
-    val listPostCashed: Flow<PagingData<Post>> = repository.getPosts().cachedIn(viewModelScope)
 
     private fun getTime(): String {
         val date = Date()
@@ -61,6 +55,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _uiState.value = UiState.Success(
+                    posts = repository.getPosts(Random.nextInt(31) + 1),
                     manyScreens = repository.getAllNewScreen(),
                 )
             } catch (e: Exception) {
@@ -74,5 +69,4 @@ class HomeViewModel @Inject constructor(
     fun retry() {
         getInfo()
     }
-
 }

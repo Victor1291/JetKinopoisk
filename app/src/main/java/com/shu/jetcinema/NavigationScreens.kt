@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class NavigationScreens(val route: String, @StringRes val label: Int, val icon: ImageVector) {
@@ -13,6 +14,12 @@ sealed class NavigationScreens(val route: String, @StringRes val label: Int, val
         route = "main_screen",
         label = R.string.home,
         icon = Icons.Default.Home
+    )
+
+    data object PostsScreen : NavigationScreens(
+        route = "postsscreen",
+        label = R.string.posts,
+        icon = Icons.Default.Warning
     )
 
     data object SearchScreen : NavigationScreens(

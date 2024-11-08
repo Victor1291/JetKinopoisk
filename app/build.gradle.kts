@@ -61,6 +61,7 @@ dependencies {
 
     //feature
     implementation(project(":feature:home"))
+    implementation(project(":feature:posts"))
     implementation(project(":feature:detail_movie"))
     implementation(project(":feature:list_movies"))
     implementation(project(":feature:detail_person"))

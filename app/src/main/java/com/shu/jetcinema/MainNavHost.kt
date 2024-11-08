@@ -36,6 +36,7 @@ import com.shu.home.MainCheckState
 import com.shu.list_movies.ListScreen
 import com.shu.models.FilmVip
 import com.shu.models.details.DetailMovie
+import com.shu.posts.PostsScreen
 
 
 private const val argumentKey = "arg"
@@ -81,7 +82,12 @@ fun MainNavHost(
                         route = "${NavigationScreens.DetailScreen.route}/${filmId}"
                     )
                 },
-                onPostClick = {},
+                onPostClick = {
+                    navController.navigate(
+                        route = NavigationScreens.PostsScreen.route
+                    )
+
+                },
                 onListClick = { vip ->
                     val filmsLink = "${NavigationScreens.ListMovies.route}/${
                         FilmsParametersType.serializeAsValue(vip)
@@ -90,6 +96,14 @@ fun MainNavHost(
                         route = filmsLink
                     )
                 }
+            )
+        }
+
+        //PostsScreen
+        composable(NavigationScreens.PostsScreen.route) {
+            PostsScreen(
+                innerPadding = innerPadding,
+                onPostClick = {}
             )
         }
 
