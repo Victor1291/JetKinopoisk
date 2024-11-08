@@ -272,11 +272,19 @@ class HomeRepositoryImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getOrderingCash(vip: FilmVip): Flow<PagingData<CinemaItem>> {
+    override fun getOrderingCash(
+        vip: FilmVip,
+        isSkipRefresh: Boolean
+    ): Flow<PagingData<CinemaItem>> {
         return Pager(
             config = PagingConfig(pageSize = 10, initialLoadSize = 15, prefetchDistance = 4),
             pagingSourceFactory = { database.getMovieMediatorDao().getMovies() },
-            remoteMediator = MovieRemoteMediator(api = api, dataBase = database, vip = vip)
+            remoteMediator = MovieRemoteMediator(
+                api = api,
+                dataBase = database,
+                vip = vip,
+                isSkipRefresh = isSkipRefresh
+            )
         ).flow.map { pagingData ->
             pagingData.map { it.mapFromBd() }
         }

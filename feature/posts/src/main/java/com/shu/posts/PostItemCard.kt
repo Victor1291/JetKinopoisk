@@ -51,7 +51,7 @@ fun PostItemCard(
         Box(
             modifier = modifier
                 .padding(4.dp)
-                .width(350.dp)
+                .fillMaxWidth()
                 .height(270.dp)
                 .clickable {
                     onPostClick(post.kinopoiskId)
@@ -114,24 +114,6 @@ fun PostItemCard(
                     .width(350.dp)
                     .padding(4.dp)
             )
-            IconButton(
-                modifier = Modifier
-                    .padding(end = 16.dp, top = 16.dp)
-                    .clip(CircleShape)
-                    .background(Color.Transparent.copy(alpha = 0.3f)),
-                enabled = true,
-                onClick = {  onNextPageClick()  },
-            ) {
-                Icon(
-                    Icons.Default.Add,
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .size(56.dp),
-                    contentDescription = "collection"
-                )
-            }
-
         }
     }
 }

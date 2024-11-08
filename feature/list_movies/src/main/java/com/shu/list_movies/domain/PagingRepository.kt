@@ -19,7 +19,7 @@ interface PagingRepository {
     suspend fun getFilmVip(vip: FilmVip): ListCinema
     suspend fun getSerialVip(page: Int): ListCinema
 
-    fun getOrderingCash(vip: FilmVip): Flow<PagingData<CinemaItem>>
+    fun getOrderingCash(vip: FilmVip,isSkipRefresh: Boolean): Flow<PagingData<CinemaItem>>
    // fun getOrdering(vip: FilmVip): Flow<PagingData<CinemaItem>>
 
     // suspend fun getGenreCountry(): ListFilter    s

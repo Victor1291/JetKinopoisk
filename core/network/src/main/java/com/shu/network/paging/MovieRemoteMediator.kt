@@ -26,7 +26,7 @@ class MovieRemoteMediator(
     private val api: ServiceMovieApi,
     private val dataBase: MovieDatabase,
     private val vip: FilmVip,
-    //private val isSkipRefresh: Boolean = true
+    private val isSkipRefresh: Boolean = true
 ) : RemoteMediator<Int, MovieMediaDbo>() {
 
     override suspend fun initialize(): InitializeAction {
@@ -34,7 +34,7 @@ class MovieRemoteMediator(
 
         //пропускаем инициализацию если тот же title в ключах и по времени
         return if (System.currentTimeMillis() - (dataBase.getRemoteKeysDao().getCreationTime()
-                ?: 0) < cacheTimeout && dataBase.getRemoteKeysDao().getTitle() == vip.title.name
+                ?: 0) < cacheTimeout && dataBase.getRemoteKeysDao().getTitle() == vip.title.name && isSkipRefresh
         ) {
             InitializeAction.SKIP_INITIAL_REFRESH
         } else {
@@ -75,7 +75,7 @@ class MovieRemoteMediator(
                 ETitle.Top250 -> api.top250(page = page).mapFrom()//лучшее TODO
                 ETitle.SerialVip -> api.serialVip(page = page).mapFrom()
                 else -> api.filmVip(
-                    page = vip.page,
+                    page = page,
                     country = vip.country,
                     genres = vip.genres,
                     order = vip.order,

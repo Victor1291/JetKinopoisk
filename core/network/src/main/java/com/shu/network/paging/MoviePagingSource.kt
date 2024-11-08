@@ -26,7 +26,7 @@ class MoviePagingSource(
                 ETitle.Top250 -> api.top250(page = page).mapFrom().items//лучшее TODO
                 ETitle.SerialVip -> api.serialVip(page = page).mapFrom().items
                 else -> api.filmVip(
-                    page = vip.page,
+                    page = page,
                     country = vip.country,
                     genres = vip.genres,
                     order = vip.order,

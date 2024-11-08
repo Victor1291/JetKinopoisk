@@ -30,27 +30,4 @@ class PostsRepositoryImpl @Inject constructor(
             pagingData.map { it.bdUi() }
         }
     }
-
-
 }
-
-/*
- @OptIn(ExperimentalPagingApi::class)
-    override fun getOrderingCash(vip: FilmVip): Flow<PagingData<CinemaItem>> {
-        return Pager(
-            config = PagingConfig(pageSize = 10, initialLoadSize = 15, prefetchDistance = 4),
-            pagingSourceFactory = { database.getMovieMediatorDao().getMovies() },
-            remoteMediator = MovieRemoteMediator(api = api, dataBase = database, vip = vip)
-        ).flow.map { pagingData ->
-            pagingData.map { it.mapFromBd() }
-        }
-    }
-
-
- /*   override fun getOrdering(vip: FilmVip): Flow<PagingData<CinemaItem>> {
-        return Pager(
-            config = PagingConfig(pageSize = 10, initialLoadSize = 15, prefetchDistance = 4),
-            pagingSourceFactory = { MoviePagingSource(api, vip) },
-        ).flow
-    }*/
- */

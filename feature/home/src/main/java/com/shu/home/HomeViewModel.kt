@@ -55,7 +55,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _uiState.value = UiState.Success(
-                    posts = repository.getPosts(Random.nextInt(31) + 1),
+                    posts = repository.getPosts(Random.nextInt(59) + 1),
                     manyScreens = repository.getAllNewScreen(),
                 )
             } catch (e: Exception) {

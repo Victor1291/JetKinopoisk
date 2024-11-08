@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.shu.list_movies.domain.PagingRepository
 import com.shu.models.CinemaItem
+import com.shu.models.ETitle
 import com.shu.models.FilmVip
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -32,7 +33,7 @@ class ListViewModel @AssistedInject constructor(
     ).flow.cachedIn(viewModelScope)*/
 
     val listCashed: Flow<PagingData<CinemaItem>> = repository.getOrderingCash(
-        vip = film,
+        vip = film, film.title != ETitle.Search
     ).cachedIn(viewModelScope)
 
 
