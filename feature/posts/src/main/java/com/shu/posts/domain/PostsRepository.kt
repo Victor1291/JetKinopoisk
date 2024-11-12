@@ -7,6 +7,6 @@ import com.shu.models.media_posts.Post
 import kotlinx.coroutines.flow.Flow
 
 interface PostsRepository {
-    fun getPosts(pageNew: Int): Flow<PagingData<Post>>
+    fun getPosts(pageNew: Int,isSkipRefresh: Boolean): Flow<PagingData<Post>>
 
 }

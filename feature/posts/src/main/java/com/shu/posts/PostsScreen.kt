@@ -27,7 +27,7 @@ fun PostsScreen(
     val refreshing by remember { mutableStateOf(false) }
 
     val swipeRefreshState =
-        rememberPullRefreshState(refreshing, { })
+        rememberPullRefreshState(refreshing, { viewModel.refresh() })
 
     Box(
         Modifier
@@ -36,12 +36,14 @@ fun PostsScreen(
     ) {
 
 
-        LazyPosts(
-            viewModel = viewModel,
-            posts = viewModel.listPostCashed.collectAsLazyPagingItems(),
-            onPostClick = onPostClick,
-            onNextPageClick = { }
-        )
+        viewModel.listPostCashed?.let {
+            LazyPosts(
+                viewModel = viewModel,
+                posts = it.collectAsLazyPagingItems(),
+                onPostClick = onPostClick,
+                onNextPageClick = { }
+            )
+        }
 
         PullRefreshIndicator(
             refreshing,

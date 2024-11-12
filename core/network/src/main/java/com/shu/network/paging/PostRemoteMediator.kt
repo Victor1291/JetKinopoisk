@@ -1,5 +1,6 @@
 package com.shu.network.paging
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -19,13 +20,14 @@ class PostRemoteMediator(
     private val api: ServiceMovieApi,
     private val dataBase: MovieDatabase,
     private val pageNew: Int,
+    private val isSkipRefresh: Boolean = true
 ) : RemoteMediator<Int, PostDbo>() {
 
     override suspend fun initialize(): InitializeAction {
         val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
 
         return if (System.currentTimeMillis() - (dataBase.getRemoteKeysDao().getCreationTime()
-                ?: 0) < cacheTimeout
+                ?: 0) < cacheTimeout && isSkipRefresh
         ) {
             InitializeAction.SKIP_INITIAL_REFRESH
         } else {
@@ -40,7 +42,8 @@ class PostRemoteMediator(
         val page: Int = when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextKey?.minus(1) ?: 1
+                Log.d("media","remoteKeys Refresh ${remoteKeys?.currentPage ?: 1}")
+                remoteKeys?.currentPage ?: pageNew// nextKey?.minus(1) ?: 1
             }
 
             LoadType.PREPEND -> {
@@ -66,8 +69,8 @@ class PostRemoteMediator(
 
             dataBase.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    dataBase.getRemoteKeysDao().clearRemoteKeys()
-                    dataBase.getMovieMediatorDao().clearAllGames()
+                    //dataBase.getRemoteKeysDao().clearRemoteKeys()
+                    //dataBase.getMovieMediatorDao().clearAllGames()
                 }
                 val prevKey = if (page > 1) page - 1 else null
                 val nextKey = if (endOfPaginationReached) null else page + 1

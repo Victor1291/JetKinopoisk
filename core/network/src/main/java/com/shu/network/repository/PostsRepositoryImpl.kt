@@ -21,11 +21,11 @@ class PostsRepositoryImpl @Inject constructor(
     private val database: MovieDatabase,
 ) : PostsRepository {
     @OptIn(ExperimentalPagingApi::class)
-    override fun getPosts(pageNew: Int): Flow<PagingData<Post>> {
+    override fun getPosts(pageNew: Int,isSkipRefresh: Boolean): Flow<PagingData<Post>> {
         return Pager(
             config = PagingConfig(pageSize = 10, initialLoadSize = 15, prefetchDistance = 4),
             pagingSourceFactory = { database.getPostsDao().getPosts() },
-            remoteMediator = PostRemoteMediator(api = api, dataBase = database,pageNew = pageNew)
+            remoteMediator = PostRemoteMediator(api = api, dataBase = database,pageNew = pageNew, isSkipRefresh = isSkipRefresh )
         ).flow.map { pagingData ->
             pagingData.map { it.bdUi() }
         }
