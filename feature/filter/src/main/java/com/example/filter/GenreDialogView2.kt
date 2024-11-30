@@ -1,5 +1,6 @@
 package com.example.filter
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
@@ -34,7 +36,7 @@ fun GenreDialogView2(
     onConfirmation: (Genres) -> Unit,
     viewModel: FilterViewModel,
     genreSelected: Genres,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
 
     val filter = viewModel.filter.collectAsState()
@@ -47,17 +49,38 @@ fun GenreDialogView2(
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(genreSelected) }
 
     Column(
-        Modifier
-            .verticalScroll(rememberScrollState()),
+        // Modifier.verticalScroll(verticalState),
         verticalArrangement = Arrangement.Center
     ) {
+        var isActive by remember {
+            mutableStateOf(false)
+        }
+
+        var searchTextState by remember {
+            mutableStateOf("")
+        }
+
+        val onTextChange = { text : String ->
+            searchTextState = text
+        }
+
         MaterialSearch(
             viewModel = viewModel,
+            searchTextState = searchTextState,
+            onTextChange = onTextChange,
             isCountries = false,
+            isActive = isActive,
             city = emptyList(),
             genres = city,
-            onDismiss = { onDismiss() },
+            onDismiss = {
+                isActive = false
+                onDismiss()
+            },
+            onChangeActive = {
+                isActive = it
+            },
             onConfirmation = { _, genre ->
+                isActive = false
                 onConfirmation(genre)
             },
         )
@@ -66,7 +89,7 @@ fun GenreDialogView2(
             Modifier
                 .selectableGroup()
                 .fillMaxWidth()
-                .height(300.dp), //TODO сделать выбор высоты от ориентации экрана
+                .height(400.dp), //TODO сделать выбор высоты от ориентации экрана
         ) {
             items(city.size) { item ->
 

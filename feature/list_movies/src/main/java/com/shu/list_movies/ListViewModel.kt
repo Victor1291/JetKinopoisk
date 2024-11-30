@@ -20,18 +20,7 @@ class ListViewModel @AssistedInject constructor(
     @Assisted private val film: FilmVip,
 ) : ViewModel() {
 
-    //TODO подключить Mediator
-
-    /*val pagedMovies: Flow<PagingData<CinemaItem>> = Pager(
-        config = PagingConfig(pageSize = 10),
-        pagingSourceFactory = {
-            MoviePagingSource(
-                repository,
-                film
-            )
-        }
-    ).flow.cachedIn(viewModelScope)*/
-
+    //Paging with Mediator
     val listCashed: Flow<PagingData<CinemaItem>> = repository.getOrderingCash(
         vip = film, film.title != ETitle.Search
     ).cachedIn(viewModelScope)

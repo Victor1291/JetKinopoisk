@@ -47,8 +47,8 @@ fun DialogListView(
         Card(
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier
-                .fillMaxWidth()
-                .height(500.dp),
+                .fillMaxWidth(),
+              //  .height(500.dp),
             elevation = CardDefaults.cardElevation(8.dp)
         ) {
             CountryDialogView2(

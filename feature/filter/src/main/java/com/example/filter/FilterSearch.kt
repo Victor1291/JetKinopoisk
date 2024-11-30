@@ -86,7 +86,7 @@ fun FilterSearch(
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp),
+                    .height(520.dp),
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
                 CountryDialogView2(
@@ -117,7 +117,7 @@ fun FilterSearch(
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp),
+                    .height(520.dp),
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
                 GenreDialogView2(

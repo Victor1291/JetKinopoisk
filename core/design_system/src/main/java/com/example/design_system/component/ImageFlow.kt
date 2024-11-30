@@ -45,6 +45,9 @@ import kotlin.math.abs
  * не увеличивать больше текущего года.
  */
 
+/*
+Это логика рисования, так что Ок
+ */
 
 @Composable
 fun StartImage(
