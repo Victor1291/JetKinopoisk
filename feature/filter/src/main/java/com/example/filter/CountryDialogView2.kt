@@ -14,7 +14,6 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,11 +35,7 @@ fun CountryDialogView2(
     onDismiss: () -> Unit
 ) {
 
-    val city by viewModel.country.collectAsState()
-    LaunchedEffect(true) {
-        viewModel.updateSearchTextState("")
-        viewModel.refreshCountry()
-    }
+    val city by viewModel.filterCG.collectAsState()
 
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(countrySelected) }
 
@@ -57,7 +52,7 @@ fun CountryDialogView2(
             mutableStateOf("")
         }
 
-        val onTextChange = { text : String ->
+        val onTextChange = { text: String ->
             searchTextState = text
         }
 
@@ -67,7 +62,7 @@ fun CountryDialogView2(
             onTextChange = onTextChange,
             isCountries = true,
             isActive = isActive,
-            city = city,
+            city = city.countries,
             genres = emptyList(),
             onDismiss = {
                 isActive = false
@@ -86,25 +81,25 @@ fun CountryDialogView2(
                 .fillMaxWidth()
                 .height(400.dp), //TODO от ориентации
         ) {
-            items(city.size) { item ->
+            items(city.countries.size) { item ->
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .height(36.dp)
                         .selectable(
-                            selected = (city[item].country == selectedOption.country),
-                            onClick = { onOptionSelected(city[item]) },
+                            selected = (city.countries[item].country == selectedOption.country),
+                            onClick = { onOptionSelected(city.countries[item]) },
                             role = Role.RadioButton
                         )
                         .padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
-                        selected = (city[item].country == selectedOption.country),
+                        selected = (city.countries[item].country == selectedOption.country),
                         onClick = null // null recommended for accessibility with screenreaders
                     )
                     Text(
-                        text = city[item].country,
+                        text = city.countries[item].country,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(start = 16.dp)
                     )

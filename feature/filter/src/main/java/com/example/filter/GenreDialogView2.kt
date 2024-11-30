@@ -1,6 +1,5 @@
 package com.example.filter
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,16 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,12 +35,7 @@ fun GenreDialogView2(
     onDismiss: () -> Unit,
 ) {
 
-    val filter = viewModel.filter.collectAsState()
-    val city by viewModel.genres.collectAsState()
-    LaunchedEffect(true) {
-        viewModel.updateSearchTextState("")
-        viewModel.refreshGenres()
-    }
+    val city by viewModel.filterCG.collectAsState()
 
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(genreSelected) }
 
@@ -60,7 +51,7 @@ fun GenreDialogView2(
             mutableStateOf("")
         }
 
-        val onTextChange = { text : String ->
+        val onTextChange = { text: String ->
             searchTextState = text
         }
 
@@ -71,7 +62,7 @@ fun GenreDialogView2(
             isCountries = false,
             isActive = isActive,
             city = emptyList(),
-            genres = city,
+            genres = city.genres,
             onDismiss = {
                 isActive = false
                 onDismiss()
@@ -91,26 +82,26 @@ fun GenreDialogView2(
                 .fillMaxWidth()
                 .height(400.dp), //TODO сделать выбор высоты от ориентации экрана
         ) {
-            items(city.size) { item ->
+            items(city.genres.size) { item ->
 
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .height(36.dp)
                         .selectable(
-                            selected = (city[item].genre == selectedOption.genre),
-                            onClick = { onOptionSelected(city[item]) },
+                            selected = (city.genres[item].genre == selectedOption.genre),
+                            onClick = { onOptionSelected(city.genres[item]) },
                             role = Role.RadioButton
                         )
                         .padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
-                        selected = (city[item].genre == selectedOption.genre),
+                        selected = (city.genres[item].genre == selectedOption.genre),
                         onClick = null // null recommended for accessibility with screenreaders
                     )
                     Text(
-                        text = city[item].genre,
+                        text = city.genres[item].genre,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(start = 16.dp)
                     )

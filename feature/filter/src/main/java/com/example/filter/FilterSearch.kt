@@ -94,7 +94,6 @@ fun FilterSearch(
                         openDialogCity.value = false
                     },
                     onConfirmation = {
-                        viewModel.updateSearchTextState(it.country)
                         viewModel.setFilter(filter.value.copy(country =it.id,countryName = it.country))
                         openDialogCity.value = false
                     },
@@ -125,7 +124,6 @@ fun FilterSearch(
                         openDialogGenre.value = false
                     },
                     onConfirmation = {
-                        viewModel.updateSearchTextState(it.genre)
                         viewModel.setFilter(filter.value.copy(genres =it.id, genresName = it.genre))
                         openDialogGenre.value = false
                     },

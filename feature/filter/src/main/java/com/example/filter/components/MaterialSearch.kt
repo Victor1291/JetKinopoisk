@@ -47,7 +47,7 @@ fun MaterialSearch(
     val filter = viewModel.filter.collectAsState()
 
     val mainList = remember {
-        mutableStateOf(city)
+        mutableStateOf(Utils.searchCity("", city))
     }
     val mainListGenres = remember {
         mutableStateOf(genres)
@@ -66,7 +66,7 @@ fun MaterialSearch(
                 mainListGenres.value = Utils.searchGenre(text, genres)
         },
         onSearch = {
-            viewModel.updateSearchTextState(it)
+
         },
         placeholder = {
             Text(text = stringResource(R.string.enter_city))
@@ -99,10 +99,9 @@ fun MaterialSearch(
                                 .fillMaxWidth()
                                 .padding(16.dp)
                                 .clickable {
-                                    onConfirmation(mainList.value[item], Genres(id = 0, "триллер"))
-                                    viewModel.updateSearchTextState(mainList.value[item].country)
+                                    onTextChange(mainList.value[item].country)
                                     viewModel.setFilter(filter.value.copy(country = mainList.value[item].id))
-                                    onDismiss()
+                                    onConfirmation(mainList.value[item], Genres(id = 0, "триллер"))
                                 }, contentAlignment = Alignment.Center
                         ) {
                             Text(text = mainList.value[item].country)
@@ -117,10 +116,9 @@ fun MaterialSearch(
                                 .fillMaxWidth()
                                 .padding(4.dp)
                                 .clickable {
-                                    onConfirmation(Countries(0, "США"), mainListGenres.value[item])
-                                    viewModel.updateSearchTextState(mainListGenres.value[item].genre)
+                                    onTextChange(mainListGenres.value[item].genre)
                                     viewModel.setFilter(filter.value.copy(country = mainListGenres.value[item].id))
-                                    onDismiss()
+                                    onConfirmation(Countries(0, "США"), mainListGenres.value[item])
                                 }, contentAlignment = Alignment.Center
                         ) {
                             Text(text = mainListGenres.value[item].genre)
